@@ -46,6 +46,28 @@ export interface EventGear {
   createdAt?: Timestamp;
 }
 
+export interface GearBox {
+  id?: string;
+  name: string;
+  description?: string;
+  bandId: string;
+  createdBy: string;
+  gearIds: string[]; // Array of gear IDs contained in this box
+  createdAt?: Timestamp;
+  updatedAt?: Timestamp;
+}
+
+export interface EventGearBox {
+  id?: string;
+  eventId: string;
+  gearBoxId: string;
+  quantity: number; // Usually 1 for boxes, but could be multiple sets
+  notes?: string;
+  assignedTo?: string; // User ID of who's responsible for bringing it
+  status: 'planned' | 'packed' | 'delivered' | 'returned';
+  createdAt?: Timestamp;
+}
+
 // Predefined gear types and categories for easy selection
 export const GEAR_CATEGORIES = {
   microphone: [
@@ -385,6 +407,137 @@ export const removeGearFromAllEvents = async (gearId: string): Promise<void> => 
   }
 };
 
+// Gear Box CRUD Operations
+export const createGearBox = async (gearBoxData: Omit<GearBox, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> => {
+  try {
+    const docRef = await addDoc(collection(db, 'gearBoxes'), {
+      ...gearBoxData,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error('Error creating gear box:', error);
+    throw error;
+  }
+};
+
+export const getGearBoxesByBandId = async (bandId: string): Promise<GearBox[]> => {
+  try {
+    const q = query(
+      collection(db, 'gearBoxes'),
+      where('bandId', '==', bandId),
+      orderBy('name', 'asc')
+    );
+    const querySnapshot = await getDocs(q);
+    const gearBoxes: GearBox[] = [];
+    querySnapshot.forEach((doc) => {
+      gearBoxes.push({
+        id: doc.id,
+        ...doc.data()
+      } as GearBox);
+    });
+    return gearBoxes;
+  } catch (error) {
+    console.error('Error fetching gear boxes:', error);
+    throw error;
+  }
+};
+
+export const updateGearBox = async (gearBoxId: string, updates: Partial<GearBox>): Promise<void> => {
+  try {
+    const gearBoxRef = doc(db, 'gearBoxes', gearBoxId);
+    await updateDoc(gearBoxRef, {
+      ...updates,
+      updatedAt: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error('Error updating gear box:', error);
+    throw error;
+  }
+};
+
+export const deleteGearBox = async (gearBoxId: string): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, 'gearBoxes', gearBoxId));
+  } catch (error) {
+    console.error('Error deleting gear box:', error);
+    throw error;
+  }
+};
+
+// Event Gear Box Operations
+export const addGearBoxToEvent = async (eventGearBoxData: Omit<EventGearBox, 'id' | 'createdAt'>): Promise<string> => {
+  try {
+    const docRef = await addDoc(collection(db, 'eventGearBoxes'), {
+      ...eventGearBoxData,
+      createdAt: serverTimestamp(),
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error('Error adding gear box to event:', error);
+    throw error;
+  }
+};
+
+export const getEventGearBoxes = async (eventId: string): Promise<(EventGearBox & { gearBox: GearBox })[]> => {
+  try {
+    const q = query(
+      collection(db, 'eventGearBoxes'),
+      where('eventId', '==', eventId)
+    );
+    const querySnapshot = await getDocs(q);
+    const eventGearBoxes: (EventGearBox & { gearBox: GearBox })[] = [];
+    
+    for (const docSnap of querySnapshot.docs) {
+      const eventGearBoxData = {
+        id: docSnap.id,
+        ...docSnap.data()
+      } as EventGearBox;
+      
+      // Fetch the associated gear box
+      const gearBoxDoc = await doc(db, 'gearBoxes', eventGearBoxData.gearBoxId);
+      const gearBoxSnap = await getDocs(query(collection(db, 'gearBoxes'), where('__name__', '==', eventGearBoxData.gearBoxId)));
+      
+      if (!gearBoxSnap.empty) {
+        const gearBoxData = {
+          id: gearBoxSnap.docs[0].id,
+          ...gearBoxSnap.docs[0].data()
+        } as GearBox;
+        
+        eventGearBoxes.push({
+          ...eventGearBoxData,
+          gearBox: gearBoxData
+        });
+      }
+    }
+    
+    return eventGearBoxes;
+  } catch (error) {
+    console.error('Error fetching event gear boxes:', error);
+    throw error;
+  }
+};
+
+export const updateEventGearBox = async (eventGearBoxId: string, updates: Partial<EventGearBox>): Promise<void> => {
+  try {
+    const eventGearBoxRef = doc(db, 'eventGearBoxes', eventGearBoxId);
+    await updateDoc(eventGearBoxRef, updates);
+  } catch (error) {
+    console.error('Error updating event gear box:', error);
+    throw error;
+  }
+};
+
+export const removeGearBoxFromEvent = async (eventGearBoxId: string): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, 'eventGearBoxes', eventGearBoxId));
+  } catch (error) {
+    console.error('Error removing gear box from event:', error);
+    throw error;
+  }
+};
+
 // Utility functions
 export const getGearByType = (gear: Gear[], type: string): Gear[] => {
   return gear.filter(item => item.type === type);
@@ -420,4 +573,34 @@ export const getGearByWishlistStatus = (gear: Gear[], status: string): Gear[] =>
 
 export const getGearByPriority = (gear: Gear[], priority: string): Gear[] => {
   return gear.filter(item => item.isWishlist && item.priority === priority);
+};
+
+// Utility function to check if gear is available (not wishlist, but can be in a box)
+export const getAvailableGear = async (bandId: string, eventId?: string): Promise<Gear[]> => {
+  try {
+    const allGear = await getGearByBandId(bandId);
+    // Do not filter out gear that's in boxes
+    const availableGear = allGear.filter(gear => !gear.isWishlist);
+    // If eventId is provided, also filter out gear already assigned to that event
+    if (eventId) {
+      const eventGear = await getEventGear(eventId);
+      const assignedGearIds = new Set(eventGear.map(eg => eg.gearId));
+      return availableGear.filter(gear => !assignedGearIds.has(gear.id!));
+    }
+    return availableGear;
+  } catch (error) {
+    console.error('Error getting available gear:', error);
+    throw error;
+  }
+};
+
+// Utility function to get gear items in a box with full gear details
+export const getGearInBox = async (gearBox: GearBox): Promise<Gear[]> => {
+  try {
+    const allGear = await getGearByBandId(gearBox.bandId);
+    return allGear.filter(gear => gearBox.gearIds.includes(gear.id!));
+  } catch (error) {
+    console.error('Error getting gear in box:', error);
+    throw error;
+  }
 };

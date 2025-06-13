@@ -17,7 +17,15 @@ import {
   getOwnedGear,
   getWishlistGear,
   getGearByWishlistStatus,
-  getGearByPriority
+  getGearByPriority,
+  // Gear Box imports
+  GearBox,
+  createGearBox,
+  getGearBoxesByBandId,
+  updateGearBox,
+  deleteGearBox,
+  getAvailableGear,
+  getGearInBox
 } from '../../lib/gearService';
 import { getBandById, getCurrentUserBand } from '../../lib/bandService';
 import { doc, getDoc } from 'firebase/firestore';
@@ -71,9 +79,21 @@ export default function GearPage() {
   const [conditionFilter, setConditionFilter] = useState<string>('all');
   
   // New state for tabs and wishlist functionality
-  const [activeTab, setActiveTab] = useState<'owned' | 'wishlist'>('owned');
+  const [activeTab, setActiveTab] = useState<'owned' | 'wishlist' | 'boxes'>('owned');
   const [wishlistStatusFilter, setWishlistStatusFilter] = useState<string>('all');
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
+
+  // Gear Box state
+  const [gearBoxes, setGearBoxes] = useState<GearBox[]>([]);
+  const [showBoxForm, setShowBoxForm] = useState(false);
+  const [editingBox, setEditingBox] = useState<GearBox | null>(null);
+  const [boxForm, setBoxForm] = useState({
+    name: '',
+    description: '',
+    gearIds: [] as string[]
+  });
+  const [showBoxDetails, setShowBoxDetails] = useState<string | null>(null);
+  const [availableGear, setAvailableGear] = useState<Gear[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,6 +115,14 @@ export default function GearPage() {
         const gearData = await getGearByBandId(bandId);
         setGear(gearData);
         setFilteredGear(gearData);
+
+        // Fetch gear boxes
+        const gearBoxData = await getGearBoxesByBandId(bandId);
+        setGearBoxes(gearBoxData);
+
+        // Fetch available gear for box creation
+        const availableGearData = await getAvailableGear(bandId);
+        setAvailableGear(availableGearData);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -449,6 +477,123 @@ export default function GearPage() {
     return getTypeIcon(fallbackType);
   };
 
+  // Gear Box Management Functions
+  const handleAddBox = async () => {
+    if (!currentUser || !boxForm.name.trim()) return;
+
+    try {
+      const bandId = await getCurrentUserBand(currentUser.uid);
+      
+      const boxData = {
+        name: boxForm.name.trim(),
+        description: boxForm.description.trim(),
+        bandId,
+        createdBy: currentUser.uid,
+        gearIds: boxForm.gearIds
+      };
+
+      await createGearBox(boxData);
+
+      // Refresh data
+      const [updatedBoxes, updatedAvailableGear] = await Promise.all([
+        getGearBoxesByBandId(bandId),
+        getAvailableGear(bandId)
+      ]);
+      setGearBoxes(updatedBoxes);
+      setAvailableGear(updatedAvailableGear);
+      
+      // Reset form
+      setBoxForm({ name: '', description: '', gearIds: [] });
+      setShowBoxForm(false);
+      
+      alert('Gear box created successfully!');
+    } catch (error) {
+      console.error('Error creating gear box:', error);
+      alert('Failed to create gear box. Please try again.');
+    }
+  };
+
+  const handleEditBox = (box: GearBox) => {
+    setEditingBox(box);
+    setBoxForm({
+      name: box.name,
+      description: box.description || '',
+      gearIds: box.gearIds
+    });
+    setShowBoxForm(true);
+  };
+
+  const handleUpdateBox = async () => {
+    if (!currentUser || !editingBox || !boxForm.name.trim()) return;
+
+    try {
+      const updates = {
+        name: boxForm.name.trim(),
+        description: boxForm.description.trim(),
+        gearIds: boxForm.gearIds
+      };
+
+      await updateGearBox(editingBox.id!, updates);
+      
+      // Refresh data
+      const bandId = await getCurrentUserBand(currentUser.uid);
+      const [updatedBoxes, updatedAvailableGear] = await Promise.all([
+        getGearBoxesByBandId(bandId),
+        getAvailableGear(bandId)
+      ]);
+      setGearBoxes(updatedBoxes);
+      setAvailableGear(updatedAvailableGear);
+      
+      // Reset form
+      setBoxForm({ name: '', description: '', gearIds: [] });
+      setShowBoxForm(false);
+      setEditingBox(null);
+      
+      alert('Gear box updated successfully!');
+    } catch (error) {
+      console.error('Error updating gear box:', error);
+      alert('Failed to update gear box. Please try again.');
+    }
+  };
+
+  const handleDeleteBox = async (boxId: string, boxName: string) => {
+    const confirmed = confirm(`Are you sure you want to delete the gear box "${boxName}"?\n\nThis will not delete the individual gear items, just remove the box grouping.`);
+    
+    if (!confirmed) return;
+
+    try {
+      await deleteGearBox(boxId);
+      setGearBoxes(gearBoxes.filter(box => box.id !== boxId));
+      
+      // Refresh available gear
+      if (currentUser) {
+        const bandId = await getCurrentUserBand(currentUser.uid);
+        const updatedAvailableGear = await getAvailableGear(bandId);
+        setAvailableGear(updatedAvailableGear);
+      }
+      
+      alert('Gear box deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting gear box:', error);
+      alert('Failed to delete gear box. Please try again.');
+    }
+  };
+
+  const handleCancelBoxEdit = () => {
+    setBoxForm({ name: '', description: '', gearIds: [] });
+    setShowBoxForm(false);
+    setEditingBox(null);
+  };
+
+  const toggleGearInBox = (gearId: string) => {
+    setBoxForm(prev => ({
+      ...prev,
+      gearIds: prev.gearIds.includes(gearId)
+        ? prev.gearIds.filter(id => id !== gearId)
+        : [...prev.gearIds, gearId]
+    }));
+  };
+
   if (loading) {
     return (
       <ProtectedRoute>
@@ -499,6 +644,16 @@ export default function GearPage() {
               >
                 Wishlist ({getWishlistGear(gear).length})
               </button>
+              <button
+                onClick={() => setActiveTab('boxes')}
+                className={`px-4 py-2 rounded-md transition-colors ${
+                  activeTab === 'boxes'
+                    ? 'bg-yellow-600 text-white'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                Gear Boxes ({gearBoxes.length})
+              </button>
             </div>
           </div>
 
@@ -506,61 +661,76 @@ export default function GearPage() {
           <div className="mb-6 space-y-4">
             <div className="flex flex-wrap gap-4 items-center justify-between">
               <div className="flex gap-2">
-                <button
-                  onClick={() => handleAddNew(activeTab === 'wishlist')}
-                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors flex items-center gap-2"
-                >
-                  <span>+</span>
-                  {activeTab === 'owned' ? 'Add Gear' : 'Add to Wishlist'}
-                </button>
-                
-                {activeTab === 'owned' && (
-                  <button
-                    onClick={() => handleAddNew(true)}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2"
-                  >
-                    <span>💫</span>
-                    Add to Wishlist
-                  </button>
+                {activeTab !== 'boxes' && (
+                  <>
+                    <button
+                      onClick={() => handleAddNew(activeTab === 'wishlist')}
+                      className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      <span>+</span>
+                      {activeTab === 'owned' ? 'Add Gear' : 'Add to Wishlist'}
+                    </button>
+                    
+                    {activeTab === 'owned' && (
+                      <button
+                        onClick={() => handleAddNew(true)}
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                      >
+                        <span>💫</span>
+                        Add to Wishlist
+                      </button>
+                    )}
+                    
+                    {activeTab === 'wishlist' && (
+                      <button
+                        onClick={() => handleAddNew(false)}
+                        className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                      >
+                        <span>✅</span>
+                        Add Owned Gear
+                      </button>
+                    )}
+                  </>
                 )}
-                
-                {activeTab === 'wishlist' && (
+
+                {activeTab === 'boxes' && (
                   <button
-                    onClick={() => handleAddNew(false)}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                    onClick={() => setShowBoxForm(true)}
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors flex items-center gap-2"
                   >
-                    <span>✅</span>
-                    Add Owned Gear
+                    <span>📦</span>
+                    Create Gear Box
                   </button>
                 )}
               </div>
 
-              {/* Search and Filters */}
-              <div className="flex flex-wrap gap-4">
-                <input
-                  type="text"
-                  placeholder="Search gear..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500"
-                />
+              {/* Search and Filters - Only show for gear tabs, not boxes */}
+              {activeTab !== 'boxes' && (
+                <div className="flex flex-wrap gap-4">
+                  <input
+                    type="text"
+                    placeholder="Search gear..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500"
+                  />
 
-                <select
-                  value={typeFilter}
-                  onChange={(e) => setTypeFilter(e.target.value)}
-                  className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
-                >
-                  <option value="all">All Types</option>
-                  <option value="microphone">Microphones</option>
-                  <option value="cable">Cables</option>
-                  <option value="instrument">Instruments</option>
-                  <option value="amplifier">Amplifiers</option>
-                  <option value="percussion">Percussion</option>
-                  <option value="audio-equipment">Audio Equipment</option>
-                  <option value="accessory">Accessories</option>
-                  <option value="lighting">Lighting</option>
-                  <option value="other">Other</option>
-                </select>
+                  <select
+                    value={typeFilter}
+                    onChange={(e) => setTypeFilter(e.target.value)}
+                    className="px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                  >
+                    <option value="all">All Types</option>
+                    <option value="microphone">Microphones</option>
+                    <option value="cable">Cables</option>
+                    <option value="instrument">Instruments</option>
+                    <option value="amplifier">Amplifiers</option>
+                    <option value="percussion">Percussion</option>
+                    <option value="audio-equipment">Audio Equipment</option>
+                    <option value="accessory">Accessories</option>
+                    <option value="lighting">Lighting</option>
+                    <option value="other">Other</option>
+                  </select>
 
                 {activeTab === 'owned' && (
                   <select
@@ -607,10 +777,15 @@ export default function GearPage() {
                   </>
                 )}
               </div>
+              )}
             </div>
             
             <div className="text-sm text-gray-400">
-              Showing {filteredGear.length} of {activeTab === 'owned' ? getOwnedGear(gear).length : getWishlistGear(gear).length} {activeTab === 'owned' ? 'owned' : 'wishlist'} item{filteredGear.length !== 1 ? 's' : ''}
+              {activeTab === 'boxes' ? (
+                `${gearBoxes.length} gear box${gearBoxes.length !== 1 ? 'es' : ''}`
+              ) : (
+                `Showing ${filteredGear.length} of ${activeTab === 'owned' ? getOwnedGear(gear).length : getWishlistGear(gear).length} ${activeTab === 'owned' ? 'owned' : 'wishlist'} item${filteredGear.length !== 1 ? 's' : ''}`
+              )}
             </div>
           </div>
 
@@ -860,145 +1035,347 @@ export default function GearPage() {
             </div>
           )}
 
-          {/* Gear Grid */}
-          {filteredGear.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-gray-400 mb-4">
-                {gear.length === 0 ? (
-                  activeTab === 'owned' 
-                    ? 'No gear items yet.' 
-                    : 'No wishlist items yet.'
-                ) : (
-                  activeTab === 'owned'
-                    ? 'No owned gear matches your filters.'
-                    : 'No wishlist items match your filters.'
-                )}
+          {/* Gear Box Form */}
+          {showBoxForm && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+              <div className="bg-gray-800 rounded-lg p-6 w-full max-w-4xl max-h-90vh overflow-y-auto">
+                <h2 className="text-xl font-bold text-white mb-4">
+                  {editingBox ? 'Edit Gear Box' : 'Create New Gear Box'}
+                </h2>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Box Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={boxForm.name}
+                      onChange={(e) => setBoxForm({ ...boxForm, name: e.target.value })}
+                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
+                      placeholder="e.g., Vocal Microphone Kit, Drum Recording Setup"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                      Description
+                    </label>
+                    <textarea
+                      value={boxForm.description}
+                      onChange={(e) => setBoxForm({ ...boxForm, description: e.target.value })}
+                      className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-purple-500"
+                      rows={3}
+                      placeholder="Describe what this gear box is for..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-3">
+                      Select Gear for this Box ({boxForm.gearIds.length} selected)
+                    </label>
+                    <div className="max-h-60 overflow-y-auto border border-gray-600 rounded-lg">
+                      {availableGear.length === 0 ? (
+                        <div className="p-4 text-gray-400 text-center">
+                          No available gear. All owned gear is already assigned to boxes.
+                        </div>
+                      ) : (
+                        <div className="space-y-2 p-4">
+                          {availableGear.map(gearItem => (
+                            <label key={gearItem.id} className="flex items-center space-x-3 p-2 hover:bg-gray-700 rounded cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={boxForm.gearIds.includes(gearItem.id!)}
+                                onChange={() => toggleGearInBox(gearItem.id!)}
+                                className="form-checkbox h-4 w-4 text-purple-600"
+                              />
+                              <span className="text-xl">{getCategoryIcon(gearItem.category || '', gearItem.type)}</span>
+                              <div className="flex-1">
+                                <div className="text-white font-medium">{gearItem.name}</div>
+                                <div className="text-sm text-gray-400">
+                                  {gearItem.brand && `${gearItem.brand} `}{gearItem.model && `${gearItem.model}`}
+                                </div>
+                              </div>
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 pt-4">
+                    <button
+                      type="button"
+                      onClick={editingBox ? handleUpdateBox : handleAddBox}
+                      className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+                    >
+                      {editingBox ? 'Update Box' : 'Create Box'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCancelBoxEdit}
+                      className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               </div>
-              {((activeTab === 'owned' && getOwnedGear(gear).length === 0) || 
-                (activeTab === 'wishlist' && getWishlistGear(gear).length === 0)) && (
-                <button
-                  onClick={() => handleAddNew(activeTab === 'wishlist')}
-                  className={`px-6 py-3 rounded-lg transition-colors text-white ${
-                    activeTab === 'owned' 
-                      ? 'bg-yellow-600 hover:bg-yellow-700' 
-                      : 'bg-blue-600 hover:bg-blue-700'
-                  }`}
-                >
-                  {activeTab === 'owned' ? 'Add Your First Gear Item' : 'Add Your First Wishlist Item'}
-                </button>
-              )}
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredGear.map(gearItem => (
-                <div key={gearItem.id} className={`rounded-lg p-4 hover:bg-gray-750 transition-colors ${
-                  gearItem.isWishlist ? 'bg-blue-900/20 border border-blue-800/30' : 'bg-gray-800'
-                }`}>
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{getCategoryIcon(gearItem.category || '', gearItem.type)}</span>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-white truncate">{gearItem.name}</h3>
-                        <p className="text-sm text-gray-400">{gearItem.category}</p>
-                      </div>
-                    </div>
-                    <div className="flex gap-1">
-                      <button
-                        onClick={() => handleEditGear(gearItem)}
-                        className="text-gray-400 hover:text-yellow-400 transition-colors"
-                        title="Edit"
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        onClick={() => handleDeleteGear(gearItem.id!)}
-                        className="text-gray-400 hover:text-red-400 transition-colors"
-                        title="Delete"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </div>
+          )}
 
-                  <div className="space-y-2 text-sm">
-                    {gearItem.brand && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Brand:</span>
-                        <span className="text-white">{gearItem.brand}</span>
-                      </div>
-                    )}
-                    {gearItem.model && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Model:</span>
-                        <span className="text-white">{gearItem.model}</span>
-                      </div>
-                    )}
-                    
-                    {gearItem.isWishlist ? (
-                      <>
-                        <div className="flex justify-between">
-                          <span className="text-gray-400">Status:</span>
-                          <span className={`capitalize ${getWishlistStatusColor(gearItem.wishlistStatus || 'wanted')}`}>
-                            {(gearItem.wishlistStatus || 'wanted').replace('-', ' ')}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-400">Priority:</span>
-                          <span className={`capitalize ${getPriorityColor(gearItem.priority || 'medium')}`}>
-                            {gearItem.priority || 'medium'}
-                          </span>
-                        </div>
-                        {gearItem.estimatedCost && (
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Est. Cost:</span>
-                            <span className="text-green-400">${gearItem.estimatedCost.toFixed(2)}</span>
+          {/* Main Content */}
+          {activeTab === 'boxes' ? (
+            /* Gear Boxes Content */
+            gearBoxes.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="text-gray-400 mb-4">No gear boxes yet.</div>
+                <button
+                  onClick={() => setShowBoxForm(true)}
+                  className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+                >
+                  Create Your First Gear Box
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {gearBoxes.map(box => {
+                  const boxGear = gear.filter(g => box.gearIds.includes(g.id!));
+                  return (
+                    <div 
+                      key={box.id} 
+                      className="bg-purple-900/20 border border-purple-800/30 rounded-lg p-4 hover:bg-purple-900/30 transition-colors cursor-pointer"
+                      onClick={() => setShowBoxDetails(showBoxDetails === box.id ? null : box.id!)}
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl">📦</span>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-white truncate">{box.name}</h3>
+                            <p className="text-sm text-gray-400">{boxGear.length} item{boxGear.length !== 1 ? 's' : ''}</p>
                           </div>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex justify-between">
-                          <span className="text-gray-400">Condition:</span>
-                          <span className={`capitalize ${getConditionColor(gearItem.condition)}`}>
-                            {gearItem.condition.replace('-', ' ')}
-                          </span>
                         </div>
-                        {gearItem.location && (
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Location:</span>
-                            <span className="text-white truncate">{gearItem.location}</span>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-
-                  {(gearItem.description || gearItem.notes) && (
-                    <div className="mt-3 pt-3 border-t border-gray-700">
-                      <p className="text-sm text-gray-300 line-clamp-2">
-                        {gearItem.isWishlist ? gearItem.notes : gearItem.description}
-                      </p>
-                    </div>
-                  )}
-
-                  {gearItem.isWishlist && (
-                    <div className="mt-3 pt-3 border-t border-blue-800/30">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-blue-400">Wishlist Item</span>
-                        {gearItem.wishlistStatus === 'purchased' && (
+                        <div className="flex gap-1">
                           <button
-                            onClick={() => handleConvertToOwned(gearItem)}
-                            className="text-xs px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded transition-colors"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEditBox(box);
+                            }}
+                            className="text-gray-400 hover:text-yellow-400 transition-colors"
+                            title="Edit"
                           >
-                            Mark as Owned
+                            ✏️
                           </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteBox(box.id!, box.name);
+                            }}
+                            className="text-gray-400 hover:text-red-400 transition-colors"
+                            title="Delete"
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      </div>
+
+                      {box.description && (
+                        <div className="mb-3">
+                          <p className="text-sm text-gray-300">{box.description}</p>
+                        </div>
+                      )}
+
+                      <div className="space-y-2">
+                        <div className="text-xs text-purple-400 font-medium uppercase tracking-wide">
+                          Contents ({boxGear.length})
+                        </div>
+                        
+                        {showBoxDetails === box.id ? (
+                          <div className="space-y-2 max-h-40 overflow-y-auto">
+                            {boxGear.map(gearItem => (
+                              <div key={gearItem.id} className="flex items-center gap-2 p-2 bg-gray-800/50 rounded text-sm">
+                                <span className="text-lg">{getCategoryIcon(gearItem.category || '', gearItem.type)}</span>
+                                <div className="flex-1">
+                                  <div className="text-white font-medium">{gearItem.name}</div>
+                                  <div className="text-xs text-gray-400">
+                                    {gearItem.brand && `${gearItem.brand} `}{gearItem.model}
+                                  </div>
+                                </div>
+                                <span className={`text-xs px-2 py-1 rounded ${getConditionColor(gearItem.condition)} bg-gray-700`}>
+                                  {gearItem.condition}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="flex flex-wrap gap-1">
+                            {boxGear.slice(0, 6).map(gearItem => (
+                              <span key={gearItem.id} className="text-lg" title={gearItem.name}>
+                                {getCategoryIcon(gearItem.category || '', gearItem.type)}
+                              </span>
+                            ))}
+                            {boxGear.length > 6 && (
+                              <span className="text-gray-400 text-sm">+{boxGear.length - 6}</span>
+                            )}
+                          </div>
                         )}
                       </div>
+
+                      <div className="mt-3 pt-3 border-t border-purple-800/30">
+                        <div className="flex justify-between items-center text-xs">
+                          <span className="text-purple-400">Gear Box</span>
+                          <span className="text-gray-400">
+                            Created {(box.createdAt?.toDate?.() || new Date()).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
                     </div>
+                  );
+                })}
+              </div>
+            )
+          ) : (
+            /* Gear Grid */
+            filteredGear.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="text-gray-400 mb-4">
+                  {gear.length === 0 ? (
+                    activeTab === 'owned' 
+                      ? 'No gear items yet.' 
+                      : 'No wishlist items yet.'
+                  ) : (
+                    activeTab === 'owned'
+                      ? 'No owned gear matches your filters.'
+                      : 'No wishlist items match your filters.'
                   )}
                 </div>
-              ))}
-            </div>
+                {((activeTab === 'owned' && getOwnedGear(gear).length === 0) || 
+                  (activeTab === 'wishlist' && getWishlistGear(gear).length === 0)) && (
+                  <button
+                    onClick={() => handleAddNew(activeTab === 'wishlist')}
+                    className={`px-6 py-3 rounded-lg transition-colors text-white ${
+                      activeTab === 'owned' 
+                        ? 'bg-yellow-600 hover:bg-yellow-700' 
+                        : 'bg-blue-600 hover:bg-blue-700'
+                    }`}
+                  >
+                    {activeTab === 'owned' ? 'Add Your First Gear Item' : 'Add Your First Wishlist Item'}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredGear.map(gearItem => (
+                  <div key={gearItem.id} className={`rounded-lg p-4 hover:bg-gray-750 transition-colors ${
+                    gearItem.isWishlist ? 'bg-blue-900/20 border border-blue-800/30' : 'bg-gray-800'
+                  }`}>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{getCategoryIcon(gearItem.category || '', gearItem.type)}</span>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-white truncate">{gearItem.name}</h3>
+                          <p className="text-sm text-gray-400">{gearItem.category}</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-1">
+                        <button
+                          onClick={() => handleEditGear(gearItem)}
+                          className="text-gray-400 hover:text-yellow-400 transition-colors"
+                          title="Edit"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          onClick={() => handleDeleteGear(gearItem.id!)}
+                          className="text-gray-400 hover:text-red-400 transition-colors"
+                          title="Delete"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 text-sm">
+                      {gearItem.brand && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Brand:</span>
+                          <span className="text-white">{gearItem.brand}</span>
+                        </div>
+                      )}
+                      {gearItem.model && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Model:</span>
+                          <span className="text-white">{gearItem.model}</span>
+                        </div>
+                      )}
+                      
+                      {gearItem.isWishlist ? (
+                        <>
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Status:</span>
+                            <span className={`capitalize ${getWishlistStatusColor(gearItem.wishlistStatus || 'wanted')}`}>
+                              {(gearItem.wishlistStatus || 'wanted').replace('-', ' ')}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Priority:</span>
+                            <span className={`capitalize ${getPriorityColor(gearItem.priority || 'medium')}`}>
+                              {gearItem.priority || 'medium'}
+                            </span>
+                          </div>
+                          {gearItem.estimatedCost && (
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Est. Cost:</span>
+                              <span className="text-green-400">${gearItem.estimatedCost.toFixed(2)}</span>
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Condition:</span>
+                            <span className={`capitalize ${getConditionColor(gearItem.condition)}`}>
+                              {gearItem.condition.replace('-', ' ')}
+                            </span>
+                          </div>
+                          {gearItem.location && (
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Location:</span>
+                              <span className="text-white truncate">{gearItem.location}</span>
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
+
+                    {(gearItem.description || gearItem.notes) && (
+                      <div className="mt-3 pt-3 border-t border-gray-700">
+                        <p className="text-sm text-gray-300 line-clamp-2">
+                          {gearItem.isWishlist ? gearItem.notes : gearItem.description}
+                        </p>
+                      </div>
+                    )}
+
+                    {gearItem.isWishlist && (
+                      <div className="mt-3 pt-3 border-t border-blue-800/30">
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs text-blue-400">Wishlist Item</span>
+                          {gearItem.wishlistStatus === 'purchased' && (
+                            <button
+                              onClick={() => handleConvertToOwned(gearItem)}
+                              className="text-xs px-2 py-1 bg-green-600 hover:bg-green-700 text-white rounded transition-colors"
+                            >
+                              Mark as Owned
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )
           )}
         </div>
       </div>
