@@ -1,5 +1,6 @@
 import { collection, addDoc, getDocs, doc, setDoc, getDoc, query, where } from 'firebase/firestore';
-import { db } from './firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from './firebase';
 
 export interface Band {
   id?: string;
@@ -104,6 +105,19 @@ export const getCurrentUserBand = async (userId: string): Promise<string> => {
     throw new Error('User has no band associated. Please complete the setup process.');
   } catch (error) {
     console.error('Error getting current user band:', error);
+    throw error;
+  }
+};
+
+// Upload band photo
+export const uploadBandPhoto = async (file: File, bandId: string): Promise<string> => {
+  try {
+    const storageRef = ref(storage, `band-photos/${bandId}`);
+    const snapshot = await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    return downloadURL;
+  } catch (error) {
+    console.error('Error uploading band photo:', error);
     throw error;
   }
 };
