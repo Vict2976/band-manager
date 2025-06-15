@@ -1007,17 +1007,18 @@ export default function EventPage() {
             </div>
           </div>
 
-          {/* Gear Section */}
-          <div className="bg-gray-900 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Gear & Equipment</h2>
-              <button
-                onClick={() => setShowGearModal(true)}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2"
-              >
-                + Add Gear
-              </button>
-            </div>
+          {/* Gear Section - Only show for gigs */}
+          {event.type === 'gig' && (
+            <div className="bg-gray-900 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">Gear & Equipment</h2>
+                <button
+                  onClick={() => setShowGearModal(true)}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                >
+                  + Add Gear
+                </button>
+              </div>
 
             {eventGear.length === 0 && eventGearBoxes.length === 0 ? (
               <div className="text-center py-8 text-gray-400">
@@ -1158,15 +1159,17 @@ export default function EventPage() {
                 )}
               </div>
             )}
-          </div>
+            </div>
+          )}
 
-          {/* Logistics Section */}
-          <div className="bg-gray-900 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">🚗 Transportation & Logistics</h2>
-              <button
-                onClick={() => setShowLogisticsModal(true)}
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors flex items-center gap-2"
+          {/* Logistics Section - Only show for gigs */}
+          {event.type === 'gig' && (
+            <div className="bg-gray-900 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">🚗 Transportation & Logistics</h2>
+                <button
+                  onClick={() => setShowLogisticsModal(true)}
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors flex items-center gap-2"
               >
                 + Add Vehicle
               </button>
@@ -1299,7 +1302,8 @@ export default function EventPage() {
                 ))}
               </div>
             )}
-          </div>
+            </div>
+          )}
 
           {/* Financial Overview Section - Only show for gigs */}
           {event.type === 'gig' && (

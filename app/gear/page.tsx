@@ -435,7 +435,7 @@ export default function GearPage() {
     if (category.includes('Headphone')) return '🎧';
     
     // Accessories - Stands & Support
-    if (category.includes('Stand') || category.includes('Boom')) return '🎤';
+    if (category.includes('Stand') || category.includes('Boom')) return '🎵';
     if (category.includes('Stool') || category.includes('Bench')) return '🪑';
     if (category.includes('Case') || category.includes('Bag')) return '💼';
     if (category.includes('Rack') || category.includes('Flight Case')) return '📦';
