@@ -41,10 +41,6 @@ export default function LoginPage() {
     }
   };
 
-  const quickLogin = (memberEmail: string) => {
-    setEmail(memberEmail);
-    setPassword('bandmanager2025');
-  };
 
   return (
     <PublicRoute>
@@ -121,28 +117,6 @@ export default function LoginPage() {
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
-        </div>
-
-        {/* Quick Login Options */}
-        <div className="bg-gray-900 rounded-xl p-6">
-          <h3 className="text-lg font-semibold mb-4 text-center">Quick Login</h3>
-          <p className="text-sm text-gray-400 mb-4 text-center">
-            Click on any band member to auto-fill login details
-          </p>
-          <div className="grid grid-cols-2 gap-2">
-            {bandMembers.map((member) => (
-              <button
-                key={member.email}
-                onClick={() => quickLogin(member.email)}
-                className="px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors text-sm"
-              >
-                {member.name}
-              </button>
-            ))}
-          </div>
-          <p className="text-xs text-gray-500 mt-3 text-center">
-            Default password: <code className="bg-gray-800 px-1 rounded">bandmanager2025</code>
-          </p>
         </div>
 
         {/* Links */}

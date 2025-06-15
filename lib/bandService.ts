@@ -76,34 +76,10 @@ export const updateBand = async (bandId: string, bandData: Partial<Band>) => {
   }
 };
 
-// Initialize default band
-export const initializeDefaultBand = async (): Promise<string> => {
-  try {
-    // Check if "Olis Orkester" already exists
-    const bandsQuery = query(collection(db, 'bands'), where('name', '==', 'Olis Orkester'));
-    const querySnapshot = await getDocs(bandsQuery);
-    
-    if (!querySnapshot.empty) {
-      // Band already exists, return its ID
-      return querySnapshot.docs[0].id;
-    }
+// Get the current user's band
 
-    // Create the default band
-    const defaultBandId = await createBand({
-      name: 'Olis Orkester',
-      description: 'A passionate group of musicians creating amazing music together',
-      genre: 'Rock/Pop',
-      founded: new Date('2023-01-01'),
-    });
 
-    return defaultBandId;
-  } catch (error) {
-    console.error('Error initializing default band:', error);
-    throw error;
-  }
-};
-
-// Get the current user's band (with fallback to default)
+// Get the current user's band
 export const getCurrentUserBand = async (userId: string): Promise<string> => {
   try {
     // Get user profile from Firestore
@@ -124,12 +100,10 @@ export const getCurrentUserBand = async (userId: string): Promise<string> => {
       }
     }
     
-    // Fallback to default band if user has no band or band doesn't exist
-    console.log('Falling back to default band for user:', userId);
-    return await initializeDefaultBand();
+    // No band found for user
+    throw new Error('User has no band associated. Please complete the setup process.');
   } catch (error) {
     console.error('Error getting current user band:', error);
-    // Fallback to default band on error
-    return await initializeDefaultBand();
+    throw error;
   }
 };

@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../lib/firebase';
+import { useAuth } from '../../../lib/auth';
+import { userHasBand } from '../../../lib/setupGuard';
 import { createBand } from '../../../lib/bandService';
 import { createUser, createUserProfile, updateUserProfile } from '../../../lib/userService';
 
@@ -15,10 +17,49 @@ interface BandMember {
 }
 
 export default function NewBandSetupPage() {
+  const { user, sessionUser } = useAuth();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [checkingBand, setCheckingBand] = useState(true);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const checkUserBand = async () => {
+      const currentUser = user || sessionUser;
+      if (!currentUser) {
+        setCheckingBand(false);
+        return;
+      }
+
+      try {
+        // Check if user already has a band
+        const hasBand = await userHasBand(currentUser.uid);
+        if (hasBand) {
+          // User already has a band, redirect to dashboard
+          router.push('/dashboard');
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking user band:', error);
+      } finally {
+        setCheckingBand(false);
+      }
+    };
+
+    checkUserBand();
+  }, [user, sessionUser, router]);
+
+  if (checkingBand) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400 mx-auto mb-4"></div>
+          <p className="text-gray-400">Checking your band status...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Band information
   const [bandForm, setBandForm] = useState({

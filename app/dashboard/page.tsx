@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { getEventsByBandId, Event } from '../../lib/eventService';
-import { getBandById, Band, initializeDefaultBand } from '../../lib/bandService';
+import { getBandById, Band, getCurrentUserBand } from '../../lib/bandService';
 import { getUsersByBandId, updateUserProfile, uploadUserPhoto } from '../../lib/userService';
 import ProtectedRoute from '../../lib/ProtectedRoute';
 import AuthNav from '../../lib/AuthNav';
@@ -42,19 +42,9 @@ export default function DashboardPage() {
     }
   }, [user, sessionUser]);
 
-  const fallbackToDefaultBand = async () => {
-    const bandId = await initializeDefaultBand();
-    const bandData = await getBandById(bandId);
-    setBand(bandData);
-    
-    // Get events for default band
-    const events = await getEventsByBandId(bandId);
-    const now = new Date();
-    const upcoming = events
-      .filter(event => new Date(event.date) >= now)
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      .slice(0, 3);
-    setUpcomingEvents(upcoming);
+  const handleNoBand = () => {
+    // User has no band, redirect to setup
+    router.push('/setup');
   };
 
   const fetchUserProfile = async () => {
@@ -91,28 +81,23 @@ export default function DashboardPage() {
             setUpcomingEvents(upcoming);
           } else {
             console.warn('User has bandId but band not found:', userData.bandId);
-            // Fall back to default band if user's band doesn't exist
-            await fallbackToDefaultBand();
+            // Redirect to setup if user's band doesn't exist
+            handleNoBand();
           }
         } else {
-          // User has no band, fall back to default
-          await fallbackToDefaultBand();
+          // User has no band, redirect to setup
+          handleNoBand();
         }
       } else {
-        // User document doesn't exist, create basic profile and use default band
-        console.warn('User document not found, creating basic profile');
-        setUserProfile({
-          name: currentUser.displayName || currentUser.email || 'User',
-          email: currentUser.email || '',
-          photoURL: currentUser.photoURL || undefined
-        });
-        await fallbackToDefaultBand();
+        // User document doesn't exist, redirect to setup to create profile
+        console.warn('User document not found, redirecting to setup');
+        handleNoBand();
       }
       
     } catch (error) {
       console.error('Error fetching user profile:', error);
-      // Fallback in case of any error
-      await fallbackToDefaultBand();
+      // Redirect to setup in case of any error
+      handleNoBand();
     } finally {
       setProfileLoading(false);
     }

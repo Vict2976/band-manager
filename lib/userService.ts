@@ -155,57 +155,7 @@ export const getUserById = async (userId: string): Promise<User | null> => {
   }
 };
 
-// Initial band members data for "Olis Orkester"
-export const initialBandMembers = [
-  {
-    name: 'Sarah',
-    email: 'sarah@bandmanager.com',
-    role: 'Lead Vocalist',
-    permission: 'admin' as const, // Band leader/admin
-    instrument: 'Vocals',
-  },
-  {
-    name: 'Victor',
-    email: 'victor@bandmanager.com',
-    role: 'Guitarist',
-    permission: 'member' as const,
-    instrument: 'Guitar',
-  },
-  {
-    name: 'Marius',
-    email: 'marius@bandmanager.com',
-    role: 'Bassist',
-    permission: 'member' as const,
-    instrument: 'Bass',
-  },
-  {
-    name: 'Kasper',
-    email: 'kasper@bandmanager.com',
-    role: 'Drummer',
-    permission: 'member' as const,
-    instrument: 'Drums',
-  },
-  {
-    name: 'Oliver',
-    email: 'oliver@bandmanager.com',
-    role: 'Keyboardist',
-    permission: 'member' as const,
-    instrument: 'Keyboard',
-  },
-  {
-    name: 'Tobias',
-    email: 'tobias@bandmanager.com',
-    role: 'Guitarist',
-    permission: 'member' as const,
-    instrument: 'Guitar',
-  },
-  {
-    name: 'Adam',
-    email: 'adam@bandmanager.com',
-    role: 'Percussionist',
-    instrument: 'Percussion',
-  },
-];
+
 
 export const updateUsersWithBand = async (bandId: string) => {
   try {

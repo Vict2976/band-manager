@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../lib/auth';
 import { useRouter } from 'next/navigation';
 import { getEventsByBandId, Event } from '../../lib/eventService';
-import { getUsersByBandId, User, updateUsersWithBand } from '../../lib/userService';
-import { getBandById, Band, initializeDefaultBand } from '../../lib/bandService';
+import { getUsersByBandId, User } from '../../lib/userService';
+import { getBandById, Band, getCurrentUserBand } from '../../lib/bandService';
 import ProtectedRoute from '../../lib/ProtectedRoute';
 import AuthNav from '../../lib/AuthNav';
 
@@ -31,13 +31,13 @@ export default function CalendarPage() {
   }, [user, sessionUser, authLoading, router]);
 
   const fetchData = async () => {
+    const currentUser = user || sessionUser;
+    if (!currentUser) return;
+    
     try {
-      // Initialize default band and get its ID
-      const bandId = await initializeDefaultBand();
+      // Get the current user's band ID
+      const bandId = await getCurrentUserBand(currentUser.uid);
       
-      // Update existing users to be part of this band
-      await updateUsersWithBand(bandId);
-
       // Fetch band information
       const bandData = await getBandById(bandId);
       setBand(bandData);
@@ -50,7 +50,10 @@ export default function CalendarPage() {
       setUsers(usersData);
     } catch (error: any) {
       console.error('Error fetching data:', error);
-      if (error.message?.includes('index')) {
+      if (error.message?.includes('no band associated')) {
+        // If user has no band, redirect to setup
+        router.push('/setup');
+      } else if (error.message?.includes('index')) {
         console.log('📝 Firebase Index Required - Please create the index using the URL in the console');
       }
     } finally {

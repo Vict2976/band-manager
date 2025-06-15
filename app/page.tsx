@@ -49,7 +49,7 @@ export default function Home() {
                     Sign In
                   </a>
                   <a
-                    href="/setup/new"
+                    href="/setup"
                     className="px-4 py-2 text-sm text-black rounded-lg font-medium transition-all hover:scale-105"
                     style={{background: 'var(--gold)'}}
                   >
@@ -77,7 +77,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <a
-                href="/setup/new"
+                href="/setup"
                 className="px-8 py-4 text-lg text-black rounded-lg font-semibold transition-all hover:scale-105 shadow-lg"
                 style={{background: 'var(--gold)'}}
               >
