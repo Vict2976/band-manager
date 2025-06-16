@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../../lib/auth';
 import { useRouter, useParams } from 'next/navigation';
-import { getEventById, updateEvent, deleteEvent, Event, addAttendeeToEvent, removeAttendeeFromEvent } from '../../../lib/eventService';
+import { getEventById, updateEvent, deleteEvent, Event, addAttendeeToEvent, removeAttendeeFromEvent, getAttendanceNote, hasAttendanceNote } from '../../../lib/eventService';
 import { getUsersByBandId, User, canManageAttendee, hasAdminPermission } from '../../../lib/userService';
 import { getBandById, Band, getCurrentUserBand } from '../../../lib/bandService';
 import { getGearByBandId, addGearToEvent, getEventGear, removeGearFromEvent, updateEventGear, Gear, EventGear, GearBox, EventGearBox, getGearBoxesByBandId, addGearBoxToEvent, getEventGearBoxes, removeGearBoxFromEvent, getAvailableGear } from '../../../lib/gearService';
@@ -82,6 +82,15 @@ export default function EventPage() {
   const [earningsForm, setEarningsForm] = useState({
     gigEarnings: 0,
   });
+
+  // Attendance note state
+  const [showNoteModal, setShowNoteModal] = useState(false);
+  const [noteModalData, setNoteModalData] = useState<{
+    userId: string;
+    userName: string;
+    currentNote: string;
+    isAttending: boolean;
+  } | null>(null);
 
   useEffect(() => {
     const currentUser = user || sessionUser;
@@ -231,30 +240,81 @@ export default function EventPage() {
       return;
     }
 
+    // Get user name for the modal
+    const targetUser = users.find(u => (u.id || u.uid) === userId);
+    const userName = targetUser ? targetUser.name : 'Unknown User';
+    
+    const isCurrentlyAttending = event.attendees.includes(userId);
+    const currentNote = getAttendanceNote(event, userId) || '';
+
+    // Show note modal
+    setNoteModalData({
+      userId,
+      userName,
+      currentNote,
+      isAttending: !isCurrentlyAttending // Will be the new status
+    });
+    setShowNoteModal(true);
+  };
+
+  const handleAttendanceWithNote = async (userId: string, note: string, isAttending: boolean) => {
+    if (!event) return;
+
     try {
-      const isCurrentlyAttending = event.attendees.includes(userId);
-      
-      if (isCurrentlyAttending) {
-        await removeAttendeeFromEvent(event.id!, userId);
+      if (isAttending) {
+        await addAttendeeToEvent(event.id!, userId, note);
+        const newAttendingEntry: any = {
+          userId,
+          status: 'attending' as const,
+          timestamp: new Date()
+        };
+        
+        // Only add note field if it has a value
+        if (note && note.trim().length > 0) {
+          newAttendingEntry.note = note.trim();
+        }
+
         setEvent({
           ...event,
-          attendees: event.attendees.filter(id => id !== userId)
-        });
-        setEventForm({
-          ...eventForm,
-          attendees: eventForm.attendees.filter(id => id !== userId)
-        });
-      } else {
-        await addAttendeeToEvent(event.id!, userId);
-        setEvent({
-          ...event,
-          attendees: [...event.attendees, userId]
+          attendees: [...event.attendees, userId],
+          attendanceEntries: [
+            ...(event.attendanceEntries || []).filter(entry => entry.userId !== userId),
+            newAttendingEntry
+          ]
         });
         setEventForm({
           ...eventForm,
           attendees: [...eventForm.attendees, userId]
         });
+      } else {
+        await removeAttendeeFromEvent(event.id!, userId, note);
+        const newNotAttendingEntry: any = {
+          userId,
+          status: 'not_attending' as const,
+          timestamp: new Date()
+        };
+        
+        // Only add note field if it has a value
+        if (note && note.trim().length > 0) {
+          newNotAttendingEntry.note = note.trim();
+        }
+
+        setEvent({
+          ...event,
+          attendees: event.attendees.filter(id => id !== userId),
+          attendanceEntries: [
+            ...(event.attendanceEntries || []).filter(entry => entry.userId !== userId),
+            newNotAttendingEntry
+          ]
+        });
+        setEventForm({
+          ...eventForm,
+          attendees: eventForm.attendees.filter(id => id !== userId)
+        });
       }
+      
+      setShowNoteModal(false);
+      setNoteModalData(null);
     } catch (error) {
       console.error('Error updating attendees:', error);
       alert('Failed to update attendees. Please try again.');
@@ -923,6 +983,18 @@ export default function EventPage() {
                                   {bandUser.permission === 'admin' && (
                                     <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded">ADMIN</span>
                                   )}
+                                  {hasAttendanceNote(event, userId) && (
+                                    <button
+                                      onClick={() => {
+                                        const note = getAttendanceNote(event, userId);
+                                        alert(`Note: ${note}`);
+                                      }}
+                                      className="text-blue-400 hover:text-blue-300 text-sm"
+                                      title="View attendance note"
+                                    >
+                                      💬
+                                    </button>
+                                  )}
                                 </div>
                                 <p className="text-sm text-gray-400">{bandUser.instrument || bandUser.role}</p>
                               </div>
@@ -979,6 +1051,18 @@ export default function EventPage() {
                                   )}
                                   {bandUser.permission === 'admin' && (
                                     <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded">ADMIN</span>
+                                  )}
+                                  {hasAttendanceNote(event, userId) && (
+                                    <button
+                                      onClick={() => {
+                                        const note = getAttendanceNote(event, userId);
+                                        alert(`Note: ${note}`);
+                                      }}
+                                      className="text-blue-400 hover:text-blue-300 text-sm"
+                                      title="View attendance note"
+                                    >
+                                      💬
+                                    </button>
                                   )}
                                 </div>
                                 <p className="text-sm text-gray-400">{bandUser.instrument || bandUser.role}</p>
@@ -2105,6 +2189,62 @@ export default function EventPage() {
             </div>
           )}
         </div>
+
+        {/* Attendance Note Modal */}
+        {showNoteModal && noteModalData && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-gray-900 rounded-xl p-6 w-full max-w-md mx-4">
+              <h3 className="text-xl font-semibold mb-4">
+                {noteModalData.isAttending ? 'Attending' : 'Not Attending'}: {noteModalData.userName}
+              </h3>
+              
+              <div className="mb-4">
+                <label className="block text-gray-400 text-sm mb-2">
+                  Add a note (optional)
+                </label>
+                <textarea
+                  value={noteModalData.currentNote}
+                  onChange={(e) => setNoteModalData({
+                    ...noteModalData,
+                    currentNote: e.target.value
+                  })}
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white"
+                  rows={3}
+                  placeholder={`Why ${noteModalData.isAttending ? 'are you attending' : 'can\'t you attend'}?`}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  This note will be visible to other band members when they click the note icon.
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => handleAttendanceWithNote(
+                    noteModalData.userId, 
+                    noteModalData.currentNote, 
+                    noteModalData.isAttending
+                  )}
+                  className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
+                    noteModalData.isAttending
+                      ? 'bg-green-600 hover:bg-green-700'
+                      : 'bg-red-600 hover:bg-red-700'
+                  } text-white`}
+                >
+                  {noteModalData.isAttending ? 'Mark as Attending' : 'Mark as Not Attending'}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowNoteModal(false);
+                    setNoteModalData(null);
+                  }}
+                  className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </ProtectedRoute>
   );

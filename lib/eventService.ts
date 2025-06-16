@@ -1,6 +1,13 @@
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, orderBy } from 'firebase/firestore';
 import { db } from './firebase';
 
+export interface AttendeeEntry {
+  userId: string;
+  status: 'attending' | 'not_attending';
+  note?: string;
+  timestamp: Date;
+}
+
 export interface Event {
   id?: string;
   title: string;
@@ -9,7 +16,8 @@ export interface Event {
   time: string; // HH:MM format
   location?: string;
   description?: string;
-  attendees: string[]; // Array of user IDs
+  attendees: string[]; // Array of user IDs (kept for backward compatibility)
+  attendanceEntries?: AttendeeEntry[]; // New detailed attendance tracking with notes
   bandId?: string; // Band association
   createdBy: string; // User ID who created the event
   // Financial fields
@@ -163,7 +171,7 @@ export const deleteEvent = async (eventId: string): Promise<void> => {
   }
 };
 
-export const addAttendeeToEvent = async (eventId: string, userId: string): Promise<void> => {
+export const addAttendeeToEvent = async (eventId: string, userId: string, note?: string): Promise<void> => {
   try {
     // First get the current event to avoid overwriting other fields
     const events = await getAllEvents();
@@ -175,8 +183,30 @@ export const addAttendeeToEvent = async (eventId: string, userId: string): Promi
 
     const updatedAttendees = [...new Set([...event.attendees, userId])]; // Use Set to avoid duplicates
     
+    // Update or add attendance entry
+    const attendanceEntries = event.attendanceEntries || [];
+    const existingEntryIndex = attendanceEntries.findIndex(entry => entry.userId === userId);
+    
+    const newEntry: AttendeeEntry = {
+      userId,
+      status: 'attending',
+      timestamp: new Date()
+    };
+    
+    // Only add note field if it has a value
+    if (note && note.trim().length > 0) {
+      newEntry.note = note.trim();
+    }
+
+    if (existingEntryIndex >= 0) {
+      attendanceEntries[existingEntryIndex] = newEntry;
+    } else {
+      attendanceEntries.push(newEntry);
+    }
+    
     await updateEvent(eventId, {
       attendees: updatedAttendees,
+      attendanceEntries
     });
   } catch (error) {
     console.error('Error adding attendee to event:', error);
@@ -184,7 +214,7 @@ export const addAttendeeToEvent = async (eventId: string, userId: string): Promi
   }
 };
 
-export const removeAttendeeFromEvent = async (eventId: string, userId: string): Promise<void> => {
+export const removeAttendeeFromEvent = async (eventId: string, userId: string, note?: string): Promise<void> => {
   try {
     // First get the current event
     const events = await getAllEvents();
@@ -196,11 +226,44 @@ export const removeAttendeeFromEvent = async (eventId: string, userId: string): 
 
     const updatedAttendees = event.attendees.filter(id => id !== userId);
     
+    // Update or add attendance entry for not attending
+    const attendanceEntries = event.attendanceEntries || [];
+    const existingEntryIndex = attendanceEntries.findIndex(entry => entry.userId === userId);
+    
+    const newEntry: AttendeeEntry = {
+      userId,
+      status: 'not_attending',
+      timestamp: new Date()
+    };
+    
+    // Only add note field if it has a value
+    if (note && note.trim().length > 0) {
+      newEntry.note = note.trim();
+    }
+
+    if (existingEntryIndex >= 0) {
+      attendanceEntries[existingEntryIndex] = newEntry;
+    } else {
+      attendanceEntries.push(newEntry);
+    }
+    
     await updateEvent(eventId, {
       attendees: updatedAttendees,
+      attendanceEntries
     });
   } catch (error) {
     console.error('Error removing attendee from event:', error);
     throw error;
   }
+};
+
+export const getAttendanceNote = (event: Event, userId: string): string | undefined => {
+  if (!event.attendanceEntries) return undefined;
+  const entry = event.attendanceEntries.find(entry => entry.userId === userId);
+  return entry?.note;
+};
+
+export const hasAttendanceNote = (event: Event, userId: string): boolean => {
+  const note = getAttendanceNote(event, userId);
+  return !!(note && note.trim().length > 0);
 };
