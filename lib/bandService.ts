@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, doc, setDoc, getDoc, query, where } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, setDoc, getDoc, query, where, updateDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from './firebase';
 
@@ -8,8 +8,8 @@ export interface Band {
   description?: string;
   genre?: string;
   location?: string;
-  founded?: Date;
   imageURL?: string;
+  currentHoldings?: number; // Current band money in DKK
   createdAt?: Date;
   updatedAt?: Date;
   createdBy?: string;
@@ -118,6 +118,20 @@ export const uploadBandPhoto = async (file: File, bandId: string): Promise<strin
     return downloadURL;
   } catch (error) {
     console.error('Error uploading band photo:', error);
+    throw error;
+  }
+};
+
+// Update band holdings
+export const updateBandHoldings = async (bandId: string, newAmount: number): Promise<void> => {
+  try {
+    const bandRef = doc(db, 'bands', bandId);
+    await updateDoc(bandRef, {
+      currentHoldings: newAmount,
+      updatedAt: new Date(),
+    });
+  } catch (error) {
+    console.error('Error updating band holdings:', error);
     throw error;
   }
 };

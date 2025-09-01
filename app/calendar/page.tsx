@@ -86,7 +86,18 @@ export default function CalendarPage() {
 
   const getEventsForDate = (date: Date) => {
     const dateString = formatDate(date);
-    return events.filter(event => event.date === dateString);
+    return events.filter(event => {
+      // Handle both YYYY-MM-DD format and ISO timestamp format during transition
+      if (event.date.includes('T')) {
+        // ISO timestamp - extract just the date part
+        const eventDate = new Date(event.date);
+        const eventDateString = formatDate(eventDate);
+        return eventDateString === dateString;
+      } else {
+        // Already in YYYY-MM-DD format
+        return event.date === dateString;
+      }
+    });
   };
 
   const handleDateClick = (date: Date) => {
@@ -128,10 +139,10 @@ export default function CalendarPage() {
     <ProtectedRoute>
       <div className="min-h-screen bg-black text-white">
         <AuthNav currentPage="calendar" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex justify-between items-center mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-4xl font-bold mb-2">
+              <h1 className="text-2xl sm:text-4xl font-bold mb-2">
                 {band ? (
                   <>
                     <span style={{color: 'var(--gold)'}}>{band.name}</span> Calendar
@@ -142,52 +153,55 @@ export default function CalendarPage() {
                   </>
                 )}
               </h1>
-              <p className="text-gray-400">Click on any date to create an event, or click on existing events to view them</p>
+              <p className="text-gray-400 text-sm sm:text-base">Click on any date to create an event, or click on existing events to view them</p>
               {band && (
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="text-xs sm:text-sm text-gray-500 mt-2">
                   Band: {band.name} | Events: {events.length} | Members: {users.length}
                 </p>
               )}
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
               <button
                 onClick={() => router.push('/events/new')}
-                className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 + New Event
               </button>
-              <button
-                onClick={prevMonth}
-                className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
-              >
-                ←
-              </button>
-              <h2 className="text-2xl font-semibold min-w-[200px] text-center">
-                {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
-              </h2>
-              <button
-                onClick={nextMonth}
-                className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
-              >
-                →
-              </button>
+              <div className="flex items-center justify-center space-x-2 sm:space-x-4">
+                <button
+                  onClick={prevMonth}
+                  className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                >
+                  ←
+                </button>
+                <h2 className="text-lg sm:text-2xl font-semibold min-w-[150px] sm:min-w-[200px] text-center">
+                  {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
+                </h2>
+                <button
+                  onClick={nextMonth}
+                  className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                >
+                  →
+                </button>
+              </div>
             </div>
           </div>
 
-          <div className="bg-gray-900 rounded-xl p-6 mb-8">
-            <div className="grid grid-cols-7 gap-2 mb-4">
+          <div className="bg-gray-900 rounded-xl p-3 sm:p-6 mb-6 sm:mb-8">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2 sm:mb-4">
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                <div key={day} className="text-center font-semibold text-gray-400 py-2">
-                  {day}
+                <div key={day} className="text-center font-semibold text-gray-400 py-1 sm:py-2 text-xs sm:text-base">
+                  <span className="hidden sm:inline">{day}</span>
+                  <span className="sm:hidden">{day.slice(0, 1)}</span>
                 </div>
               ))}
             </div>
 
-            <div className="grid grid-cols-7 gap-2">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2">
               {days.map((day, index) => (
                 <div
                   key={index}
-                  className={`min-h-[100px] p-2 rounded-lg transition-colors ${
+                  className={`min-h-[60px] sm:min-h-[100px] p-1 sm:p-2 rounded-lg transition-colors ${
                     day 
                       ? 'bg-gray-800 hover:bg-gray-700 cursor-pointer border border-gray-700' 
                       : ''
@@ -196,7 +210,7 @@ export default function CalendarPage() {
                 >
                   {day && (
                     <>
-                      <div className="font-semibold mb-1">{day.getDate()}</div>
+                      <div className="font-semibold mb-1 text-xs sm:text-base">{day.getDate()}</div>
                       <div className="space-y-1">
                         {getEventsForDate(day).map((event, eventIndex) => (
                           <div
@@ -205,13 +219,16 @@ export default function CalendarPage() {
                               e.stopPropagation();
                               handleEventClick(event);
                             }}
-                            className={`text-xs p-1 rounded text-black font-medium cursor-pointer hover:opacity-80 ${
+                            className={`text-xs p-1 rounded text-black font-medium cursor-pointer hover:opacity-80 truncate ${
                               event.type === 'gig' 
                                 ? 'bg-yellow-400' 
                                 : 'bg-blue-400'
                             }`}
+                            title={`${event.type === 'gig' ? '🪩' : '🎼'} ${event.title}`}
                           >
-                            {event.type === 'gig' ? '🎤' : '🎸'} {event.title}
+                            <span className="hidden sm:inline">{event.type === 'gig' ? '🪩' : '🎼'} </span>
+                            <span className="sm:hidden">{event.type === 'gig' ? '🪩' : '🎼'}</span>
+                            <span className="hidden sm:inline">{event.title}</span>
                           </div>
                         ))}
                       </div>
@@ -222,14 +239,14 @@ export default function CalendarPage() {
             </div>
           </div>
 
-          <div className="flex justify-center space-x-6 mb-8">
+          <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-6 mb-6 sm:mb-8">
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-blue-400 rounded"></div>
               <span className="text-sm">🎸 Rehearsal</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-yellow-400 rounded"></div>
-              <span className="text-sm">🎤 Gig</span>
+              <span className="text-sm">🪩 Gig</span>
             </div>
           </div>
         </div>

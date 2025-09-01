@@ -16,6 +16,7 @@ export interface Event {
   time: string; // HH:MM format
   location?: string;
   description?: string;
+  agreements?: string; // Free text field for coordination notes and agreements
   attendees: string[]; // Array of user IDs (kept for backward compatibility)
   attendanceEntries?: AttendeeEntry[]; // New detailed attendance tracking with notes
   bandId?: string; // Band association

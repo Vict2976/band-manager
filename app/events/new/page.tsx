@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { createEvent } from '../../../lib/eventService';
 import { getUsersByBandId, User, canManageAttendee, hasAdminPermission } from '../../../lib/userService';
 import { getBandById, Band, getCurrentUserBand } from '../../../lib/bandService';
+import { createActivity } from '../../../lib/activityService';
 import ProtectedRoute from '../../../lib/ProtectedRoute';
 import AuthNav from '../../../lib/AuthNav';
 
@@ -94,6 +95,23 @@ function NewEventForm() {
         bandId,
         createdBy: currentUser.uid
       });
+
+      // Track event creation activity
+      if (band?.id) {
+        await createActivity({
+          userId: currentUser.uid,
+          userName: currentUser.displayName || currentUser.email || 'Unknown User',
+          ...(currentUser.photoURL && { userPhotoURL: currentUser.photoURL }),
+          bandId: band.id,
+          type: 'event_create',
+          action: `Created ${eventForm.type} "${eventForm.title}"`,
+          details: {
+            eventId: newEvent.id,
+            eventTitle: eventForm.title,
+            eventType: eventForm.type
+          }
+        });
+      }
 
       // Navigate to the new event page
       router.push(`/events/${newEvent.id}`);
@@ -185,8 +203,8 @@ function NewEventForm() {
                     onChange={(e) => setEventForm({...eventForm, type: e.target.value as 'rehearsal' | 'gig'})}
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded text-white focus:outline-none focus:border-yellow-500"
                   >
-                    <option value="rehearsal">🎸 Rehearsal</option>
-                    <option value="gig">🎤 Gig</option>
+                    <option value="rehearsal">🎼 Rehearsal</option>
+                    <option value="gig">🪩 Gig</option>
                   </select>
                 </div>
 

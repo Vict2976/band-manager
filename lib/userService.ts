@@ -1,4 +1,4 @@
-import { collection, addDoc, getDocs, doc, setDoc, getDoc, query, where } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, setDoc, getDoc, updateDoc, query, where } from 'firebase/firestore';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, auth, storage } from './firebase';
@@ -189,4 +189,99 @@ export const canManageAttendee = (currentUser: User | null, targetUserId: string
   // Regular members can only manage their own attendance
   const currentUserId = currentUser.id || currentUser.uid || '';
   return currentUserId === targetUserId;
+};
+
+// Get all users without a band (available to be added to bands)
+export const getAvailableUsers = async (): Promise<User[]> => {
+  try {
+    const usersQuery = query(
+      collection(db, 'users'), 
+      where('bandId', '==', null)
+    );
+    const querySnapshot = await getDocs(usersQuery);
+    const users: User[] = [];
+    
+    querySnapshot.forEach((doc) => {
+      const userData = doc.data();
+      users.push({
+        id: doc.id,
+        uid: userData.uid || doc.id,
+        ...userData,
+      } as User);
+    });
+
+    return users;
+  } catch (error) {
+    console.error('Error fetching available users:', error);
+    throw error;
+  }
+};
+
+// Search users by email or name (for admins to find and add users)
+export const searchUsers = async (searchTerm: string): Promise<User[]> => {
+  try {
+    const allUsers = await getAllUsers();
+    
+    console.log('All users found:', allUsers.length);
+    console.log('Search term:', searchTerm);
+    
+    // Find users that match the search term
+    const matchingUsers = allUsers.filter(user => 
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
+    console.log('Users matching search term:', matchingUsers.length);
+    matchingUsers.forEach(user => {
+      console.log('Matching user:', {
+        name: user.name,
+        email: user.email,
+        bandId: user.bandId,
+        hasNoBand: !user.bandId
+      });
+    });
+    
+    // Filter users based on search term (email or name) and no band
+    const filteredUsers = allUsers.filter(user => 
+      !user.bandId && // Only users without a band
+      (user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       user.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    
+    console.log('Final filtered users (no band):', filteredUsers.length);
+
+    return filteredUsers;
+  } catch (error) {
+    console.error('Error searching users:', error);
+    throw error;
+  }
+};
+
+// Add a user to a band (for admin use)
+export const addUserToBand = async (userId: string, bandId: string): Promise<void> => {
+  try {
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, {
+      bandId: bandId,
+      joinedAt: new Date(),
+      updatedAt: new Date(),
+    });
+  } catch (error) {
+    console.error('Error adding user to band:', error);
+    throw error;
+  }
+};
+
+// Remove a user from a band (for admin use)
+export const removeUserFromBand = async (userId: string): Promise<void> => {
+  try {
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, {
+      bandId: null,
+      updatedAt: new Date(),
+    });
+  } catch (error) {
+    console.error('Error removing user from band:', error);
+    throw error;
+  }
 };

@@ -8,16 +8,28 @@ export const formatDateSafe = (dateString: string): string => {
   if (!dateString) return '';
   
   try {
-    // Split the date string and create date in local timezone
-    const [year, month, day] = dateString.split('-').map(Number);
-    const date = new Date(year, month - 1, day); // month is 0-indexed
-    
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    // Handle both ISO date strings and YYYY-MM-DD format
+    if (dateString.includes('T')) {
+      // ISO date string - parse and format in local timezone
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } else {
+      // Simple YYYY-MM-DD format - create date in local timezone
+      const [year, month, day] = dateString.split('-').map(Number);
+      const date = new Date(year, month - 1, day); // month is 0-indexed
+      
+      return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
   } catch (error) {
     console.error('Error formatting date:', error);
     return dateString;

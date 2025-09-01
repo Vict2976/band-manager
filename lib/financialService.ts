@@ -6,10 +6,8 @@ export interface Expense {
   eventId: string;
   userId: string; // Who incurred the expense
   type: 'transport' | 'accommodation' | 'food' | 'equipment' | 'other';
-  amount: number; // Amount in DKK
+  amount: number; // Amount in DKK (direct amount, not calculated)
   description: string;
-  distance?: number; // For transport expenses (km)
-  reimbursementRate?: number; // DKK per km for transport
   receiptUrl?: string; // Optional receipt image URL
   approved: boolean; // Whether the expense is approved for reimbursement
   createdAt: Date;
@@ -30,8 +28,8 @@ export interface EventFinancials {
   }>;
 }
 
-// Default transport rate in DKK per km (Danish standard rate)
-export const DEFAULT_TRANSPORT_RATE = 2.04; // 2024 Danish tax-free rate
+// Default transport rate in DKK per km (Danish standard rate) - DEPRECATED
+export const DEFAULT_TRANSPORT_RATE = 2.04; // No longer used
 
 export const createExpense = async (expenseData: Omit<Expense, 'id' | 'createdAt' | 'updatedAt'>): Promise<Expense> => {
   try {
@@ -108,10 +106,6 @@ export const deleteExpense = async (expenseId: string): Promise<void> => {
     console.error('Error deleting expense:', error);
     throw error;
   }
-};
-
-export const calculateTransportExpense = (distance: number, rate: number = DEFAULT_TRANSPORT_RATE): number => {
-  return Math.round(distance * rate * 100) / 100; // Round to 2 decimal places
 };
 
 export const calculateEventFinancials = async (eventId: string, gigEarnings: number = 0): Promise<EventFinancials> => {

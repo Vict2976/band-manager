@@ -213,7 +213,7 @@ export default function CalendarPage() {
                                 : 'bg-blue-400'
                             }`}
                           >
-                            {event.type === 'gig' ? '🎤' : '🎸'} {event.title}
+                            {event.type === 'gig' ? '🪩' : '🎼'} {event.title}
                           </div>
                         ))}
                       </div>
@@ -227,11 +227,11 @@ export default function CalendarPage() {
           <div className="flex justify-center space-x-6 mb-8">
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-blue-400 rounded"></div>
-              <span className="text-sm">🎸 Rehearsal</span>
+              <span className="text-sm">🎼 Rehearsal</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 bg-yellow-400 rounded"></div>
-              <span className="text-sm">🎤 Gig</span>
+              <span className="text-sm">🪩 Gig</span>
             </div>
           </div>
         </div>

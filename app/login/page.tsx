@@ -1,30 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useAuth } from '../../lib/auth';
-import { useRouter } from 'next/navigation';
-import PublicRoute from '../../lib/PublicRoute';
+import { useRouter, useSearchParams } from 'next/navigation';
+import AuthNav from '../../lib/AuthNav';
+import Image from 'next/image';
 
-export default function LoginPage() {
+function LoginContent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const router = useRouter();
-
-  // Pre-fill with band member emails for easy testing
-  const bandMembers = [
-    { name: 'Sarah', email: 'sarah@bandmanager.com' },
-    { name: 'Victor', email: 'victor@bandmanager.com' },
-    { name: 'Marius', email: 'marius@bandmanager.com' },
-    { name: 'Kasper', email: 'kasper@bandmanager.com' },
-    { name: 'Oliver', email: 'oliver@bandmanager.com' },
-    { name: 'Tobias', email: 'tobias@bandmanager.com' },
-    { name: 'Adam', email: 'adam@bandmanager.com' },
-    { name: 'Rune', email: 'rune@bandmanager.com' },
-  ];
+  const searchParams = useSearchParams();
+  
+  // Check for success message from registration
+  const registrationSuccess = searchParams.get('registered') === 'true';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,101 +24,116 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await signIn(email, password, rememberMe);
+      await signIn(email, password);
       router.push('/dashboard');
     } catch (error: any) {
-      setError(error.message);
+      console.error('Login error:', error);
+      setError(error.message || 'Failed to sign in');
     } finally {
       setLoading(false);
     }
   };
 
-
   return (
-    <PublicRoute>
-    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-12 h-12 rounded-full" style={{background: 'var(--gold)'}}></div>
-            <span className="text-3xl font-bold">BandManager</span>
-          </div>
-          <p className="text-gray-400">Sign in to access your band</p>
-        </div>
-
-        {/* Login Form */}
-        <div className="bg-gray-900 rounded-xl p-8 mb-6">
-          <h2 className="text-2xl font-semibold mb-6 text-center">Welcome Back</h2>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-colors"
-                placeholder="Enter your email"
-                required
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      <AuthNav />
+      
+      <div className="flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full">
+          <div className="bg-gray-900 rounded-2xl shadow-2xl p-8">
+            <div className="text-center mb-8">
+              <Image 
+                src="/logo.png" 
+                alt="BandManager Logo" 
+                width={80} 
+                height={80} 
+                className="w-20 h-20 mx-auto mb-4"
               />
+              <h2 className="text-3xl font-bold">Welcome Back</h2>
+              <p className="text-gray-400 mt-2">Sign in to your account</p>
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-colors"
-                placeholder="Enter your password"
-                required
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="mr-2 text-yellow-400"
-                />
-                <span className="text-sm text-gray-400">Remember me for 30 days</span>
-              </label>
-            </div>
-
-            {error && (
-              <div className="bg-red-900 border border-red-700 rounded-lg p-3">
-                <p className="text-red-200 text-sm">{error}</p>
+            {registrationSuccess && (
+              <div className="bg-green-900 border border-green-700 rounded-xl p-4 mb-6">
+                <p className="text-green-200 text-center">
+                  ✅ Registration successful! Please sign in with your new account.
+                </p>
               </div>
             )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 text-black rounded-lg font-semibold transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{background: loading ? '#666' : 'var(--gold)'}}
-            >
-              {loading ? 'Signing In...' : 'Sign In'}
-            </button>
-          </form>
-        </div>
+            {error && (
+              <div className="bg-red-900 border border-red-700 rounded-xl p-4 mb-6">
+                <p className="text-red-200">{error}</p>
+              </div>
+            )}
 
-        {/* Links */}
-        <div className="text-center mt-6">
-          <a href="/" className="text-gray-400 hover:text-white transition-colors">
-            ← Back to Home
-          </a>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                  placeholder="Enter your email"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                  placeholder="Enter your password"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full text-black font-semibold py-3 px-4 rounded-lg transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{background: 'var(--gold)'}}
+              >
+                {loading ? 'Signing In...' : 'Sign In'}
+              </button>
+            </form>
+
+            <div className="mt-6 text-center">
+              <p className="text-gray-400">
+                Don't have an account?{' '}
+                <a href="/register" className="text-yellow-400 hover:text-yellow-300 font-medium">
+                  Register here
+                </a>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    </PublicRoute>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🎵</div>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }

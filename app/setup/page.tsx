@@ -9,6 +9,7 @@ import { useAuth } from '../../lib/auth';
 import { userHasBand } from '../../lib/setupGuard';
 import { createBand } from '../../lib/bandService';
 import { createUser, createUserProfile, updateUserProfile } from '../../lib/userService';
+import Image from 'next/image';
 
 interface BandMember {
   name: string;
@@ -202,26 +203,31 @@ export default function NewBandSetupPage() {
       {/* Header */}
       <div className="border-b border-gray-800 bg-black/50 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-14 sm:h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-full" style={{background: 'var(--gold)'}}></div>
-              <span className="text-xl font-bold">BandManager</span>
+              <Image 
+                src="/logo.png" 
+                alt="BandManager Logo" 
+                width={56} 
+                height={56} 
+                className="w-10 h-10 sm:w-12 sm:h-12"
+              />
             </div>
-            <div className="text-sm text-gray-400">
+            <div className="text-xs sm:text-sm text-gray-400">
               Step {currentStep} of 3
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         {/* Progress Bar */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <div className="flex items-center">
             {[1, 2, 3].map((step) => (
               <div key={step} className="flex items-center">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                  className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium ${
                     step <= currentStep
                       ? 'text-black'
                       : 'bg-gray-700 text-gray-400'
@@ -232,7 +238,7 @@ export default function NewBandSetupPage() {
                 </div>
                 {step < 3 && (
                   <div
-                    className={`w-16 h-1 mx-4 ${
+                    className={`w-8 sm:w-16 h-1 mx-2 sm:mx-4 ${
                       step < currentStep ? 'bg-yellow-500' : 'bg-gray-700'
                     }`}
                   />
@@ -240,7 +246,7 @@ export default function NewBandSetupPage() {
               </div>
             ))}
           </div>
-          <div className="flex justify-between mt-2 text-sm">
+          <div className="flex justify-between mt-2 text-xs sm:text-sm">
             <span className={currentStep >= 1 ? 'text-yellow-400' : 'text-gray-400'}>Band Info</span>
             <span className={currentStep >= 2 ? 'text-yellow-400' : 'text-gray-400'}>Admin Account</span>
             <span className={currentStep >= 3 ? 'text-yellow-400' : 'text-gray-400'}>Add Members</span>
@@ -255,11 +261,11 @@ export default function NewBandSetupPage() {
 
         {/* Step 1: Band Information */}
         {currentStep === 1 && (
-          <div className="bg-gray-900 rounded-xl p-8">
-            <h1 className="text-3xl font-bold mb-2">Create Your Band</h1>
-            <p className="text-gray-400 mb-8">Let's start with some basic information about your band.</p>
+          <div className="bg-gray-900 rounded-xl p-4 sm:p-8">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">Create Your Band</h1>
+            <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">Let's start with some basic information about your band.</p>
 
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Band Name *
@@ -269,7 +275,7 @@ export default function NewBandSetupPage() {
                   required
                   value={bandForm.name}
                   onChange={(e) => setBandForm({...bandForm, name: e.target.value})}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                   placeholder="e.g., The Rock Stars"
                 />
               </div>
@@ -282,7 +288,7 @@ export default function NewBandSetupPage() {
                   required
                   value={bandForm.genre}
                   onChange={(e) => setBandForm({...bandForm, genre: e.target.value})}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                 >
                   <option value="">Select a genre</option>
                   <option value="Rock">Rock</option>
@@ -309,7 +315,7 @@ export default function NewBandSetupPage() {
                   type="text"
                   value={bandForm.location}
                   onChange={(e) => setBandForm({...bandForm, location: e.target.value})}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                   placeholder="e.g., Los Angeles, CA"
                 />
               </div>
@@ -321,17 +327,17 @@ export default function NewBandSetupPage() {
                 <textarea
                   value={bandForm.description}
                   onChange={(e) => setBandForm({...bandForm, description: e.target.value})}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                   rows={3}
                   placeholder="Tell us about your band..."
                 />
               </div>
             </div>
 
-            <div className="flex justify-end mt-8">
+            <div className="flex justify-end mt-6 sm:mt-8">
               <button
                 onClick={handleBandNext}
-                className="px-8 py-3 text-black rounded-lg font-medium transition-all hover:scale-105"
+                className="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 text-black rounded-lg font-medium transition-all hover:scale-105 text-sm sm:text-base"
                 style={{background: 'var(--gold)'}}
               >
                 Next: Create Admin Account
@@ -342,11 +348,11 @@ export default function NewBandSetupPage() {
 
         {/* Step 2: Admin Account */}
         {currentStep === 2 && (
-          <div className="bg-gray-900 rounded-xl p-8">
-            <h1 className="text-3xl font-bold mb-2">Create Admin Account</h1>
-            <p className="text-gray-400 mb-8">Set up your account as the band administrator.</p>
+          <div className="bg-gray-900 rounded-xl p-4 sm:p-8">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">Create Admin Account</h1>
+            <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">Set up your account as the band administrator.</p>
 
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Your Name *
@@ -356,7 +362,7 @@ export default function NewBandSetupPage() {
                   required
                   value={adminForm.name}
                   onChange={(e) => setAdminForm({...adminForm, name: e.target.value})}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                   placeholder="Your full name"
                 />
               </div>
@@ -370,12 +376,12 @@ export default function NewBandSetupPage() {
                   required
                   value={adminForm.email}
                   onChange={(e) => setAdminForm({...adminForm, email: e.target.value})}
-                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                   placeholder="your@email.com"
                 />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Password *
@@ -385,7 +391,7 @@ export default function NewBandSetupPage() {
                     required
                     value={adminForm.password}
                     onChange={(e) => setAdminForm({...adminForm, password: e.target.value})}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                     placeholder="Password (6+ characters)"
                   />
                 </div>
@@ -399,13 +405,13 @@ export default function NewBandSetupPage() {
                     required
                     value={adminForm.confirmPassword}
                     onChange={(e) => setAdminForm({...adminForm, confirmPassword: e.target.value})}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                     placeholder="Confirm password"
                   />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Your Instrument *
@@ -415,7 +421,7 @@ export default function NewBandSetupPage() {
                     required
                     value={adminForm.instrument}
                     onChange={(e) => setAdminForm({...adminForm, instrument: e.target.value})}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                     placeholder="e.g., Guitar, Vocals, Drums"
                   />
                 </div>
@@ -428,23 +434,23 @@ export default function NewBandSetupPage() {
                     type="text"
                     value={adminForm.role}
                     onChange={(e) => setAdminForm({...adminForm, role: e.target.value})}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                     placeholder="e.g., Band Leader, Songwriter"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-between mt-8">
+            <div className="flex flex-col sm:flex-row justify-between gap-4 mt-6 sm:mt-8">
               <button
                 onClick={() => setCurrentStep(1)}
-                className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm sm:text-base"
               >
                 Back
               </button>
               <button
                 onClick={handleAdminNext}
-                className="px-8 py-3 text-black rounded-lg font-medium transition-all hover:scale-105"
+                className="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 text-black rounded-lg font-medium transition-all hover:scale-105 text-sm sm:text-base"
                 style={{background: 'var(--gold)'}}
               >
                 Next: Add Members
@@ -455,40 +461,40 @@ export default function NewBandSetupPage() {
 
         {/* Step 3: Add Members */}
         {currentStep === 3 && (
-          <div className="bg-gray-900 rounded-xl p-8">
-            <h1 className="text-3xl font-bold mb-2">Add Band Members</h1>
-            <p className="text-gray-400 mb-8">
+          <div className="bg-gray-900 rounded-xl p-4 sm:p-8">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">Add Band Members</h1>
+            <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">
               Invite your band members by email. They'll receive instructions to set up their accounts.
             </p>
 
             {/* Add Member Form */}
-            <div className="bg-gray-800 rounded-lg p-6 mb-6">
-              <h3 className="text-lg font-semibold mb-4">Add New Member</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-gray-800 rounded-lg p-4 sm:p-6 mb-6">
+              <h3 className="text-base sm:text-lg font-semibold mb-4">Add New Member</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 <input
                   type="text"
                   value={newMember.name}
                   onChange={(e) => setNewMember({...newMember, name: e.target.value})}
-                  className="px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-yellow-500"
+                  className="px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                   placeholder="Name"
                 />
                 <input
                   type="email"
                   value={newMember.email}
                   onChange={(e) => setNewMember({...newMember, email: e.target.value})}
-                  className="px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-yellow-500"
+                  className="px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                   placeholder="Email"
                 />
                 <input
                   type="text"
                   value={newMember.instrument}
                   onChange={(e) => setNewMember({...newMember, instrument: e.target.value})}
-                  className="px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-yellow-500"
+                  className="px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
                   placeholder="Instrument"
                 />
                 <button
                   onClick={addMember}
-                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded transition-colors"
+                  className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded transition-colors text-sm sm:text-base"
                 >
                   Add Member
                 </button>
@@ -498,17 +504,17 @@ export default function NewBandSetupPage() {
             {/* Members List */}
             {members.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-4">Band Members ({members.length})</h3>
+                <h3 className="text-base sm:text-lg font-semibold mb-4">Band Members ({members.length})</h3>
                 <div className="space-y-3">
                   {members.map((member, index) => (
-                    <div key={index} className="flex items-center justify-between bg-gray-800 rounded-lg p-4">
+                    <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between bg-gray-800 rounded-lg p-4 gap-3 sm:gap-0">
                       <div>
-                        <p className="font-medium">{member.name}</p>
-                        <p className="text-sm text-gray-400">{member.email} • {member.instrument}</p>
+                        <p className="font-medium text-sm sm:text-base">{member.name}</p>
+                        <p className="text-xs sm:text-sm text-gray-400">{member.email} • {member.instrument}</p>
                       </div>
                       <button
                         onClick={() => removeMember(index)}
-                        className="text-red-400 hover:text-red-300 transition-colors"
+                        className="text-red-400 hover:text-red-300 transition-colors text-sm sm:text-base self-start sm:self-auto"
                       >
                         Remove
                       </button>
@@ -519,22 +525,22 @@ export default function NewBandSetupPage() {
             )}
 
             {members.length === 0 && (
-              <div className="text-center py-8 text-gray-400">
-                <p>No members added yet. Add some members above or skip this step for now.</p>
+              <div className="text-center py-6 sm:py-8 text-gray-400">
+                <p className="text-sm sm:text-base">No members added yet. Add some members above or skip this step for now.</p>
               </div>
             )}
 
-            <div className="flex justify-between mt-8">
+            <div className="flex flex-col sm:flex-row justify-between gap-4 mt-6 sm:mt-8">
               <button
                 onClick={() => setCurrentStep(2)}
-                className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm sm:text-base"
               >
                 Back
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="px-8 py-3 text-black rounded-lg font-medium transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 text-black rounded-lg font-medium transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 style={{background: loading ? '#666' : 'var(--gold)'}}
               >
                 {loading ? 'Creating Band...' : 'Create Band & Finish'}

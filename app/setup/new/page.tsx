@@ -8,6 +8,7 @@ import { useAuth } from '../../../lib/auth';
 import { userHasBand } from '../../../lib/setupGuard';
 import { createBand } from '../../../lib/bandService';
 import { createUser, createUserProfile, updateUserProfile } from '../../../lib/userService';
+import Image from 'next/image';
 
 interface BandMember {
   name: string;
@@ -197,8 +198,13 @@ export default function NewBandSetupPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-full" style={{background: 'var(--gold)'}}></div>
-              <span className="text-xl font-bold">BandManager</span>
+              <Image 
+                src="/logo.png" 
+                alt="BandManager Logo" 
+                width={56} 
+                height={56} 
+                className="w-10 h-10 sm:w-12 sm:h-12"
+              />
             </div>
             <div className="text-sm text-gray-400">
               Step {currentStep} of 3

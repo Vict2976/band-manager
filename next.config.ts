@@ -10,6 +10,8 @@ const nextConfig: NextConfig = {
         pathname: '/v0/b/band-manager-d1cb7.firebasestorage.app/**',
       },
     ],
+    dangerouslyAllowSVG: true,
+    unoptimized: false,
   },
 };
 
