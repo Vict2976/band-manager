@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Band Manager - Organize Your Band Life",
-  description: "Manage rehearsals, gigs, and band members in one place. The ultimate tool for organized bands.",
+  title: "Band Manager",
+  description: "Shared calendar and gear list for the band.",
   icons: {
     icon: [
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
@@ -23,18 +23,6 @@ export const metadata: Metadata = {
     ],
     shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
-  },
-  openGraph: {
-    title: "Band Manager - Organize Your Band Life",
-    description: "Manage rehearsals, gigs, and band members in one place. The ultimate tool for organized bands.",
-    images: ["/logo.png"],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Band Manager - Organize Your Band Life",
-    description: "Manage rehearsals, gigs, and band members in one place. The ultimate tool for organized bands.",
-    images: ["/logo.png"],
   },
 };
 
@@ -51,11 +39,11 @@ export default function RootLayout({
         <link rel="icon" href="/logo.png" type="image/png" sizes="16x16" />
         <link rel="apple-touch-icon" href="/logo.png" sizes="180x180" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#F59E0B" />
+        <meta name="theme-color" content="#6874f4" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="BandManager" />
-        <meta name="msapplication-TileColor" content="#F59E0B" />
+        <meta name="msapplication-TileColor" content="#6874f4" />
         <meta name="msapplication-TileImage" content="/logo.png" />
       </head>
       <body

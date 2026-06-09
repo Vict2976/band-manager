@@ -1,248 +1,374 @@
 'use client';
 
-import { useAuth } from '../lib/auth';
-import Image from 'next/image';
+import { useEffect, useMemo, useState } from 'react';
+import AppShell from '../lib/AppShell';
+import Markdown from '../lib/Markdown';
+import RichTextEditor from '../lib/RichTextEditor';
+import {
+  BandEvent,
+  EventType,
+  NewEvent,
+  subscribeToEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+} from '../lib/eventService';
 
-export default function Home() {
-  const { user } = useAuth();
+const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+// gig = magenta, rehearsal = periwinkle
+const TYPE_COLOR: Record<EventType, string> = {
+  gig: 'var(--latina)',
+  rehearsal: 'var(--primary)',
+};
+
+// --- date helpers (local, no deps) ---
+const pad = (n: number) => String(n).padStart(2, '0');
+const toKey = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const todayKey = () => toKey(new Date());
+
+function buildMonthGrid(year: number, month: number): Date[] {
+  const first = new Date(year, month, 1);
+  const offset = (first.getDay() + 6) % 7; // Monday-first
+  const start = new Date(year, month, 1 - offset);
+  return Array.from({ length: 42 }, (_, i) => {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    return d;
+  });
+}
+
+function formatLongDate(key: string): string {
+  const [y, m, d] = key.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
+}
+
+export default function CalendarPage() {
+  return (
+    <AppShell>
+      <Calendar />
+    </AppShell>
+  );
+}
+
+function Calendar() {
+  const now = new Date();
+  const [year, setYear] = useState(now.getFullYear());
+  const [month, setMonth] = useState(now.getMonth());
+  const [selected, setSelected] = useState<string>(todayKey());
+  const [events, setEvents] = useState<BandEvent[]>([]);
+  const [editing, setEditing] = useState<BandEvent | null>(null);
+  const [creating, setCreating] = useState(false);
+
+  useEffect(() => subscribeToEvents(setEvents), []);
+
+  const byDate = useMemo(() => {
+    const map = new Map<string, BandEvent[]>();
+    for (const e of events) {
+      const list = map.get(e.date) || [];
+      list.push(e);
+      map.set(e.date, list);
+    }
+    return map;
+  }, [events]);
+
+  const grid = useMemo(() => buildMonthGrid(year, month), [year, month]);
+  const selectedEvents = byDate.get(selected) || [];
+
+  const changeMonth = (delta: number) => {
+    const d = new Date(year, month + delta, 1);
+    setYear(d.getFullYear());
+    setMonth(d.getMonth());
+  };
+
+  const goToday = () => {
+    const t = new Date();
+    setYear(t.getFullYear());
+    setMonth(t.getMonth());
+    setSelected(todayKey());
+  };
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Navigation */}
-      <nav className="border-b border-gray-800 bg-black/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-24 sm:h-28">
-            <div className="flex items-center space-x-2">
-              <a href={user ? "/dashboard" : "/"} className="cursor-pointer">
-                <Image 
-                  src="/logo.png" 
-                  alt="BandManager Logo" 
-                  width={128} 
-                  height={128} 
-                  className="w-24 h-24 sm:w-32 sm:h-32"
-                />
-              </a>
-            </div>
-            <div className="hidden md:flex space-x-8">
-              {user ? (
-                <>
-                  <a href="/dashboard" className="hover:text-yellow-400 transition-colors">Dashboard</a>
-                  <a href="/users" className="hover:text-yellow-400 transition-colors">Band Members</a>
-                  <a href="/calendar" className="hover:text-yellow-400 transition-colors">Calendar</a>
-                  <a href="/setup" className="hover:text-yellow-400 transition-colors">Setup</a>
-                </>
-              ) : (
-                <>
-                </>
-              )}
-            </div>
-            <div className="flex space-x-2 sm:space-x-4">
-              {user ? (
-                <>
-                  <a 
-                    href="/dashboard"
-                    className="px-3 sm:px-4 py-2 text-xs sm:text-sm text-black rounded-lg font-medium transition-all hover:scale-105"
-                    style={{background: 'var(--gold)'}}
-                  >
-                    Dashboard
-                  </a>
-                </>
-              ) : (
-                <>
-                  <a 
-                    href="/login"
-                    className="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-600 rounded-lg hover:border-yellow-400 transition-colors"
-                  >
-                    Sign In
-                  </a>
-                  <a
-                    href="/setup"
-                    className="px-3 sm:px-4 py-2 text-xs sm:text-sm text-black rounded-lg font-medium transition-all hover:scale-105"
-                    style={{background: 'var(--gold)'}}
-                  >
-                    Get Started
-                  </a>
-                </>
-              )}
-            </div>
+    <div className="space-y-5">
+      {/* Calendar card */}
+      <section className="card p-4 sm:p-5 animate-slide-up">
+        {/* Month nav */}
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold tracking-tight">
+            {MONTHS[month]} <span className="text-[var(--faint)] font-semibold">{year}</span>
+          </h1>
+          <div className="flex items-center gap-1.5">
+            <button onClick={goToday} className="btn-soft text-xs font-semibold px-3 py-2 rounded-full">
+              Today
+            </button>
+            <button onClick={() => changeMonth(-1)} aria-label="Previous month" className="w-9 h-9 grid place-items-center rounded-full text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors">‹</button>
+            <button onClick={() => changeMonth(1)} aria-label="Next month" className="w-9 h-9 grid place-items-center rounded-full text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors">›</button>
           </div>
         </div>
-      </nav>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-32">
-          <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6">
-              Manage Your Band
-              <span className="block" style={{color: 'var(--gold)'}}>Like a Pro</span>
-            </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
-              Streamline rehearsals, organize gigs, and keep your band in perfect harmony. 
-              Everything you need in one powerful platform.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12 px-4">
-              <a
-                href="/setup"
-                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg text-black rounded-lg font-semibold transition-all hover:scale-105 shadow-lg text-center"
-                style={{background: 'var(--gold)'}}
+        {/* Weekday header */}
+        <div className="grid grid-cols-7 mb-1">
+          {WEEKDAYS.map((d) => (
+            <div key={d} className="text-center text-[11px] font-semibold text-[var(--faint)] py-1">{d}</div>
+          ))}
+        </div>
+
+        {/* Day grid */}
+        <div className="grid grid-cols-7 gap-1">
+          {grid.map((d) => {
+            const key = toKey(d);
+            const inMonth = d.getMonth() === month;
+            const isToday = key === todayKey();
+            const isSelected = key === selected;
+            const dayEvents = byDate.get(key) || [];
+            return (
+              <button
+                key={key}
+                onClick={() => setSelected(key)}
+                className={`aspect-square rounded-2xl flex flex-col items-center justify-center gap-1.5 transition-all ${
+                  isSelected
+                    ? 'bg-[var(--primary-50)] ring-2 ring-[var(--primary)]'
+                    : 'hover:bg-[var(--primary-50)]'
+                } ${inMonth ? '' : 'opacity-40'}`}
               >
-                Start Managing Today
-              </a>
-            </div>
-            
-            {/* Feature Icons */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 mt-12 sm:mt-16 px-4">
-              <div className="text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4 rounded-xl bg-gray-800 flex items-center justify-center">
-                  <span className="text-xl sm:text-2xl" style={{color: 'var(--gold)'}}>📅</span>
-                </div>
-                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Schedule</h3>
-                <p className="text-xs sm:text-sm text-gray-400">Rehearsals & Gigs</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4 rounded-xl bg-gray-800 flex items-center justify-center">
-                  <span className="text-xl sm:text-2xl" style={{color: 'var(--gold)'}}>👥</span>
-                </div>
-                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Members</h3>
-                <p className="text-xs sm:text-sm text-gray-400">Track Attendance</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4 rounded-xl bg-gray-800 flex items-center justify-center">
-                  <span className="text-xl sm:text-2xl" style={{color: 'var(--gold)'}}>💰</span>
-                </div>
-                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Finance</h3>
-                <p className="text-xs sm:text-sm text-gray-400">Track Earnings</p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 sm:mb-4 rounded-xl bg-gray-800 flex items-center justify-center">
-                  <span className="text-xl sm:text-2xl" style={{color: 'var(--gold)'}}>📊</span>
-                </div>
-                <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Analytics</h3>
-                <p className="text-xs sm:text-sm text-gray-400">Performance Insights</p>
-              </div>
-            </div>
-          </div>
+                <span
+                  className={`w-7 h-7 grid place-items-center rounded-full text-[13px] font-semibold ${
+                    isToday ? 'btn-grad text-white' : 'text-[var(--ink)]'
+                  }`}
+                >
+                  {d.getDate()}
+                </span>
+                <span className="flex gap-1 h-1.5">
+                  {dayEvents.slice(0, 3).map((e) => (
+                    <span key={e.id} className="w-1.5 h-1.5 rounded-full" style={{ background: TYPE_COLOR[e.type] }} />
+                  ))}
+                </span>
+              </button>
+            );
+          })}
         </div>
+
+        <Legend />
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-16 sm:py-24 bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-              Everything Your Band Needs
-            </h2>
-            <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto px-4">
-              From scheduling to logistics management, we've got you covered with powerful tools designed specifically for bands.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
-            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 hover:bg-gray-700 transition-colors">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{background: 'var(--gold)'}}>
-                <span className="text-black text-lg sm:text-xl font-bold">📅</span>
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Smart Calendar</h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                Organize rehearsals and gigs with an intuitive calendar view. Never miss another important date.
-              </p>
-            </div>
-            
-            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 hover:bg-gray-700 transition-colors">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{background: 'var(--gold)'}}>
-                <span className="text-black text-lg sm:text-xl font-bold">✓</span>
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Attendance Tracking</h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                Know who's coming to what. Track member availability and plan accordingly.
-              </p>
-            </div>
-            
-            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 hover:bg-gray-700 transition-colors">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{background: 'var(--gold)'}}>
-                <span className="text-black text-lg sm:text-xl font-bold">💰</span>
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Financial Tracking</h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                Track gig earnings, expenses, and split payments fairly among band members.
-              </p>
-            </div>
-            
-            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 hover:bg-gray-700 transition-colors">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{background: 'var(--gold)'}}>
-                <span className="text-black text-lg sm:text-xl font-bold">💬</span>
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Communication</h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                Keep everyone in the loop with built-in messaging and notifications.
-              </p>
-            </div>
-            
-            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 hover:bg-gray-700 transition-colors">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{background: 'var(--gold)'}}>
-                <span className="text-black text-lg sm:text-xl font-bold">📱</span>
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Mobile Ready</h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                Access your band's information anywhere, anytime. Fully responsive design.
-              </p>
-            </div>
-            
-            <div className="bg-gray-800 rounded-xl p-4 sm:p-6 hover:bg-gray-700 transition-colors">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg mb-3 sm:mb-4 flex items-center justify-center" style={{background: 'var(--gold)'}}>
-                <span className="text-black text-lg sm:text-xl font-bold">🔒</span>
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Secure & Private</h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                Your band's information is protected with enterprise-grade security.
-              </p>
-            </div>
-          </div>
+      {/* Selected day */}
+      <section className="animate-slide-up">
+        <div className="flex items-center justify-between mb-3 px-1">
+          <h2 className="font-bold text-[var(--ink)]">{formatLongDate(selected)}</h2>
+          <button
+            onClick={() => setCreating(true)}
+            className="btn-grad text-sm font-semibold px-4 py-2 rounded-full"
+          >
+            + Add event
+          </button>
         </div>
+
+        {selectedEvents.length === 0 ? (
+          <div className="card card-hover p-8 text-center">
+            <p className="text-sm text-[var(--muted)]">Nothing planned this day.</p>
+            <button onClick={() => setCreating(true)} className="mt-2 text-sm font-semibold text-[var(--primary)] hover:underline">
+              Add a gig or rehearsal
+            </button>
+          </div>
+        ) : (
+          <ul className="space-y-2.5">
+            {selectedEvents.map((e) => (
+              <li key={e.id}>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setEditing(e)}
+                  onKeyDown={(ev) => {
+                    if (ev.key === 'Enter' || ev.key === ' ') {
+                      ev.preventDefault();
+                      setEditing(e);
+                    }
+                  }}
+                  className="card card-hover w-full text-left flex gap-3.5 p-4 overflow-hidden cursor-pointer"
+                >
+                  <span className="w-1.5 rounded-full shrink-0" style={{ background: TYPE_COLOR[e.type] }} />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span
+                        className="text-[11px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
+                        style={{ color: TYPE_COLOR[e.type], background: `color-mix(in srgb, ${TYPE_COLOR[e.type]} 12%, white)` }}
+                      >
+                        {e.type}
+                      </span>
+                      {e.time && <span className="text-xs font-medium text-[var(--muted)]">{e.time}</span>}
+                    </div>
+                    {e.text.trim() ? (
+                      <div className="text-sm leading-relaxed">
+                        <Markdown>{e.text}</Markdown>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-[var(--faint)] italic">No details</p>
+                    )}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-            <div className="sm:col-span-2 md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <Image 
-                  src="/logo.png" 
-                  alt="BandManager Logo" 
-                width={128} 
-                height={128} 
-                className="w-24 h-24 sm:w-32 sm:h-32"
-                />
-              </div>
-              <p className="text-gray-400 max-w-md text-sm sm:text-base">
-                The ultimate band management platform. Keep your band organized, professional, and ready to rock.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Product</h4>
-              <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-                <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Demo</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Support</h4>
-              <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center text-gray-400">
-            <p className="text-sm sm:text-base">&copy; 2025 BandManager. All rights reserved.</p>
+      {(creating || editing) && (
+        <EventModal
+          date={selected}
+          event={editing}
+          onClose={() => {
+            setCreating(false);
+            setEditing(null);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+function Legend() {
+  return (
+    <div className="flex items-center justify-center gap-5 mt-4 text-xs font-medium text-[var(--muted)]">
+      <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ background: 'var(--latina)' }} /> Gig</span>
+      <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ background: 'var(--primary)' }} /> Rehearsal</span>
+    </div>
+  );
+}
+
+function EventModal({
+  date,
+  event,
+  onClose,
+}: {
+  date: string;
+  event: BandEvent | null;
+  onClose: () => void;
+}) {
+  const [type, setType] = useState<EventType>(event?.type ?? 'rehearsal');
+  const [eventDate, setEventDate] = useState(event?.date ?? date);
+  const [time, setTime] = useState(event?.time ?? '');
+  const [text, setText] = useState(event?.text ?? '');
+  const [busy, setBusy] = useState(false);
+
+  const save = async () => {
+    setBusy(true);
+    const payload: NewEvent = { type, date: eventDate, time, text };
+    try {
+      if (event) await updateEvent(event.id, payload);
+      else await createEvent(payload);
+      onClose();
+    } catch (err) {
+      console.error(err);
+      setBusy(false);
+    }
+  };
+
+  const remove = async () => {
+    if (!event || !confirm('Delete this event?')) return;
+    setBusy(true);
+    try {
+      await deleteEvent(event.id);
+      onClose();
+    } catch (err) {
+      console.error(err);
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm p-0 sm:p-4" onClick={onClose}>
+      <div
+        className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-6 space-y-4 max-h-[92vh] overflow-y-auto shadow-2xl animate-pop-in"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3 className="text-xl font-bold">{event ? 'Edit event' : 'New event'}</h3>
+
+        {/* Type toggle */}
+        <div className="grid grid-cols-2 gap-2">
+          {(['rehearsal', 'gig'] as EventType[]).map((t) => {
+            const sel = type === t;
+            return (
+              <button
+                key={t}
+                onClick={() => setType(t)}
+                className="py-2.5 rounded-xl text-sm font-bold capitalize border-2 transition-all"
+                style={
+                  sel
+                    ? { background: TYPE_COLOR[t], borderColor: TYPE_COLOR[t], color: '#fff' }
+                    : { borderColor: 'var(--hairline)', color: 'var(--muted)' }
+                }
+              >
+                {t}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <label className="block">
+            <span className="text-xs font-medium text-[var(--muted)]">Date</span>
+            <input
+              type="date"
+              value={eventDate}
+              onChange={(e) => setEventDate(e.target.value)}
+              className="field mt-1 w-full px-3 py-2.5 text-sm"
+            />
+          </label>
+          <label className="block">
+            <span className="text-xs font-medium text-[var(--muted)]">Time (optional)</span>
+            <input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="field mt-1 w-full px-3 py-2.5 text-sm"
+            />
+          </label>
+        </div>
+
+        <div>
+          <span className="text-xs font-medium text-[var(--muted)]">Details</span>
+          <div className="mt-1">
+            <RichTextEditor
+              value={text}
+              onChange={setText}
+              autoFocus={!event}
+              minHeight="7rem"
+              placeholder="What's happening? e.g. **Gig at Loppen**, load-in 18:00, bring the small PA…"
+            />
           </div>
         </div>
-      </footer>
+
+        <div className="flex items-center gap-2 pt-1">
+          {event && (
+            <button
+              onClick={remove}
+              disabled={busy}
+              className="px-3 py-2.5 rounded-xl text-sm font-semibold text-[var(--latina)] hover:bg-[var(--latina)]/10 transition-colors disabled:opacity-50"
+            >
+              Delete
+            </button>
+          )}
+          <div className="flex-1" />
+          <button onClick={onClose} disabled={busy} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors disabled:opacity-50">
+            Cancel
+          </button>
+          <button
+            onClick={save}
+            disabled={busy || !text.trim()}
+            className="btn-grad px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+          >
+            {busy ? 'Saving…' : 'Save'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
