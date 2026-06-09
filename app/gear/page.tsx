@@ -35,6 +35,8 @@ function GearOverview() {
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
   const dirty = useRef(false);
   const savedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const textRef = useRef(text);
+  textRef.current = text;
 
   useEffect(() => {
     return subscribeToGear((remote) => {
@@ -57,6 +59,13 @@ function GearOverview() {
     }, 700);
     return () => clearTimeout(t);
   }, [text]);
+
+  // If we leave the page mid-edit (before the debounce fires), save now so nothing is lost.
+  useEffect(() => {
+    return () => {
+      if (dirty.current) saveGear(textRef.current);
+    };
+  }, []);
 
   return (
     <section className="animate-slide-up">
@@ -187,6 +196,11 @@ function NeedModal({
   const [text, setText] = useState(initial);
   const [busy, setBusy] = useState(false);
 
+  const requestClose = () => {
+    if (text !== initial && !confirm('You have unsaved changes. Close and lose them?')) return;
+    onClose();
+  };
+
   const save = async () => {
     setBusy(true);
     try {
@@ -199,7 +213,7 @@ function NeedModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm p-0 sm:p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm p-0 sm:p-4" onClick={requestClose}>
       <div
         className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl animate-pop-in"
         onClick={(e) => e.stopPropagation()}
@@ -216,7 +230,7 @@ function NeedModal({
         />
         <div className="flex items-center gap-2">
           <div className="flex-1" />
-          <button onClick={onClose} disabled={busy} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors disabled:opacity-50">
+          <button onClick={requestClose} disabled={busy} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors disabled:opacity-50">
             Cancel
           </button>
           <button onClick={save} disabled={busy} className="btn-grad px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40">

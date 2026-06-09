@@ -56,6 +56,32 @@ export function subscribeToEvents(
   );
 }
 
+/** Subscribe to a single event in real time. Calls back with null if it doesn't exist. */
+export function subscribeToEvent(
+  id: string,
+  onChange: (event: BandEvent | null) => void,
+  onError?: (error: Error) => void
+): () => void {
+  return onSnapshot(
+    doc(db, 'events', id),
+    (snap) => {
+      if (!snap.exists()) {
+        onChange(null);
+        return;
+      }
+      const data = snap.data();
+      onChange({
+        id: snap.id,
+        type: data.type,
+        date: data.date,
+        time: data.time || '',
+        text: data.text || '',
+      });
+    },
+    (err) => onError?.(err)
+  );
+}
+
 export async function createEvent(data: NewEvent): Promise<void> {
   const payload: Record<string, unknown> = {
     type: data.type,

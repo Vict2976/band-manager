@@ -8,6 +8,8 @@ interface Props {
   placeholder?: string;
   minHeight?: string;
   autoFocus?: boolean;
+  /** Fill the parent's height; the textarea scrolls internally. */
+  grow?: boolean;
 }
 
 type Result = { text: string; selStart: number; selEnd: number };
@@ -18,6 +20,7 @@ export default function RichTextEditor({
   placeholder,
   minHeight = '8rem',
   autoFocus,
+  grow = false,
 }: Props) {
   const ref = useRef<HTMLTextAreaElement>(null);
   const pendingSel = useRef<{ start: number; end: number } | null>(null);
@@ -94,7 +97,7 @@ export default function RichTextEditor({
   ];
 
   return (
-    <div className="rte">
+    <div className={`rte${grow ? ' rte-grow' : ''}`}>
       <div className="rte-toolbar">
         {tools.map((t, i) => (
           <button

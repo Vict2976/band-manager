@@ -1,30 +1,17 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
 import AppShell from '../lib/AppShell';
 import Markdown from '../lib/Markdown';
-import RichTextEditor from '../lib/RichTextEditor';
-import {
-  BandEvent,
-  EventType,
-  NewEvent,
-  subscribeToEvents,
-  createEvent,
-  updateEvent,
-  deleteEvent,
-} from '../lib/eventService';
+import EventModal, { TYPE_COLOR } from '../lib/EventModal';
+import { BandEvent, subscribeToEvents } from '../lib/eventService';
 
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
 ];
-
-// gig = magenta, rehearsal = periwinkle
-const TYPE_COLOR: Record<EventType, string> = {
-  gig: 'var(--latina)',
-  rehearsal: 'var(--primary)',
-};
 
 // --- date helpers (local, no deps) ---
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -204,11 +191,21 @@ function Calendar() {
                         {e.type}
                       </span>
                       {e.time && <span className="text-xs font-medium text-[var(--muted)]">{e.time}</span>}
+                      <div className="flex-1" />
+                      <Link
+                        href={`/events/${e.id}`}
+                        onClick={(ev) => ev.stopPropagation()}
+                        aria-label="Open full page"
+                        title="Open full page"
+                        className="shrink-0 -my-1 w-7 h-7 grid place-items-center rounded-full text-[var(--faint)] hover:text-[var(--primary)] hover:bg-[var(--primary-50)] transition-colors"
+                      >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M7 17 17 7M9 7h8v8" />
+                        </svg>
+                      </Link>
                     </div>
                     {e.text.trim() ? (
-                      <div className="text-sm leading-relaxed">
-                        <Markdown>{e.text}</Markdown>
-                      </div>
+                      <EventBody text={e.text} eventId={e.id} />
                     ) : (
                       <p className="text-sm text-[var(--faint)] italic">No details</p>
                     )}
@@ -234,6 +231,36 @@ function Calendar() {
   );
 }
 
+function EventBody({ text, eventId }: { text: string; eventId: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [overflows, setOverflows] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (el) setOverflows(el.scrollHeight > el.clientHeight + 4);
+  }, [text]);
+
+  return (
+    <div>
+      <div ref={ref} className="relative text-sm leading-relaxed max-h-72 overflow-hidden">
+        <Markdown>{text}</Markdown>
+        {overflows && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white to-transparent" />
+        )}
+      </div>
+      {overflows && (
+        <Link
+          href={`/events/${eventId}`}
+          onClick={(e) => e.stopPropagation()}
+          className="inline-block mt-1.5 text-xs font-bold text-[var(--primary)] hover:underline"
+        >
+          Show more →
+        </Link>
+      )}
+    </div>
+  );
+}
+
 function Legend() {
   return (
     <div className="flex items-center justify-center gap-5 mt-4 text-xs font-medium text-[var(--muted)]">
@@ -243,132 +270,3 @@ function Legend() {
   );
 }
 
-function EventModal({
-  date,
-  event,
-  onClose,
-}: {
-  date: string;
-  event: BandEvent | null;
-  onClose: () => void;
-}) {
-  const [type, setType] = useState<EventType>(event?.type ?? 'rehearsal');
-  const [eventDate, setEventDate] = useState(event?.date ?? date);
-  const [time, setTime] = useState(event?.time ?? '');
-  const [text, setText] = useState(event?.text ?? '');
-  const [busy, setBusy] = useState(false);
-
-  const save = async () => {
-    setBusy(true);
-    const payload: NewEvent = { type, date: eventDate, time, text };
-    try {
-      if (event) await updateEvent(event.id, payload);
-      else await createEvent(payload);
-      onClose();
-    } catch (err) {
-      console.error(err);
-      setBusy(false);
-    }
-  };
-
-  const remove = async () => {
-    if (!event || !confirm('Delete this event?')) return;
-    setBusy(true);
-    try {
-      await deleteEvent(event.id);
-      onClose();
-    } catch (err) {
-      console.error(err);
-      setBusy(false);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm p-0 sm:p-4" onClick={onClose}>
-      <div
-        className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-6 space-y-4 max-h-[92vh] overflow-y-auto shadow-2xl animate-pop-in"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h3 className="text-xl font-bold">{event ? 'Edit event' : 'New event'}</h3>
-
-        {/* Type toggle */}
-        <div className="grid grid-cols-2 gap-2">
-          {(['rehearsal', 'gig'] as EventType[]).map((t) => {
-            const sel = type === t;
-            return (
-              <button
-                key={t}
-                onClick={() => setType(t)}
-                className="py-2.5 rounded-xl text-sm font-bold capitalize border-2 transition-all"
-                style={
-                  sel
-                    ? { background: TYPE_COLOR[t], borderColor: TYPE_COLOR[t], color: '#fff' }
-                    : { borderColor: 'var(--hairline)', color: 'var(--muted)' }
-                }
-              >
-                {t}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <label className="block">
-            <span className="text-xs font-medium text-[var(--muted)]">Date</span>
-            <input
-              type="date"
-              value={eventDate}
-              onChange={(e) => setEventDate(e.target.value)}
-              className="field mt-1 w-full px-3 py-2.5 text-sm"
-            />
-          </label>
-          <label className="block">
-            <span className="text-xs font-medium text-[var(--muted)]">Time (optional)</span>
-            <input
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              className="field mt-1 w-full px-3 py-2.5 text-sm"
-            />
-          </label>
-        </div>
-
-        <div>
-          <span className="text-xs font-medium text-[var(--muted)]">Details</span>
-          <div className="mt-1">
-            <RichTextEditor
-              value={text}
-              onChange={setText}
-              autoFocus={!event}
-              minHeight="7rem"
-              placeholder="What's happening? e.g. **Gig at Loppen**, load-in 18:00, bring the small PA…"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 pt-1">
-          {event && (
-            <button
-              onClick={remove}
-              disabled={busy}
-              className="px-3 py-2.5 rounded-xl text-sm font-semibold text-[var(--latina)] hover:bg-[var(--latina)]/10 transition-colors disabled:opacity-50"
-            >
-              Delete
-            </button>
-          )}
-          <div className="flex-1" />
-          <button onClick={onClose} disabled={busy} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors disabled:opacity-50">
-            Cancel
-          </button>
-          <button
-            onClick={save}
-            disabled={busy || !text.trim()}
-            className="btn-grad px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
-          >
-            {busy ? 'Saving…' : 'Save'}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}

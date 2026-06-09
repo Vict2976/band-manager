@@ -189,6 +189,11 @@ body {
 }
 .rte-textarea::placeholder { color: var(--faint); }
 
+/* Fill-parent mode: editor stretches, textarea scrolls internally */
+.rte-grow { display: flex; flex-direction: column; height: 100%; }
+.rte-grow .rte-toolbar { flex: 0 0 auto; }
+.rte-grow .rte-textarea { flex: 1 1 auto; resize: none; overflow-y: auto; }
+
 /* ---- Rendered markdown ---- */
 .md { color: var(--ink); overflow-wrap: anywhere; }
 .md > *:first-child { margin-top: 0; }
