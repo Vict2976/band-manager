@@ -100,6 +100,7 @@ function EventDetail() {
         <EventModal
           date={event.date}
           event={event}
+          initialMode="edit"
           onClose={() => setEditing(false)}
           onDeleted={() => router.push('/')}
         />

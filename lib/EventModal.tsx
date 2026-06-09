@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Markdown from './Markdown';
 import RichTextEditor from './RichTextEditor';
 import {
   BandEvent,
@@ -18,42 +19,84 @@ export const TYPE_COLOR: Record<EventType, string> = {
   rehearsal: 'var(--primary)',
 };
 
+function formatLongDate(key: string): string {
+  const [y, m, d] = key.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
 export default function EventModal({
   date,
   event,
   onClose,
   onDeleted,
+  initialMode,
 }: {
   date: string;
   event: BandEvent | null;
   onClose: () => void;
   onDeleted?: () => void;
+  /** Force a starting mode. Defaults to 'view' for existing events, 'edit' for new. */
+  initialMode?: 'view' | 'edit';
 }) {
+  const openedInEdit = initialMode === 'edit' || !event;
+  const [mode, setMode] = useState<'view' | 'edit'>(initialMode ?? (event ? 'view' : 'edit'));
   const [type, setType] = useState<EventType>(event?.type ?? 'rehearsal');
   const [eventDate, setEventDate] = useState(event?.date ?? date);
   const [time, setTime] = useState(event?.time ?? '');
   const [text, setText] = useState(event?.text ?? '');
   const [busy, setBusy] = useState(false);
 
-  const dirty =
-    type !== (event?.type ?? 'rehearsal') ||
-    eventDate !== (event?.date ?? date) ||
-    time !== (event?.time ?? '') ||
-    text !== (event?.text ?? '');
+  const baseType = event?.type ?? 'rehearsal';
+  const baseDate = event?.date ?? date;
+  const baseTime = event?.time ?? '';
+  const baseText = event?.text ?? '';
+  const dirty = type !== baseType || eventDate !== baseDate || time !== baseTime || text !== baseText;
 
-  // Close, but warn first if there are unsaved edits.
+  const resetFields = () => {
+    setType(baseType);
+    setEventDate(baseDate);
+    setTime(baseTime);
+    setText(baseText);
+  };
+
+  // Close the whole modal (warn if mid-edit with changes).
   const requestClose = () => {
-    if (dirty && !confirm('You have unsaved changes. Close and lose them?')) return;
+    if (mode === 'edit' && dirty && !confirm('You have unsaved changes. Close and lose them?')) return;
     onClose();
+  };
+
+  // Cancel an edit: back to the view (or close, if we opened straight into edit).
+  const cancelEdit = () => {
+    if (dirty && !confirm('You have unsaved changes. Discard them?')) return;
+    if (openedInEdit) {
+      onClose();
+    } else {
+      resetFields();
+      setMode('view');
+    }
   };
 
   const save = async () => {
     setBusy(true);
     const payload: NewEvent = { type, date: eventDate, time, text };
     try {
-      if (event) await updateEvent(event.id, payload);
-      else await createEvent(payload);
-      onClose();
+      if (event) {
+        await updateEvent(event.id, payload);
+        if (openedInEdit) {
+          onClose();
+        } else {
+          setBusy(false);
+          setMode('view');
+        }
+      } else {
+        await createEvent(payload);
+        onClose();
+      }
     } catch (err) {
       console.error(err);
       setBusy(false);
@@ -72,22 +115,27 @@ export default function EventModal({
     }
   };
 
+  const isEdit = mode === 'edit';
+  const heightClass = isEdit ? 'h-[100dvh] sm:h-[88vh]' : 'h-[100dvh] sm:h-auto sm:max-h-[88vh]';
+
   return (
     <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm sm:p-4" onClick={requestClose}>
       <div
-        className="w-full h-[100dvh] sm:h-[88vh] sm:max-w-3xl bg-white sm:rounded-3xl shadow-2xl animate-pop-in flex flex-col overflow-hidden"
+        className={`w-full ${heightClass} sm:max-w-3xl bg-white sm:rounded-3xl shadow-2xl animate-pop-in flex flex-col overflow-hidden`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header (fixed) */}
         <div className="shrink-0 p-5 sm:p-6 pb-3 space-y-4">
           <div className="flex items-center justify-between gap-3">
-            <h3 className="text-xl font-bold">{event ? 'Edit event' : 'New event'}</h3>
+            <h3 className="text-xl font-bold">
+              {isEdit ? (event ? 'Edit event' : 'New event') : 'Event'}
+            </h3>
             <div className="flex items-center gap-1">
               {event && (
                 <Link
                   href={`/events/${event.id}`}
                   onClick={(e) => {
-                    if (dirty && !confirm('You have unsaved changes. Leave and lose them?')) e.preventDefault();
+                    if (isEdit && dirty && !confirm('You have unsaved changes. Leave and lose them?')) e.preventDefault();
                   }}
                   className="flex items-center gap-1 text-xs font-bold text-[var(--primary)] hover:bg-[var(--primary-50)] px-2.5 py-1.5 rounded-full transition-colors"
                 >
@@ -107,62 +155,85 @@ export default function EventModal({
             </div>
           </div>
 
-          {/* Type toggle */}
-          <div className="grid grid-cols-2 gap-2">
-            {(['rehearsal', 'gig'] as EventType[]).map((t) => {
-              const sel = type === t;
-              return (
-                <button
-                  key={t}
-                  onClick={() => setType(t)}
-                  className="py-2.5 rounded-xl text-sm font-bold capitalize border-2 transition-all"
-                  style={
-                    sel
-                      ? { background: TYPE_COLOR[t], borderColor: TYPE_COLOR[t], color: '#fff' }
-                      : { borderColor: 'var(--hairline)', color: 'var(--muted)' }
-                  }
-                >
-                  {t}
-                </button>
-              );
-            })}
-          </div>
+          {/* Edit-only controls */}
+          {isEdit && (
+            <>
+              <div className="grid grid-cols-2 gap-2">
+                {(['rehearsal', 'gig'] as EventType[]).map((t) => {
+                  const sel = type === t;
+                  return (
+                    <button
+                      key={t}
+                      onClick={() => setType(t)}
+                      className="py-2.5 rounded-xl text-sm font-bold capitalize border-2 transition-all"
+                      style={
+                        sel
+                          ? { background: TYPE_COLOR[t], borderColor: TYPE_COLOR[t], color: '#fff' }
+                          : { borderColor: 'var(--hairline)', color: 'var(--muted)' }
+                      }
+                    >
+                      {t}
+                    </button>
+                  );
+                })}
+              </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <label className="block">
-              <span className="text-xs font-medium text-[var(--muted)]">Date</span>
-              <input
-                type="date"
-                value={eventDate}
-                onChange={(e) => setEventDate(e.target.value)}
-                className="field mt-1 w-full px-3 py-2.5 text-sm"
-              />
-            </label>
-            <label className="block">
-              <span className="text-xs font-medium text-[var(--muted)]">Time (optional)</span>
-              <input
-                type="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="field mt-1 w-full px-3 py-2.5 text-sm"
-              />
-            </label>
-          </div>
+              <div className="grid grid-cols-2 gap-3">
+                <label className="block">
+                  <span className="text-xs font-medium text-[var(--muted)]">Date</span>
+                  <input
+                    type="date"
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
+                    className="field mt-1 w-full px-3 py-2.5 text-sm"
+                  />
+                </label>
+                <label className="block">
+                  <span className="text-xs font-medium text-[var(--muted)]">Time (optional)</span>
+                  <input
+                    type="time"
+                    value={time}
+                    onChange={(e) => setTime(e.target.value)}
+                    className="field mt-1 w-full px-3 py-2.5 text-sm"
+                  />
+                </label>
+              </div>
 
-          <span className="block text-xs font-medium text-[var(--muted)]">Details</span>
+              <span className="block text-xs font-medium text-[var(--muted)]">Details</span>
+            </>
+          )}
         </div>
 
-        {/* Editor (fills remaining height, scrolls internally) */}
-        <div className="flex-1 min-h-0 px-5 sm:px-6">
-          <RichTextEditor
-            value={text}
-            onChange={setText}
-            autoFocus={!event}
-            grow
-            minHeight="9rem"
-            placeholder="What's happening? e.g. **Gig at Loppen**, load-in 18:00, bring the small PA…"
-          />
-        </div>
+        {/* Body */}
+        {isEdit ? (
+          <div className="flex-1 min-h-0 px-5 sm:px-6">
+            <RichTextEditor
+              value={text}
+              onChange={setText}
+              autoFocus={!event}
+              grow
+              minHeight="9rem"
+              placeholder="What's happening? e.g. **Gig at Loppen**, load-in 18:00, bring the small PA…"
+            />
+          </div>
+        ) : (
+          <div className="flex-1 min-h-0 overflow-y-auto px-5 sm:px-6 pb-2">
+            <span
+              className="inline-block text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full"
+              style={{ color: TYPE_COLOR[type], background: `color-mix(in srgb, ${TYPE_COLOR[type]} 12%, white)` }}
+            >
+              {type}
+            </span>
+            <h2 className="text-2xl font-bold tracking-tight mt-3">{formatLongDate(eventDate)}</h2>
+            {time && <p className="text-[var(--muted)] font-semibold mt-0.5">{time}</p>}
+            <hr className="my-4 border-[var(--hairline)]" />
+            {text.trim() ? (
+              <Markdown>{text}</Markdown>
+            ) : (
+              <p className="text-[var(--faint)] italic">No details yet.</p>
+            )}
+          </div>
+        )}
 
         {/* Footer (fixed) */}
         <div className="shrink-0 flex items-center gap-2 p-5 sm:p-6 pt-3 border-t border-[var(--hairline)] mt-3">
@@ -176,16 +247,24 @@ export default function EventModal({
             </button>
           )}
           <div className="flex-1" />
-          <button onClick={requestClose} disabled={busy} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors disabled:opacity-50">
-            Cancel
-          </button>
-          <button
-            onClick={save}
-            disabled={busy || !text.trim()}
-            className="btn-grad px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
-          >
-            {busy ? 'Saving…' : 'Save'}
-          </button>
+          {isEdit ? (
+            <>
+              <button onClick={cancelEdit} disabled={busy} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors disabled:opacity-50">
+                Cancel
+              </button>
+              <button
+                onClick={save}
+                disabled={busy || !text.trim()}
+                className="btn-grad px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
+              >
+                {busy ? 'Saving…' : 'Save'}
+              </button>
+            </>
+          ) : (
+            <button onClick={() => setMode('edit')} className="btn-grad px-6 py-2.5 rounded-xl text-sm font-bold">
+              Edit event
+            </button>
+          )}
         </div>
       </div>
     </div>
