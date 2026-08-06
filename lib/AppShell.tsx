@@ -11,6 +11,7 @@ const TABS = [
   { href: '/gear', label: 'Gear', icon: GearIcon },
 ];
 
+// @uxid lib/AppShell::AppShell
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, loading, signOut } = useAuth();
   const router = useRouter();
@@ -97,6 +98,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+// @uxid lib/AppShell::CalendarIcon
 function CalendarIcon({ active }: { active?: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.3 : 1.9} strokeLinecap="round" strokeLinejoin="round">
@@ -106,6 +108,7 @@ function CalendarIcon({ active }: { active?: boolean }) {
   );
 }
 
+// @uxid lib/AppShell::ClockIcon
 function ClockIcon({ active }: { active?: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.3 : 1.9} strokeLinecap="round" strokeLinejoin="round">
@@ -115,6 +118,7 @@ function ClockIcon({ active }: { active?: boolean }) {
   );
 }
 
+// @uxid lib/AppShell::GearIcon
 function GearIcon({ active }: { active?: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.3 : 1.9} strokeLinecap="round" strokeLinejoin="round">

@@ -50,6 +50,7 @@ function previewLine(text: string): string {
     .trim();
 }
 
+// @uxid app/upcoming/page::UpcomingPage
 export default function UpcomingPage() {
   return (
     <AppShell>
@@ -58,6 +59,7 @@ export default function UpcomingPage() {
   );
 }
 
+// @uxid app/upcoming/page::Upcoming
 function Upcoming() {
   const [events, setEvents] = useState<BandEvent[]>([]);
   const [open, setOpen] = useState<Set<string>>(new Set());

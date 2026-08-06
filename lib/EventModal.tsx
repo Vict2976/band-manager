@@ -29,6 +29,7 @@ function formatLongDate(key: string): string {
   });
 }
 
+// @uxid lib/EventModal::EventModal
 export default function EventModal({
   date,
   event,

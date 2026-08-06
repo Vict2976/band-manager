@@ -18,6 +18,7 @@ function formatFullDate(key: string): string {
   });
 }
 
+// @uxid app/events/[id]/page::EventPage
 export default function EventPage() {
   return (
     <AppShell>
@@ -26,6 +27,7 @@ export default function EventPage() {
   );
 }
 
+// @uxid app/events/[id]/page::EventDetail
 function EventDetail() {
   const params = useParams();
   const id = String(params.id);
