@@ -1,0 +1,30 @@
+{
+  "fontFaces": [],
+  "families": [],
+  "scale": [
+    {
+      "label": "Heading 1",
+      "sizePx": 20.8,
+      "sizeRaw": "1.3rem",
+      "weight": 800,
+      "source": "app/globals.css",
+      "line": 200
+    },
+    {
+      "label": "Heading 2",
+      "sizePx": 17.92,
+      "sizeRaw": "1.12rem",
+      "weight": 700,
+      "source": "app/globals.css",
+      "line": 201
+    },
+    {
+      "label": "Heading 3",
+      "sizePx": 16,
+      "sizeRaw": "1rem",
+      "weight": 700,
+      "source": "app/globals.css",
+      "line": 202
+    }
+  ]
+}
