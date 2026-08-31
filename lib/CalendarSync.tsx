@@ -10,14 +10,21 @@ import { getOrCreateFeedToken, rotateFeedToken, feedUrl } from './calendarFeedSe
  */
 export default function CalendarSync() {
   const [url, setUrl] = useState<string | null>(null);
+  const [local, setLocal] = useState(false);
   const [error, setError] = useState(false);
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [nudged, setNudged] = useState(false);
 
   useEffect(() => {
+    const origin = window.location.origin;
+    // A feed on localhost is only reachable from this machine — a phone or
+    // Google's servers can't fetch it, so subscribing would silently do nothing.
+    setLocal(/^https?:\/\/(localhost|127\.0\.0\.1|\[::1\]|.*\.local)(:|$)/i.test(origin));
+
     let alive = true;
     getOrCreateFeedToken()
-      .then((token) => alive && setUrl(feedUrl(token, window.location.origin)))
+      .then((token) => alive && setUrl(feedUrl(token, origin)))
       .catch((err) => {
         console.error('Could not load the calendar feed link:', err);
         if (alive) setError(true);
@@ -57,8 +64,14 @@ export default function CalendarSync() {
     }
   };
 
-  // webcal:// makes iPhone and Mac open the subscribe dialog straight away.
+  // webcal:// asks the OS to hand the link to the calendar app. Browsers are
+  // free to refuse silently, so it's an accelerator, never the only route.
   const webcal = url ? url.replace(/^https?:\/\//, 'webcal://') : '';
+  // Google's own "add calendar by URL" screen — a plain https link, so it
+  // works even where the webcal handoff doesn't.
+  const google = webcal
+    ? `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}`
+    : '';
 
   return (
     <section className="card p-4 sm:p-5 animate-slide-up">
@@ -97,6 +110,14 @@ export default function CalendarSync() {
             <p className="text-sm text-[var(--faint)]">Loading…</p>
           ) : (
             <>
+              {local && (
+                <p className="text-xs font-medium rounded-xl px-3 py-2.5 bg-[var(--gold)]/15 text-[var(--ink)]">
+                  <span className="font-bold">This link only works on this computer.</span> It
+                  points at your local dev server, which phones and Google can&apos;t reach. Open
+                  the deployed site and copy the link from there.
+                </p>
+              )}
+
               <div className="flex gap-2">
                 <input
                   readOnly
@@ -110,19 +131,40 @@ export default function CalendarSync() {
                 </button>
               </div>
 
-              <a
-                href={webcal}
-                className="btn-soft block text-center text-sm font-semibold px-4 py-2.5 rounded-xl"
-              >
-                Add to iPhone / Mac Calendar
-              </a>
+              <div className="grid sm:grid-cols-2 gap-2">
+                <a
+                  href={webcal}
+                  onClick={() => setNudged(true)}
+                  className="btn-soft block text-center text-sm font-semibold px-4 py-2.5 rounded-xl"
+                >
+                  Open in iPhone / Mac Calendar
+                </a>
+                <a
+                  href={google}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-soft block text-center text-sm font-semibold px-4 py-2.5 rounded-xl"
+                >
+                  Add to Google Calendar
+                </a>
+              </div>
+
+              {nudged && (
+                <p className="text-xs text-[var(--muted)] leading-relaxed animate-fade-in">
+                  <span className="font-bold text-[var(--ink)]">Nothing happened?</span> Some
+                  browsers refuse to hand <code className="font-mono">webcal://</code> links to the
+                  Calendar app without saying so — Chrome in particular, once you&apos;ve dismissed
+                  its prompt. Copy the link above and paste it into the Calendar app instead, using
+                  the steps below. Safari does it reliably if you&apos;d rather retry.
+                </p>
+              )}
 
               <div className="space-y-3 text-xs text-[var(--muted)] leading-relaxed">
                 <div>
                   <p className="font-bold text-[var(--ink)]">iPhone</p>
                   <p>
-                    Tap the button above, or: Settings → Apps → Calendar → Calendar Accounts →
-                    Add Account → Other → Add Subscribed Calendar, and paste the link.
+                    Settings → Apps → Calendar → Calendar Accounts → Add Account → Other →
+                    Add Subscribed Calendar, and paste the link.
                   </p>
                 </div>
                 <div>
