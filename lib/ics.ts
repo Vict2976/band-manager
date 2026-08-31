@@ -16,6 +16,7 @@ export interface IcsEvent {
   id: string;
   type: string;
   status: 'confirmed' | 'pending';
+  title: string;
   date: string; // YYYY-MM-DD
   time?: string; // HH:MM
   text: string;
@@ -121,26 +122,12 @@ const VTIMEZONE = [
 /* ---------------- Event → VEVENT ---------------- */
 
 /**
- * Events have no title field, so the calendar entry is named after the first
- * meaningful line of the details with markdown markers stripped — the same
- * line the Upcoming list uses as its preview.
+ * The calendar entry's name: the event's title, prefixed with what kind of
+ * thing it is so a phone calendar full of other commitments still reads clearly.
  */
 export function titleFor(e: IcsEvent): string {
-  const first =
-    e.text
-      .split('\n')
-      .map((s) => s.trim())
-      .find(Boolean) || '';
-  const cleaned = first
-    .replace(/^#{1,6}\s*/, '')
-    .replace(/^[-*+]\s*/, '')
-    .replace(/^\d+\.\s*/, '')
-    .replace(/[*_`>#]/g, '')
-    .trim()
-    .slice(0, 120);
-
   const label = e.type.charAt(0).toUpperCase() + e.type.slice(1);
-  const name = cleaned ? `${label}: ${cleaned}` : label;
+  const name = `${label}: ${e.title}`;
   // Calendar apps render TENTATIVE subtly (and Google barely at all), so the
   // uncertainty is spelled out in the title too.
   return e.status === 'pending' ? `${name} (TBC)` : name;

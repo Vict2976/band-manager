@@ -214,11 +214,8 @@ function Calendar() {
                         </svg>
                       </Link>
                     </div>
-                    {e.text.trim() ? (
-                      <EventBody text={e.text} eventId={e.id} />
-                    ) : (
-                      <p className="text-sm text-[var(--faint)] italic">No details</p>
-                    )}
+                    <p className="font-bold text-[var(--ink)] leading-snug">{e.title}</p>
+                    {e.text.trim() && <EventBody text={e.text} eventId={e.id} />}
                   </div>
                 </div>
               </li>

@@ -39,17 +39,6 @@ function relativeLabel(key: string): string {
   return `in ${Math.round(n / 7)} weeks`;
 }
 
-// First meaningful line of the details, with markdown markers stripped.
-function previewLine(text: string): string {
-  const line = text.split('\n').map((s) => s.trim()).find(Boolean) || '';
-  return line
-    .replace(/^#{1,6}\s*/, '')
-    .replace(/^[-*+]\s*/, '')
-    .replace(/^\d+\.\s*/, '')
-    .replace(/[*_`>#]/g, '')
-    .trim();
-}
-
 export default function UpcomingPage() {
   return (
     <AppShell>
@@ -126,8 +115,8 @@ function Upcoming() {
                       <StatusBadge status={e.status} compact />
                       {e.time && <span className="text-xs font-medium text-[var(--muted)]">{e.time}</span>}
                     </div>
-                    <p className="text-sm font-medium text-[var(--ink)] truncate mt-0.5">
-                      {previewLine(e.text) || <span className="text-[var(--faint)] italic">No details</span>}
+                    <p className="text-sm font-semibold text-[var(--ink)] truncate mt-0.5">
+                      {e.title}
                     </p>
                   </div>
 

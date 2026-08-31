@@ -10,6 +10,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from './firebase';
+import { resolveTitle, normalizeDate } from './eventText';
 
 export type EventType = 'gig' | 'rehearsal';
 
@@ -20,6 +21,7 @@ export interface BandEvent {
   id: string;
   type: EventType;
   status: EventStatus;
+  title: string; // what to call it — always present, see resolveTitle
   date: string; // YYYY-MM-DD
   time?: string; // HH:MM (optional)
   text: string; // free text — "what it is"
@@ -55,7 +57,8 @@ export function subscribeToEvents(
           id: d.id,
           type: data.type,
           status: readStatus(data.status),
-          date: data.date,
+          title: resolveTitle(data.title, data.text || '', data.type),
+          date: normalizeDate(data.date),
           time: data.time || '',
           text: data.text || '',
         } as BandEvent;
@@ -88,7 +91,8 @@ export function subscribeToEvent(
         id: snap.id,
         type: data.type,
         status: readStatus(data.status),
-        date: data.date,
+        title: resolveTitle(data.title, data.text || '', data.type),
+        date: normalizeDate(data.date),
         time: data.time || '',
         text: data.text || '',
       });
@@ -101,6 +105,7 @@ export async function createEvent(data: NewEvent): Promise<void> {
   const payload: Record<string, unknown> = {
     type: data.type,
     status: data.status,
+    title: data.title.trim(),
     date: data.date,
     text: data.text.trim(),
     createdAt: Timestamp.now(),
@@ -114,6 +119,7 @@ export async function updateEvent(id: string, data: NewEvent): Promise<void> {
   await updateDoc(doc(db, 'events', id), {
     type: data.type,
     status: data.status,
+    title: data.title.trim(),
     date: data.date,
     time: data.time || '',
     text: data.text.trim(),

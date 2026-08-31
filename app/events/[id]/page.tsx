@@ -78,8 +78,11 @@ function EventDetail() {
                 </span>
                 <StatusBadge status={event.status} />
               </div>
-              <h1 className="text-2xl font-bold mt-3 tracking-tight">{formatFullDate(event.date)}</h1>
-              {event.time && <p className="text-[var(--muted)] font-semibold mt-0.5">{event.time}</p>}
+              <h1 className="text-2xl font-bold mt-3 tracking-tight">{event.title}</h1>
+              <p className="text-[var(--muted)] font-semibold mt-0.5">
+                {formatFullDate(event.date)}
+                {event.time && ` · ${event.time}`}
+              </p>
             </div>
             <button
               onClick={() => setEditing(true)}

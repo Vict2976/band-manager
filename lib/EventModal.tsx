@@ -74,6 +74,7 @@ export default function EventModal({
   const [type, setType] = useState<EventType>(event?.type ?? 'rehearsal');
   // Something you've just jotted down isn't settled yet, so new events start as pending.
   const [status, setStatus] = useState<EventStatus>(event?.status ?? 'pending');
+  const [title, setTitle] = useState(event?.title ?? '');
   const [eventDate, setEventDate] = useState(event?.date ?? date);
   const [time, setTime] = useState(event?.time ?? '');
   const [text, setText] = useState(event?.text ?? '');
@@ -81,12 +82,14 @@ export default function EventModal({
 
   const baseType = event?.type ?? 'rehearsal';
   const baseStatus: EventStatus = event?.status ?? 'pending';
+  const baseTitle = event?.title ?? '';
   const baseDate = event?.date ?? date;
   const baseTime = event?.time ?? '';
   const baseText = event?.text ?? '';
   const dirty =
     type !== baseType ||
     status !== baseStatus ||
+    title !== baseTitle ||
     eventDate !== baseDate ||
     time !== baseTime ||
     text !== baseText;
@@ -94,6 +97,7 @@ export default function EventModal({
   const resetFields = () => {
     setType(baseType);
     setStatus(baseStatus);
+    setTitle(baseTitle);
     setEventDate(baseDate);
     setTime(baseTime);
     setText(baseText);
@@ -118,7 +122,7 @@ export default function EventModal({
 
   const save = async () => {
     setBusy(true);
-    const payload: NewEvent = { type, status, date: eventDate, time, text };
+    const payload: NewEvent = { type, status, title, date: eventDate, time, text };
     try {
       if (event) {
         await updateEvent(event.id, payload);
@@ -193,6 +197,19 @@ export default function EventModal({
           {/* Edit-only controls */}
           {isEdit && (
             <>
+              <label className="block">
+                <span className="text-xs font-medium text-[var(--muted)]">Title</span>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  autoFocus={!event}
+                  maxLength={120}
+                  placeholder="e.g. Loppen, Christiania"
+                  className="field mt-1 w-full px-3 py-2.5 text-sm font-semibold"
+                />
+              </label>
+
               <div className="grid grid-cols-2 gap-2">
                 {(['rehearsal', 'gig'] as EventType[]).map((t) => {
                   const sel = type === t;
@@ -269,7 +286,6 @@ export default function EventModal({
             <RichTextEditor
               value={text}
               onChange={setText}
-              autoFocus={!event}
               grow
               minHeight="9rem"
               placeholder="What's happening? e.g. **Gig at Loppen**, load-in 18:00, bring the small PA…"
@@ -286,8 +302,11 @@ export default function EventModal({
               </span>
               <StatusBadge status={status} />
             </div>
-            <h2 className="text-2xl font-bold tracking-tight mt-3">{formatLongDate(eventDate)}</h2>
-            {time && <p className="text-[var(--muted)] font-semibold mt-0.5">{time}</p>}
+            <h2 className="text-2xl font-bold tracking-tight mt-3">{title || formatLongDate(eventDate)}</h2>
+            <p className="text-[var(--muted)] font-semibold mt-0.5">
+              {formatLongDate(eventDate)}
+              {time && ` · ${time}`}
+            </p>
             <hr className="my-4 border-[var(--hairline)]" />
             {text.trim() ? (
               <Markdown>{text}</Markdown>
@@ -316,7 +335,7 @@ export default function EventModal({
               </button>
               <button
                 onClick={save}
-                disabled={busy || !text.trim()}
+                disabled={busy || !title.trim()}
                 className="btn-grad px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
               >
                 {busy ? 'Saving…' : 'Save'}

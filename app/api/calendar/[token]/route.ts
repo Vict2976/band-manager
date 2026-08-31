@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { adminDb } from '../../../../lib/firebaseAdmin';
 import { buildCalendar, IcsEvent } from '../../../../lib/ics';
+import { resolveTitle, normalizeDate, isDateKey } from '../../../../lib/eventText';
 
 // The feed reflects Firestore at request time; nothing here may be cached
 // at build time or Next would serve a frozen calendar forever.
@@ -48,14 +49,23 @@ export async function GET(
       type: data.type === 'gig' ? 'gig' : 'rehearsal',
       // Pre-status events read as confirmed, matching the app.
       status: data.status === 'pending' ? 'pending' : 'confirmed',
-      date: data.date,
+      title: resolveTitle(data.title, data.text || '', data.type),
+      date: normalizeDate(data.date),
       time: data.time || undefined,
       text: data.text || '',
       updatedAt: updatedAt instanceof Date ? updatedAt : undefined,
     };
   });
 
-  const ics = buildCalendar(events, {
+  // A malformed date would produce an invalid DTSTART, and some calendar
+  // clients reject the entire feed over one bad entry rather than skipping it.
+  const usable = events.filter((e) => {
+    if (isDateKey(e.date)) return true;
+    console.warn(`Calendar feed: skipping event ${e.id} with unusable date`);
+    return false;
+  });
+
+  const ics = buildCalendar(usable, {
     name: 'Band Manager',
     domain: req.nextUrl.hostname || 'band-manager',
     refreshMinutes: 15,
