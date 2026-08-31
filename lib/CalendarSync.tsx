@@ -10,7 +10,6 @@ import { getOrCreateFeedToken, rotateFeedToken, feedUrl } from './calendarFeedSe
  */
 export default function CalendarSync() {
   const [url, setUrl] = useState<string | null>(null);
-  const [local, setLocal] = useState(false);
   const [error, setError] = useState(false);
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -18,10 +17,6 @@ export default function CalendarSync() {
 
   useEffect(() => {
     const origin = window.location.origin;
-    // A feed on localhost is only reachable from this machine — a phone or
-    // Google's servers can't fetch it, so subscribing would silently do nothing.
-    setLocal(/^https?:\/\/(localhost|127\.0\.0\.1|\[::1\]|.*\.local)(:|$)/i.test(origin));
-
     let alive = true;
     getOrCreateFeedToken()
       .then((token) => alive && setUrl(feedUrl(token, origin)))
@@ -110,14 +105,6 @@ export default function CalendarSync() {
             <p className="text-sm text-[var(--faint)]">Loading…</p>
           ) : (
             <>
-              {local && (
-                <p className="text-xs font-medium rounded-xl px-3 py-2.5 bg-[var(--gold)]/15 text-[var(--ink)]">
-                  <span className="font-bold">This link only works on this computer.</span> It
-                  points at your local dev server, which phones and Google can&apos;t reach. Open
-                  the deployed site and copy the link from there.
-                </p>
-              )}
-
               <div className="flex gap-2">
                 <input
                   readOnly
@@ -152,10 +139,8 @@ export default function CalendarSync() {
               {nudged && (
                 <p className="text-xs text-[var(--muted)] leading-relaxed animate-fade-in">
                   <span className="font-bold text-[var(--ink)]">Nothing happened?</span> Some
-                  browsers refuse to hand <code className="font-mono">webcal://</code> links to the
-                  Calendar app without saying so — Chrome in particular, once you&apos;ve dismissed
-                  its prompt. Copy the link above and paste it into the Calendar app instead, using
-                  the steps below. Safari does it reliably if you&apos;d rather retry.
+                  browsers won&apos;t open the Calendar app for you. Copy the link above and add it
+                  by hand using the steps below — it works exactly the same.
                 </p>
               )}
 
@@ -175,9 +160,9 @@ export default function CalendarSync() {
                   </p>
                 </div>
                 <p className="pt-1">
-                  <span className="font-bold text-[var(--ink)]">Heads up:</span> iPhone checks for
-                  changes within about 15 minutes. Google decides for itself and is often several
-                  hours behind — that&apos;s Google&apos;s limit, not something this app controls.
+                  <span className="font-bold text-[var(--ink)]">Good to know:</span> new events show
+                  up on iPhone within about 15 minutes. Google Calendar can take a few hours to
+                  catch up — that&apos;s Google&apos;s own schedule, and nothing we can speed up.
                 </p>
                 <p>
                   Anyone with this link can see the band&apos;s schedule, so keep it in the band
