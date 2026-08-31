@@ -155,7 +155,7 @@ export default function EventModal({
   };
 
   const isEdit = mode === 'edit';
-  const heightClass = isEdit ? 'h-[100dvh] sm:h-[88vh]' : 'h-[100dvh] sm:h-auto sm:max-h-[88vh]';
+  const heightClass = 'h-[100dvh] sm:h-auto sm:max-h-[88vh]';
 
   return (
     <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm sm:p-4" onClick={requestClose}>
@@ -163,8 +163,8 @@ export default function EventModal({
         className={`w-full ${heightClass} sm:max-w-3xl bg-white sm:rounded-3xl shadow-2xl animate-pop-in flex flex-col overflow-hidden`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header (fixed) */}
-        <div className="shrink-0 p-5 sm:p-6 pb-3 space-y-4">
+        {/* Title bar — stays put; everything else scrolls. */}
+        <div className="shrink-0 p-5 sm:p-6 pb-3">
           <div className="flex items-center justify-between gap-3">
             <h3 className="text-xl font-bold">
               {isEdit ? (event ? 'Edit event' : 'New event') : 'Event'}
@@ -193,103 +193,98 @@ export default function EventModal({
               </button>
             </div>
           </div>
+        </div>
 
-          {/* Edit-only controls */}
-          {isEdit && (
-            <>
-              <label className="block">
-                <span className="text-xs font-medium text-[var(--muted)]">Title</span>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  autoFocus={!event}
-                  maxLength={120}
-                  placeholder="e.g. Loppen, Christiania"
-                  className="field mt-1 w-full px-3 py-2.5 text-sm font-semibold"
-                />
-              </label>
+        {/* Body — the only scrolling region, so Save is always reachable. */}
+        {isEdit ? (
+          <div className="flex-1 min-h-0 overflow-y-auto px-5 sm:px-6 pb-2 space-y-4">
+            <label className="block">
+              <span className="text-xs font-medium text-[var(--muted)]">Title</span>
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                autoFocus={!event}
+                maxLength={120}
+                placeholder="e.g. Loppen, Christiania"
+                className="field mt-1 w-full px-3 py-2.5 text-sm font-semibold"
+              />
+            </label>
 
+            <div className="grid grid-cols-2 gap-2">
+              {(['rehearsal', 'gig'] as EventType[]).map((t) => {
+                const sel = type === t;
+                return (
+                  <button
+                    key={t}
+                    onClick={() => setType(t)}
+                    className="py-2.5 rounded-xl text-sm font-bold capitalize border-2 transition-all"
+                    style={
+                      sel
+                        ? { background: TYPE_COLOR[t], borderColor: TYPE_COLOR[t], color: '#fff' }
+                        : { borderColor: 'var(--hairline)', color: 'var(--muted)' }
+                    }
+                  >
+                    {t}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div>
+              <span className="block text-xs font-medium text-[var(--muted)] mb-1.5">Status</span>
               <div className="grid grid-cols-2 gap-2">
-                {(['rehearsal', 'gig'] as EventType[]).map((t) => {
-                  const sel = type === t;
+                {(['pending', 'confirmed'] as EventStatus[]).map((st) => {
+                  const sel = status === st;
+                  const meta = STATUS_META[st];
                   return (
                     <button
-                      key={t}
-                      onClick={() => setType(t)}
-                      className="py-2.5 rounded-xl text-sm font-bold capitalize border-2 transition-all"
+                      key={st}
+                      onClick={() => setStatus(st)}
+                      className="py-2.5 rounded-xl text-sm font-bold border-2 transition-all"
                       style={
                         sel
-                          ? { background: TYPE_COLOR[t], borderColor: TYPE_COLOR[t], color: '#fff' }
+                          ? { background: meta.color, borderColor: meta.color, color: '#fff' }
                           : { borderColor: 'var(--hairline)', color: 'var(--muted)' }
                       }
                     >
-                      {t}
+                      {meta.label}
                     </button>
                   );
                 })}
               </div>
+            </div>
 
-              <div>
-                <span className="block text-xs font-medium text-[var(--muted)] mb-1.5">Status</span>
-                <div className="grid grid-cols-2 gap-2">
-                  {(['pending', 'confirmed'] as EventStatus[]).map((st) => {
-                    const sel = status === st;
-                    const meta = STATUS_META[st];
-                    return (
-                      <button
-                        key={st}
-                        onClick={() => setStatus(st)}
-                        className="py-2.5 rounded-xl text-sm font-bold border-2 transition-all"
-                        style={
-                          sel
-                            ? { background: meta.color, borderColor: meta.color, color: '#fff' }
-                            : { borderColor: 'var(--hairline)', color: 'var(--muted)' }
-                        }
-                      >
-                        {meta.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+            <div className="grid grid-cols-2 gap-3">
+              <label className="block">
+                <span className="text-xs font-medium text-[var(--muted)]">Date</span>
+                <input
+                  type="date"
+                  value={eventDate}
+                  onChange={(e) => setEventDate(e.target.value)}
+                  className="field mt-1 w-full px-3 py-2.5 text-sm"
+                />
+              </label>
+              <label className="block">
+                <span className="text-xs font-medium text-[var(--muted)]">Time (optional)</span>
+                <input
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="field mt-1 w-full px-3 py-2.5 text-sm"
+                />
+              </label>
+            </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <label className="block">
-                  <span className="text-xs font-medium text-[var(--muted)]">Date</span>
-                  <input
-                    type="date"
-                    value={eventDate}
-                    onChange={(e) => setEventDate(e.target.value)}
-                    className="field mt-1 w-full px-3 py-2.5 text-sm"
-                  />
-                </label>
-                <label className="block">
-                  <span className="text-xs font-medium text-[var(--muted)]">Time (optional)</span>
-                  <input
-                    type="time"
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    className="field mt-1 w-full px-3 py-2.5 text-sm"
-                  />
-                </label>
-              </div>
-
-              <span className="block text-xs font-medium text-[var(--muted)]">Details</span>
-            </>
-          )}
-        </div>
-
-        {/* Body */}
-        {isEdit ? (
-          <div className="flex-1 min-h-0 px-5 sm:px-6">
-            <RichTextEditor
-              value={text}
-              onChange={setText}
-              grow
-              minHeight="9rem"
-              placeholder="What's happening? e.g. **Gig at Loppen**, load-in 18:00, bring the small PA…"
-            />
+            <div>
+              <span className="block text-xs font-medium text-[var(--muted)] mb-1.5">Details</span>
+              <RichTextEditor
+                value={text}
+                onChange={setText}
+                minHeight="9rem"
+                placeholder="What's happening? e.g. load-in 18:00, bring the small PA…"
+              />
+            </div>
           </div>
         ) : (
           <div className="flex-1 min-h-0 overflow-y-auto px-5 sm:px-6 pb-2">
@@ -317,7 +312,7 @@ export default function EventModal({
         )}
 
         {/* Footer (fixed) */}
-        <div className="shrink-0 flex items-center gap-2 p-5 sm:p-6 pt-3 border-t border-[var(--hairline)] mt-3">
+        <div className="shrink-0 flex items-center gap-2 p-5 sm:p-6 pt-4 border-t border-[var(--hairline)]">
           {event && (
             <button
               onClick={remove}
