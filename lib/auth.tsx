@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, onAuthStateChanged, signInWithEmailAndPassword, signOut as firebaseSignOut } from 'firebase/auth';
-import { auth } from './firebase';
+import { auth, authPersistenceReady } from './firebase';
 import { sessionService, SessionUser } from './sessionService';
 
 interface AuthContextType {
@@ -35,7 +35,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(firebaseUser);
       
       if (firebaseUser) {
-        // Create session when Firebase user is authenticated
+        // Re-issue the session cookie on every load so its 400-day window keeps
+        // rolling forward for as long as the band keeps using the app.
         const sessionUserData: SessionUser = {
           uid: firebaseUser.uid,
           email: firebaseUser.email || '',
@@ -47,13 +48,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsAuthenticated(true);
         sessionService.setSession(sessionUserData, true);
       } else {
-        // Clear session when Firebase user is not authenticated
-        const session = sessionService.getSession();
-        if (session.isAuthenticated) {
-          sessionService.clearSession();
-          setSessionUser(null);
-          setIsAuthenticated(false);
-        }
+        // No persisted credential — the stale cookie would only cause a
+        // logged-in flash before bouncing to /login, so drop it.
+        sessionService.clearSession();
+        setSessionUser(null);
+        setIsAuthenticated(false);
       }
       
       setLoading(false);
@@ -64,6 +63,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string, rememberMe: boolean = true) => {
     try {
+      // Make sure durable storage is selected before the credential is written,
+      // otherwise it can land in a store that dies with the tab.
+      await authPersistenceReady;
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const firebaseUser = userCredential.user;
       

@@ -4,7 +4,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import AppShell from '../lib/AppShell';
 import Markdown from '../lib/Markdown';
-import EventModal, { TYPE_COLOR } from '../lib/EventModal';
+import EventModal, { TYPE_COLOR, StatusBadge } from '../lib/EventModal';
+import CalendarSync from '../lib/CalendarSync';
 import { BandEvent, subscribeToEvents } from '../lib/eventService';
 
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -135,7 +136,15 @@ function Calendar() {
                 </span>
                 <span className="flex gap-1 h-1.5">
                   {dayEvents.slice(0, 3).map((e) => (
-                    <span key={e.id} className="w-1.5 h-1.5 rounded-full" style={{ background: TYPE_COLOR[e.type] }} />
+                    <span
+                      key={e.id}
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={
+                        e.status === 'confirmed'
+                          ? { background: TYPE_COLOR[e.type] }
+                          : { border: `1.5px solid ${TYPE_COLOR[e.type]}` }
+                      }
+                    />
                   ))}
                 </span>
               </button>
@@ -190,6 +199,7 @@ function Calendar() {
                       >
                         {e.type}
                       </span>
+                      <StatusBadge status={e.status} compact />
                       {e.time && <span className="text-xs font-medium text-[var(--muted)]">{e.time}</span>}
                       <div className="flex-1" />
                       <Link
@@ -216,6 +226,8 @@ function Calendar() {
           </ul>
         )}
       </section>
+
+      <CalendarSync />
 
       {(creating || editing) && (
         <EventModal
@@ -266,6 +278,7 @@ function Legend() {
     <div className="flex items-center justify-center gap-5 mt-4 text-xs font-medium text-[var(--muted)]">
       <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ background: 'var(--latina)' }} /> Gig</span>
       <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ background: 'var(--primary)' }} /> Rehearsal</span>
+      <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full border-[1.5px] border-[var(--faint)]" /> Being figured out</span>
     </div>
   );
 }

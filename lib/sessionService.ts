@@ -14,7 +14,9 @@ export const sessionService = {
   // Set authentication session
   setSession: (user: SessionUser, rememberMe: boolean = true) => {
     const cookieOptions = {
-      expires: rememberMe ? 30 : undefined, // 30 days or session cookie
+      // 400 days is the maximum lifetime browsers will honour for a cookie.
+      // It's re-set on every load, so an active user's cookie never runs out.
+      expires: rememberMe ? 400 : undefined,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict' as const,
     };

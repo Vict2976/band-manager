@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import AppShell from '../../../lib/AppShell';
 import Markdown from '../../../lib/Markdown';
-import EventModal, { TYPE_COLOR } from '../../../lib/EventModal';
+import EventModal, { TYPE_COLOR, StatusBadge } from '../../../lib/EventModal';
 import { BandEvent, subscribeToEvent } from '../../../lib/eventService';
 
 function formatFullDate(key: string): string {
@@ -69,12 +69,15 @@ function EventDetail() {
         <div className="p-6 sm:p-8">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <span
-                className="text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full"
-                style={{ color: TYPE_COLOR[event.type], background: `color-mix(in srgb, ${TYPE_COLOR[event.type]} 12%, white)` }}
-              >
-                {event.type}
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span
+                  className="text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full"
+                  style={{ color: TYPE_COLOR[event.type], background: `color-mix(in srgb, ${TYPE_COLOR[event.type]} 12%, white)` }}
+                >
+                  {event.type}
+                </span>
+                <StatusBadge status={event.status} />
+              </div>
               <h1 className="text-2xl font-bold mt-3 tracking-tight">{formatFullDate(event.date)}</h1>
               {event.time && <p className="text-[var(--muted)] font-semibold mt-0.5">{event.time}</p>}
             </div>

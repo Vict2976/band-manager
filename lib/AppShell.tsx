@@ -59,7 +59,11 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </nav>
 
           <button
-            onClick={() => signOut()}
+            onClick={() => {
+              // Shared account + a button on every screen: guard the one
+              // action that actually ends the session.
+              if (confirm('Sign out? You will need the band email and password to get back in.')) signOut();
+            }}
             className="text-sm font-medium text-[var(--muted)] hover:text-[var(--ink)] transition-colors"
           >
             Sign out

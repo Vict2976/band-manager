@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import AppShell from '../../lib/AppShell';
 import Markdown from '../../lib/Markdown';
-import { TYPE_COLOR } from '../../lib/EventModal';
+import { TYPE_COLOR, StatusBadge } from '../../lib/EventModal';
 import { BandEvent, subscribeToEvents } from '../../lib/eventService';
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -123,6 +123,7 @@ function Upcoming() {
                       >
                         {e.type}
                       </span>
+                      <StatusBadge status={e.status} compact />
                       {e.time && <span className="text-xs font-medium text-[var(--muted)]">{e.time}</span>}
                     </div>
                     <p className="text-sm font-medium text-[var(--ink)] truncate mt-0.5">

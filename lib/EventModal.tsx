@@ -7,6 +7,7 @@ import RichTextEditor from './RichTextEditor';
 import {
   BandEvent,
   EventType,
+  EventStatus,
   NewEvent,
   createEvent,
   updateEvent,
@@ -18,6 +19,31 @@ export const TYPE_COLOR: Record<EventType, string> = {
   gig: 'var(--latina)',
   rehearsal: 'var(--primary)',
 };
+
+export const STATUS_META: Record<EventStatus, { label: string; short: string; color: string }> = {
+  confirmed: { label: 'Confirmed', short: 'Confirmed', color: 'var(--confirmed)' },
+  pending: { label: 'Being figured out', short: 'Figuring out', color: 'var(--pending)' },
+};
+
+/** Status pill — a filled dot for confirmed, a hollow ring while it's unsettled. */
+export function StatusBadge({ status, compact }: { status: EventStatus; compact?: boolean }) {
+  const meta = STATUS_META[status];
+  const done = status === 'confirmed';
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 font-bold uppercase tracking-wide rounded-full ${
+        compact ? 'text-[10px] px-1.5 py-0.5' : 'text-[11px] px-2 py-0.5'
+      }`}
+      style={{ color: meta.color, background: `color-mix(in srgb, ${meta.color} 12%, white)` }}
+    >
+      <span
+        className="w-1.5 h-1.5 rounded-full shrink-0"
+        style={done ? { background: meta.color } : { border: `1.5px solid ${meta.color}` }}
+      />
+      {compact ? meta.short : meta.label}
+    </span>
+  );
+}
 
 function formatLongDate(key: string): string {
   const [y, m, d] = key.split('-').map(Number);
@@ -46,19 +72,28 @@ export default function EventModal({
   const openedInEdit = initialMode === 'edit' || !event;
   const [mode, setMode] = useState<'view' | 'edit'>(initialMode ?? (event ? 'view' : 'edit'));
   const [type, setType] = useState<EventType>(event?.type ?? 'rehearsal');
+  // Something you've just jotted down isn't settled yet, so new events start as pending.
+  const [status, setStatus] = useState<EventStatus>(event?.status ?? 'pending');
   const [eventDate, setEventDate] = useState(event?.date ?? date);
   const [time, setTime] = useState(event?.time ?? '');
   const [text, setText] = useState(event?.text ?? '');
   const [busy, setBusy] = useState(false);
 
   const baseType = event?.type ?? 'rehearsal';
+  const baseStatus: EventStatus = event?.status ?? 'pending';
   const baseDate = event?.date ?? date;
   const baseTime = event?.time ?? '';
   const baseText = event?.text ?? '';
-  const dirty = type !== baseType || eventDate !== baseDate || time !== baseTime || text !== baseText;
+  const dirty =
+    type !== baseType ||
+    status !== baseStatus ||
+    eventDate !== baseDate ||
+    time !== baseTime ||
+    text !== baseText;
 
   const resetFields = () => {
     setType(baseType);
+    setStatus(baseStatus);
     setEventDate(baseDate);
     setTime(baseTime);
     setText(baseText);
@@ -83,7 +118,7 @@ export default function EventModal({
 
   const save = async () => {
     setBusy(true);
-    const payload: NewEvent = { type, date: eventDate, time, text };
+    const payload: NewEvent = { type, status, date: eventDate, time, text };
     try {
       if (event) {
         await updateEvent(event.id, payload);
@@ -178,6 +213,30 @@ export default function EventModal({
                 })}
               </div>
 
+              <div>
+                <span className="block text-xs font-medium text-[var(--muted)] mb-1.5">Status</span>
+                <div className="grid grid-cols-2 gap-2">
+                  {(['pending', 'confirmed'] as EventStatus[]).map((st) => {
+                    const sel = status === st;
+                    const meta = STATUS_META[st];
+                    return (
+                      <button
+                        key={st}
+                        onClick={() => setStatus(st)}
+                        className="py-2.5 rounded-xl text-sm font-bold border-2 transition-all"
+                        style={
+                          sel
+                            ? { background: meta.color, borderColor: meta.color, color: '#fff' }
+                            : { borderColor: 'var(--hairline)', color: 'var(--muted)' }
+                        }
+                      >
+                        {meta.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <label className="block">
                   <span className="text-xs font-medium text-[var(--muted)]">Date</span>
@@ -218,12 +277,15 @@ export default function EventModal({
           </div>
         ) : (
           <div className="flex-1 min-h-0 overflow-y-auto px-5 sm:px-6 pb-2">
-            <span
-              className="inline-block text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full"
-              style={{ color: TYPE_COLOR[type], background: `color-mix(in srgb, ${TYPE_COLOR[type]} 12%, white)` }}
-            >
-              {type}
-            </span>
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                className="inline-block text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full"
+                style={{ color: TYPE_COLOR[type], background: `color-mix(in srgb, ${TYPE_COLOR[type]} 12%, white)` }}
+              >
+                {type}
+              </span>
+              <StatusBadge status={status} />
+            </div>
             <h2 className="text-2xl font-bold tracking-tight mt-3">{formatLongDate(eventDate)}</h2>
             {time && <p className="text-[var(--muted)] font-semibold mt-0.5">{time}</p>}
             <hr className="my-4 border-[var(--hairline)]" />

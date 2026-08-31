@@ -19,6 +19,10 @@
   --latina: #ff3d77; /* magenta  */
   --gold: #ffc24b;   /* warm gold */
 
+  /* Event status */
+  --confirmed: #12b886; /* locked in */
+  --pending: #e8a020;   /* still being figured out (readable on white) */
+
   /* Surfaces & text */
   --bg: #f5f6fd;
   --surface: #ffffff;
