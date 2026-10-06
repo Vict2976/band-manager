@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import Markdown from './Markdown';
 import RichTextEditor from './RichTextEditor';
@@ -157,7 +158,9 @@ export default function EventModal({
   const isEdit = mode === 'edit';
   const heightClass = 'h-[100dvh] sm:h-auto sm:max-h-[88vh]';
 
-  return (
+  // Portal to <body>: the page wrappers animate opacity/transform, which would
+  // otherwise trap this overlay under the sticky header and bottom nav.
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm sm:p-4" onClick={requestClose}>
       <div
         className={`w-full ${heightClass} sm:max-w-3xl bg-white sm:rounded-3xl shadow-2xl animate-pop-in flex flex-col overflow-hidden`}
@@ -343,6 +346,7 @@ export default function EventModal({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
