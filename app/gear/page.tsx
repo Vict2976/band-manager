@@ -15,6 +15,7 @@ import {
 // Festival palette cycled across member avatars.
 const MEMBER_COLORS = ['#6874f4', '#ff6b35', '#ff3d77', '#ffc24b', '#4c5ae8'];
 
+// @uxid app/gear/page::GearPage
 export default function GearPage() {
   return (
     <AppShell>
@@ -28,6 +29,7 @@ export default function GearPage() {
 
 /* ---------------- What we have ---------------- */
 
+// @uxid app/gear/page::GearOverview
 function GearOverview() {
   return (
     <SharedNotes
@@ -43,6 +45,7 @@ function GearOverview() {
 
 /* ---------------- What we need ---------------- */
 
+// @uxid app/gear/page::Needs
 function Needs() {
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [editing, setEditing] = useState<string | null>(null);
@@ -95,6 +98,7 @@ function Needs() {
   );
 }
 
+// @uxid app/gear/page::NeedModal
 function NeedModal({
   member,
   initial,

@@ -27,6 +27,7 @@ export const STATUS_META: Record<EventStatus, { label: string; short: string; co
 };
 
 /** Status pill — a filled dot for confirmed, a hollow ring while it's unsettled. */
+// @uxid lib/EventModal::StatusBadge
 export function StatusBadge({ status, compact }: { status: EventStatus; compact?: boolean }) {
   const meta = STATUS_META[status];
   const done = status === 'confirmed';
@@ -56,6 +57,7 @@ function formatLongDate(key: string): string {
   });
 }
 
+// @uxid lib/EventModal::EventModal
 export default function EventModal({
   date,
   event,

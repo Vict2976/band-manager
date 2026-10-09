@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 /** Renders markdown text with the app's `.md` styling. */
+// @uxid lib/Markdown::Markdown
 export default function Markdown({ children, className = '' }: { children: string; className?: string }) {
   return (
     <div className={`md ${className}`}>
