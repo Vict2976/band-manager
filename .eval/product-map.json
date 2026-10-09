@@ -1,0 +1,232 @@
+{
+  "sections": [
+    {
+      "key": "calendar",
+      "label": "Calendar"
+    },
+    {
+      "key": "upcoming",
+      "label": "Upcoming"
+    },
+    {
+      "key": "gear",
+      "label": "Gear"
+    },
+    {
+      "key": "stand-ins",
+      "label": "Stand ins"
+    }
+  ],
+  "sectionsFrom": "navigation",
+  "navigation": "lib/AppShell.tsx",
+  "pages": [
+    {
+      "id": "/",
+      "label": "Calendar",
+      "section": "calendar",
+      "file": "app/page.tsx",
+      "groups": [],
+      "tables": {}
+    },
+    {
+      "id": "/upcoming",
+      "label": "Upcoming",
+      "section": "upcoming",
+      "file": "app/upcoming/page.tsx",
+      "groups": [],
+      "tables": {}
+    },
+    {
+      "id": "/gear",
+      "label": "Gear",
+      "section": "gear",
+      "file": "app/gear/page.tsx",
+      "groups": [],
+      "tables": {}
+    },
+    {
+      "id": "/standins",
+      "label": "Stand ins",
+      "section": "stand-ins",
+      "file": "app/standins/page.tsx",
+      "groups": [],
+      "tables": {}
+    }
+  ],
+  "actions": [
+    {
+      "id": "GET /api/calendar/[token]",
+      "method": "GET",
+      "path": "/api/calendar/[token]",
+      "file": "app/api/calendar/[token]/route.ts",
+      "doc": [],
+      "tables": {},
+      "pages": [],
+      "group": "app/api/calendar",
+      "section": "calendar"
+    }
+  ],
+  "groups": [
+    {
+      "id": "app/api/calendar",
+      "label": "calendar",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [],
+      "calls": []
+    }
+  ],
+  "quiet": [
+    {
+      "id": "app",
+      "label": "app",
+      "section": "calendar",
+      "files": 2,
+      "tables": {},
+      "pages": [
+        "/"
+      ],
+      "calls": []
+    },
+    {
+      "id": "app/gear",
+      "label": "gear",
+      "section": "gear",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/gear"
+      ],
+      "calls": []
+    },
+    {
+      "id": "app/standins",
+      "label": "standins",
+      "section": "stand-ins",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/standins"
+      ],
+      "calls": []
+    },
+    {
+      "id": "app/upcoming",
+      "label": "upcoming",
+      "section": "upcoming",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/upcoming"
+      ],
+      "calls": []
+    },
+    {
+      "id": "lib/CalendarSync",
+      "label": "CalendarSync",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/"
+      ],
+      "calls": []
+    },
+    {
+      "id": "lib/EventModal",
+      "label": "EventModal",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/",
+        "/upcoming"
+      ],
+      "calls": []
+    },
+    {
+      "id": "lib/SharedNotes",
+      "label": "SharedNotes",
+      "section": "gear",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/gear",
+        "/standins"
+      ],
+      "calls": []
+    },
+    {
+      "id": "lib/calendarFeedService",
+      "label": "calendarFeedService",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/"
+      ],
+      "calls": []
+    },
+    {
+      "id": "lib/eventService",
+      "label": "eventService",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/",
+        "/upcoming"
+      ],
+      "calls": []
+    },
+    {
+      "id": "lib/eventText",
+      "label": "eventText",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/",
+        "/upcoming"
+      ],
+      "calls": []
+    },
+    {
+      "id": "lib/gearService",
+      "label": "gearService",
+      "section": "gear",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/gear"
+      ],
+      "calls": []
+    },
+    {
+      "id": "lib/standinService",
+      "label": "standinService",
+      "section": "stand-ins",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/standins"
+      ],
+      "calls": []
+    }
+  ],
+  "tables": [],
+  "ai": [],
+  "shared": [
+    "lib/AppShell",
+    "lib/Markdown",
+    "lib/RichTextEditor",
+    "lib/firebase"
+  ],
+  "gaps": [
+    "4 of 4 pages reach no code that reads data or calls an API (Calendar, Upcoming, Gear, Stand ins): static screens, or data loaded in a way this cannot follow.",
+    "1 of 1 API actions are called from no page this map can follow (cron jobs, webhooks, other apps, or calls built at runtime).",
+    "No data access was found (this reads Supabase `.from(...)` and Prisma), so the Data floor is empty.",
+    "1 imports of the product's own code resolved to no file; links through them are missing."
+  ]
+}
