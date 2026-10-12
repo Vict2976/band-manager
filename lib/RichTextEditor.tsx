@@ -14,6 +14,7 @@ interface Props {
 
 type Result = { text: string; selStart: number; selEnd: number };
 
+// @uxid lib/RichTextEditor::RichTextEditor
 export default function RichTextEditor({
   value,
   onChange,

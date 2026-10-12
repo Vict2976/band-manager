@@ -39,6 +39,7 @@ function formatLongDate(key: string): string {
   });
 }
 
+// @uxid app/page::CalendarPage
 export default function CalendarPage() {
   return (
     <AppShell>
@@ -47,6 +48,7 @@ export default function CalendarPage() {
   );
 }
 
+// @uxid app/page::Calendar
 function Calendar() {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -240,6 +242,7 @@ function Calendar() {
   );
 }
 
+// @uxid app/page::EventBody
 function EventBody({ text, eventId }: { text: string; eventId: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [overflows, setOverflows] = useState(false);
@@ -270,6 +273,7 @@ function EventBody({ text, eventId }: { text: string; eventId: string }) {
   );
 }
 
+// @uxid app/page::Legend
 function Legend() {
   return (
     <div className="flex items-center justify-center gap-5 mt-4 text-xs font-medium text-[var(--muted)]">

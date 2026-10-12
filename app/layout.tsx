@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   },
 };
 
+// @uxid app/layout::RootLayout
 export default function RootLayout({
   children,
 }: Readonly<{

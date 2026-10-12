@@ -8,6 +8,7 @@ import RichTextEditor from './RichTextEditor';
  * One free-text document the whole band edits together: rendered as markdown,
  * edited in place, autosaved shortly after typing stops.
  */
+// @uxid lib/SharedNotes::SharedNotes
 export default function SharedNotes({
   title,
   subtitle,
@@ -108,6 +109,7 @@ export default function SharedNotes({
   );
 }
 
+// @uxid lib/SharedNotes::SaveStatus
 function SaveStatus({ status }: { status: 'idle' | 'saving' | 'saved' }) {
   if (status === 'idle') return <span className="h-5" />;
   return (
