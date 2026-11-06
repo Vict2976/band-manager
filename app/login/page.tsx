@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../lib/auth';
 import { useRouter } from 'next/navigation';
 
+// @uxid app/login/page::LoginPage
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

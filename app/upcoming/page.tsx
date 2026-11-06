@@ -39,6 +39,7 @@ function relativeLabel(key: string): string {
   return `in ${Math.round(n / 7)} weeks`;
 }
 
+// @uxid app/upcoming/page::UpcomingPage
 export default function UpcomingPage() {
   return (
     <AppShell>
@@ -47,6 +48,7 @@ export default function UpcomingPage() {
   );
 }
 
+// @uxid app/upcoming/page::Upcoming
 function Upcoming() {
   const [events, setEvents] = useState<BandEvent[]>([]);
   const [open, setOpen] = useState<Set<string>>(new Set());
