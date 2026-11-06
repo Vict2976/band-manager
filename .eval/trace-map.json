@@ -1,0 +1,2741 @@
+{
+  "schema": "evaluation-tool/trace-map@1",
+  "topology": {
+    "hasWebClient": true,
+    "hasNativeClient": false,
+    "hasServer": true,
+    "serverless": true,
+    "frameworks": [
+      "Next.js",
+      "Next route handlers"
+    ]
+  },
+  "summary": {
+    "files": 26,
+    "components": 28,
+    "elements": 68,
+    "prompts": 0,
+    "aiCallSites": 0,
+    "aiCallSitesUnlinked": 0,
+    "filesNotAnalysedForAiCalls": 0,
+    "aiDependencies": 0,
+    "aiDependenciesUnexplained": 0,
+    "aiEvidenceProviders": 0,
+    "aiEvidenceUnexplained": 0,
+    "ownEndpointsCalled": 1,
+    "ownEndpointsUnanswered": 0,
+    "sharedCallSites": 0,
+    "promptsNotPrompts": 0,
+    "scanComplete": true
+  },
+  "units": [
+    {
+      "id": "tokensMatch",
+      "kind": "function",
+      "name": "tokensMatch",
+      "description": "Function 'tokensMatch'. Params: a, b.",
+      "file": "app/api/calendar/[token]/route.ts",
+      "startLine": 12,
+      "endLine": 17,
+      "props": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "id": "GET",
+      "kind": "function",
+      "name": "GET",
+      "description": "Exported Function 'GET'. Params: req, {…}.",
+      "file": "app/api/calendar/[token]/route.ts",
+      "startLine": 19,
+      "endLine": 83,
+      "props": [
+        "req",
+        "{…}"
+      ],
+      "exported": true
+    },
+    {
+      "id": "app/api/calendar/[token]/route.ts",
+      "kind": "file",
+      "name": "app/api/calendar/[token]/route.ts",
+      "description": "Source module: 2 top-level artifacts.",
+      "file": "app/api/calendar/[token]/route.ts",
+      "startLine": 1,
+      "endLine": 84
+    },
+    {
+      "id": "EventPage",
+      "kind": "component",
+      "name": "EventPage",
+      "description": "Function component. Renders: AppShell, EventDetail.",
+      "file": "app/events/[id]/page.tsx",
+      "startLine": 21,
+      "endLine": 27,
+      "routes": [
+        "/events/*"
+      ]
+    },
+    {
+      "id": "EventDetail",
+      "kind": "component",
+      "name": "EventDetail",
+      "description": "Function component. Hooks: useParams, useRouter, useState, useEffect. Renders: div, p, span, article, h1, button, Link, StatusBadge, +2 more.",
+      "file": "app/events/[id]/page.tsx",
+      "startLine": 29,
+      "endLine": 116,
+      "childIds": [
+        "EventDetail.link",
+        "EventDetail.link-2",
+        "EventDetail.button",
+        "EventDetail.eventmodal"
+      ],
+      "hooks": [
+        "useParams",
+        "useRouter",
+        "useState",
+        "useEffect"
+      ],
+      "visibleText": [
+        "← Back to calendar",
+        "‹ Calendar",
+        "Edit"
+      ],
+      "routes": [
+        "/events/*"
+      ]
+    },
+    {
+      "id": "formatFullDate",
+      "kind": "function",
+      "name": "formatFullDate",
+      "description": "Function 'formatFullDate'. Params: key.",
+      "file": "app/events/[id]/page.tsx",
+      "startLine": 11,
+      "endLine": 19,
+      "props": [
+        "key"
+      ],
+      "routes": [
+        "/events/*"
+      ]
+    },
+    {
+      "id": "EventDetail.link",
+      "kind": "element",
+      "name": "Link",
+      "description": "<Link> component. href \"/\", labelled \"← Back to calendar\".",
+      "file": "app/events/[id]/page.tsx",
+      "startLine": 51,
+      "endLine": 53,
+      "selector": "[data-uxid=\"EventDetail.link\"]",
+      "parentId": "EventDetail",
+      "accessibleName": "← Back to calendar",
+      "routes": [
+        "/events/*"
+      ]
+    },
+    {
+      "id": "EventDetail.link-2",
+      "kind": "element",
+      "name": "Link",
+      "description": "<Link> component. href \"/\", labelled \"Calendar\".",
+      "file": "app/events/[id]/page.tsx",
+      "startLine": 60,
+      "endLine": 65,
+      "selector": "[data-uxid=\"EventDetail.link-2\"]",
+      "parentId": "EventDetail",
+      "accessibleName": "Calendar",
+      "routes": [
+        "/events/*"
+      ]
+    },
+    {
+      "id": "EventDetail.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Edit\". Handlers: onClick.",
+      "file": "app/events/[id]/page.tsx",
+      "startLine": 87,
+      "endLine": 92,
+      "selector": "[data-uxid=\"EventDetail.button\"]",
+      "parentId": "EventDetail",
+      "accessibleName": "Edit",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/events/*"
+      ]
+    },
+    {
+      "id": "EventDetail.eventmodal",
+      "kind": "element",
+      "name": "EventModal",
+      "description": "<EventModal> component. Handlers: onClose, onDeleted.",
+      "file": "app/events/[id]/page.tsx",
+      "startLine": 106,
+      "endLine": 112,
+      "selector": "[data-uxid=\"EventDetail.eventmodal\"]",
+      "parentId": "EventDetail",
+      "refId": "EventModal",
+      "handlers": [
+        "onClose",
+        "onDeleted"
+      ],
+      "routes": [
+        "/events/*"
+      ]
+    },
+    {
+      "id": "app/events/[id]/page.tsx",
+      "kind": "file",
+      "name": "app/events/[id]/page.tsx",
+      "description": "Source module: 3 top-level artifacts.",
+      "file": "app/events/[id]/page.tsx",
+      "startLine": 1,
+      "endLine": 117,
+      "routes": [
+        "/events/*"
+      ]
+    },
+    {
+      "id": "GearPage",
+      "kind": "component",
+      "name": "GearPage",
+      "description": "Function component. Renders: div, AppShell, GearOverview, Needs.",
+      "file": "app/gear/page.tsx",
+      "startLine": 18,
+      "endLine": 27,
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "GearOverview",
+      "kind": "component",
+      "name": "GearOverview",
+      "description": "Function component. Renders: SharedNotes.",
+      "file": "app/gear/page.tsx",
+      "startLine": 31,
+      "endLine": 42,
+      "visibleText": [
+        "Gear",
+        "## PA 2× QSC K12 ## Mics - 3× SM58 - 1× SM57 ## Drums House kit at the studio"
+      ],
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "Needs",
+      "kind": "component",
+      "name": "Needs",
+      "description": "Function component. Hooks: useState, useEffect. Renders: section, div, h2, p, button, span, NeedModal.",
+      "file": "app/gear/page.tsx",
+      "startLine": 46,
+      "endLine": 96,
+      "childIds": [
+        "Needs.button",
+        "Needs.needmodal"
+      ],
+      "hooks": [
+        "useState",
+        "useEffect"
+      ],
+      "sections": [
+        "What to bring"
+      ],
+      "visibleText": [
+        "What to bring"
+      ],
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "NeedModal",
+      "kind": "component",
+      "name": "NeedModal",
+      "description": "Function component. Props: member, initial, onClose. Hooks: useState. Renders: div, h3, p, textarea, button.",
+      "file": "app/gear/page.tsx",
+      "startLine": 98,
+      "endLine": 156,
+      "childIds": [
+        "NeedModal.div",
+        "NeedModal.div-2",
+        "NeedModal.textarea",
+        "NeedModal.button",
+        "NeedModal.button-2"
+      ],
+      "props": [
+        "member",
+        "initial",
+        "onClose"
+      ],
+      "hooks": [
+        "useState"
+      ],
+      "sections": [
+        "What to bring for {member}"
+      ],
+      "visibleText": [
+        "What to bring for {member}",
+        "e.g. guitar combo amp, 2× DI boxes, mic + stand, monitor mix…",
+        "Cancel",
+        "Saving… / Save"
+      ],
+      "moments": [
+        {
+          "verb": "save",
+          "file": "app/gear/page.tsx",
+          "line": 115,
+          "label": "Saving… / Save",
+          "handler": "save"
+        }
+      ],
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "Needs.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. Handlers: onClick.",
+      "file": "app/gear/page.tsx",
+      "startLine": 64,
+      "endLine": 82,
+      "selector": "[data-uxid=\"Needs.button\"]",
+      "parentId": "Needs",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "Needs.needmodal",
+      "kind": "element",
+      "name": "NeedModal",
+      "description": "<NeedModal> component. Handlers: onClose.",
+      "file": "app/gear/page.tsx",
+      "startLine": 88,
+      "endLine": 92,
+      "selector": "[data-uxid=\"Needs.needmodal\"]",
+      "parentId": "Needs",
+      "refId": "NeedModal",
+      "handlers": [
+        "onClose"
+      ],
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "NeedModal.div",
+      "kind": "element",
+      "name": "div",
+      "description": "<div> element. Handlers: onClick.",
+      "file": "app/gear/page.tsx",
+      "startLine": 128,
+      "endLine": 153,
+      "selector": "[data-uxid=\"NeedModal.div\"]",
+      "parentId": "NeedModal",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "NeedModal.div-2",
+      "kind": "element",
+      "name": "div",
+      "description": "<div> element. Handlers: onClick.",
+      "file": "app/gear/page.tsx",
+      "startLine": 129,
+      "endLine": 152,
+      "selector": "[data-uxid=\"NeedModal.div-2\"]",
+      "parentId": "NeedModal",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "NeedModal.textarea",
+      "kind": "element",
+      "name": "textarea",
+      "description": "Multi-line text field. placeholder \"e.g. guitar combo amp, 2× DI boxes, mic + stand, monitor mix…\". Handlers: onChange.",
+      "file": "app/gear/page.tsx",
+      "startLine": 135,
+      "endLine": 142,
+      "selector": "[data-uxid=\"NeedModal.textarea\"]",
+      "parentId": "NeedModal",
+      "accessibleName": "e.g. guitar combo amp, 2× DI boxes, mic + stand, monitor mix…",
+      "handlers": [
+        "onChange"
+      ],
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "NeedModal.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. can be disabled, labelled \"Cancel\". Handlers: onClick.",
+      "file": "app/gear/page.tsx",
+      "startLine": 145,
+      "endLine": 147,
+      "selector": "[data-uxid=\"NeedModal.button\"]",
+      "parentId": "NeedModal",
+      "accessibleName": "Cancel",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "NeedModal.button-2",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. can be disabled, labelled \"Saving… / Save\". Handlers: onClick.",
+      "file": "app/gear/page.tsx",
+      "startLine": 148,
+      "endLine": 150,
+      "selector": "[data-uxid=\"NeedModal.button-2\"]",
+      "parentId": "NeedModal",
+      "accessibleName": "Saving… / Save",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "app/gear/page.tsx",
+      "kind": "file",
+      "name": "app/gear/page.tsx",
+      "description": "Source module: 4 top-level artifacts.",
+      "file": "app/gear/page.tsx",
+      "startLine": 1,
+      "endLine": 157,
+      "routes": [
+        "/gear"
+      ]
+    },
+    {
+      "id": "RootLayout",
+      "kind": "component",
+      "name": "RootLayout",
+      "description": "Function component. Props: children. Renders: html, head, link, meta, body, AuthProvider.",
+      "file": "app/layout.tsx",
+      "startLine": 29,
+      "endLine": 58,
+      "childIds": [
+        "RootLayout.link",
+        "RootLayout.link-2",
+        "RootLayout.link-3",
+        "RootLayout.link-4",
+        "RootLayout.link-5"
+      ],
+      "props": [
+        "children"
+      ]
+    },
+    {
+      "id": "RootLayout.link",
+      "kind": "element",
+      "name": "link",
+      "description": "<link> element. href \"/favicon.ico\".",
+      "file": "app/layout.tsx",
+      "startLine": 37,
+      "endLine": 37,
+      "selector": "[data-uxid=\"RootLayout.link\"]",
+      "parentId": "RootLayout"
+    },
+    {
+      "id": "RootLayout.link-2",
+      "kind": "element",
+      "name": "link",
+      "description": "<link> element. type=image/png, href \"/logo.png\".",
+      "file": "app/layout.tsx",
+      "startLine": 38,
+      "endLine": 38,
+      "selector": "[data-uxid=\"RootLayout.link-2\"]",
+      "parentId": "RootLayout"
+    },
+    {
+      "id": "RootLayout.link-3",
+      "kind": "element",
+      "name": "link",
+      "description": "<link> element. type=image/png, href \"/logo.png\".",
+      "file": "app/layout.tsx",
+      "startLine": 39,
+      "endLine": 39,
+      "selector": "[data-uxid=\"RootLayout.link-3\"]",
+      "parentId": "RootLayout"
+    },
+    {
+      "id": "RootLayout.link-4",
+      "kind": "element",
+      "name": "link",
+      "description": "<link> element. href \"/logo.png\".",
+      "file": "app/layout.tsx",
+      "startLine": 40,
+      "endLine": 40,
+      "selector": "[data-uxid=\"RootLayout.link-4\"]",
+      "parentId": "RootLayout"
+    },
+    {
+      "id": "RootLayout.link-5",
+      "kind": "element",
+      "name": "link",
+      "description": "<link> element. href \"/manifest.json\".",
+      "file": "app/layout.tsx",
+      "startLine": 41,
+      "endLine": 41,
+      "selector": "[data-uxid=\"RootLayout.link-5\"]",
+      "parentId": "RootLayout"
+    },
+    {
+      "id": "app/layout.tsx",
+      "kind": "file",
+      "name": "app/layout.tsx",
+      "description": "Source module: 1 top-level artifact.",
+      "file": "app/layout.tsx",
+      "startLine": 1,
+      "endLine": 59
+    },
+    {
+      "id": "LoginPage",
+      "kind": "component",
+      "name": "LoginPage",
+      "description": "Function component. Hooks: useState, useAuth, useRouter, useEffect. Renders: div, h1, p, form, label, span.",
+      "file": "app/login/page.tsx",
+      "startLine": 7,
+      "endLine": 83,
+      "childIds": [
+        "LoginPage.form",
+        "LoginPage.label",
+        "LoginPage.email",
+        "LoginPage.label-2",
+        "LoginPage.password",
+        "LoginPage.button"
+      ],
+      "hooks": [
+        "useState",
+        "useAuth",
+        "useRouter",
+        "useEffect"
+      ],
+      "sections": [
+        "Band Manager"
+      ],
+      "visibleText": [
+        "Band Manager",
+        "Email",
+        "Password",
+        "Signing in… / Sign in"
+      ],
+      "moments": [
+        {
+          "verb": "submit",
+          "file": "app/login/page.tsx",
+          "line": 19,
+          "handler": "handleSubmit",
+          "observedBy": "form-submit"
+        }
+      ],
+      "routes": [
+        "/login"
+      ]
+    },
+    {
+      "id": "LoginPage.form",
+      "kind": "element",
+      "name": "form",
+      "description": "Form. Handlers: onSubmit.",
+      "file": "app/login/page.tsx",
+      "startLine": 41,
+      "endLine": 79,
+      "selector": "[data-uxid=\"LoginPage.form\"]",
+      "parentId": "LoginPage",
+      "handlers": [
+        "onSubmit"
+      ],
+      "routes": [
+        "/login"
+      ]
+    },
+    {
+      "id": "LoginPage.label",
+      "kind": "element",
+      "name": "label",
+      "description": "Field label.",
+      "file": "app/login/page.tsx",
+      "startLine": 48,
+      "endLine": 58,
+      "selector": "[data-uxid=\"LoginPage.label\"]",
+      "parentId": "LoginPage",
+      "routes": [
+        "/login"
+      ]
+    },
+    {
+      "id": "LoginPage.email",
+      "kind": "element",
+      "name": "input",
+      "description": "Email input. Handlers: onChange.",
+      "file": "app/login/page.tsx",
+      "startLine": 50,
+      "endLine": 57,
+      "selector": "[data-uxid=\"LoginPage.email\"]",
+      "parentId": "LoginPage",
+      "handlers": [
+        "onChange"
+      ],
+      "routes": [
+        "/login"
+      ]
+    },
+    {
+      "id": "LoginPage.label-2",
+      "kind": "element",
+      "name": "label",
+      "description": "Field label.",
+      "file": "app/login/page.tsx",
+      "startLine": 60,
+      "endLine": 70,
+      "selector": "[data-uxid=\"LoginPage.label-2\"]",
+      "parentId": "LoginPage",
+      "routes": [
+        "/login"
+      ]
+    },
+    {
+      "id": "LoginPage.password",
+      "kind": "element",
+      "name": "input",
+      "description": "Password input. Handlers: onChange.",
+      "file": "app/login/page.tsx",
+      "startLine": 62,
+      "endLine": 69,
+      "selector": "[data-uxid=\"LoginPage.password\"]",
+      "parentId": "LoginPage",
+      "handlers": [
+        "onChange"
+      ],
+      "routes": [
+        "/login"
+      ]
+    },
+    {
+      "id": "LoginPage.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. type=submit, can be disabled, labelled \"Signing in… / Sign in\".",
+      "file": "app/login/page.tsx",
+      "startLine": 72,
+      "endLine": 78,
+      "selector": "[data-uxid=\"LoginPage.button\"]",
+      "parentId": "LoginPage",
+      "accessibleName": "Signing in… / Sign in",
+      "routes": [
+        "/login"
+      ]
+    },
+    {
+      "id": "app/login/page.tsx",
+      "kind": "file",
+      "name": "app/login/page.tsx",
+      "description": "Source module: 1 top-level artifact.",
+      "file": "app/login/page.tsx",
+      "startLine": 1,
+      "endLine": 84,
+      "routes": [
+        "/login"
+      ]
+    },
+    {
+      "id": "CalendarPage",
+      "kind": "component",
+      "name": "CalendarPage",
+      "description": "Function component. Renders: AppShell, Calendar.",
+      "file": "app/page.tsx",
+      "startLine": 42,
+      "endLine": 48,
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Calendar",
+      "kind": "component",
+      "name": "Calendar",
+      "description": "Function component. Hooks: useState, useEffect, useMemo. Renders: div, section, h1, span, button, h2, Legend, StatusBadge, +4 more.",
+      "file": "app/page.tsx",
+      "startLine": 50,
+      "endLine": 241,
+      "childIds": [
+        "Calendar.button",
+        "Calendar.button-2",
+        "Calendar.button-3",
+        "Calendar.button-4",
+        "Calendar.button-5",
+        "Calendar.button-6",
+        "Calendar.div",
+        "Calendar.link",
+        "Calendar.eventmodal"
+      ],
+      "hooks": [
+        "useState",
+        "useEffect",
+        "useMemo"
+      ],
+      "visibleText": [
+        "Today",
+        "Previous month",
+        "Next month",
+        "+ Add event",
+        "Add a gig or rehearsal",
+        "Open full page"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "EventBody",
+      "kind": "component",
+      "name": "EventBody",
+      "description": "Function component. Props: text, eventId. Hooks: useRef, useState, useEffect. Renders: div, Markdown, Link.",
+      "file": "app/page.tsx",
+      "startLine": 243,
+      "endLine": 271,
+      "childIds": [
+        "EventBody.link"
+      ],
+      "props": [
+        "text",
+        "eventId"
+      ],
+      "hooks": [
+        "useRef",
+        "useState",
+        "useEffect"
+      ],
+      "visibleText": [
+        "Show more →"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Legend",
+      "kind": "component",
+      "name": "Legend",
+      "description": "Function component. Renders: div, span.",
+      "file": "app/page.tsx",
+      "startLine": 273,
+      "endLine": 281,
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "pad",
+      "kind": "function",
+      "name": "pad",
+      "description": "Function 'pad'. Params: n.",
+      "file": "app/page.tsx",
+      "startLine": 18,
+      "endLine": 18,
+      "props": [
+        "n"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "toKey",
+      "kind": "function",
+      "name": "toKey",
+      "description": "Function 'toKey'. Params: d.",
+      "file": "app/page.tsx",
+      "startLine": 19,
+      "endLine": 19,
+      "props": [
+        "d"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "todayKey",
+      "kind": "function",
+      "name": "todayKey",
+      "description": "Function 'todayKey'.",
+      "file": "app/page.tsx",
+      "startLine": 20,
+      "endLine": 20,
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "buildMonthGrid",
+      "kind": "function",
+      "name": "buildMonthGrid",
+      "description": "Function 'buildMonthGrid'. Params: year, month.",
+      "file": "app/page.tsx",
+      "startLine": 22,
+      "endLine": 31,
+      "props": [
+        "year",
+        "month"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "formatLongDate",
+      "kind": "function",
+      "name": "formatLongDate",
+      "description": "Function 'formatLongDate'. Params: key.",
+      "file": "app/page.tsx",
+      "startLine": 33,
+      "endLine": 40,
+      "props": [
+        "key"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Calendar.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Today\". Handlers: onClick.",
+      "file": "app/page.tsx",
+      "startLine": 97,
+      "endLine": 99,
+      "selector": "[data-uxid=\"Calendar.button\"]",
+      "parentId": "Calendar",
+      "accessibleName": "Today",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Calendar.button-2",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Previous month\". Handlers: onClick.",
+      "file": "app/page.tsx",
+      "startLine": 100,
+      "endLine": 100,
+      "selector": "[data-uxid=\"Calendar.button-2\"]",
+      "parentId": "Calendar",
+      "accessibleName": "Previous month",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Calendar.button-3",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Next month\". Handlers: onClick.",
+      "file": "app/page.tsx",
+      "startLine": 101,
+      "endLine": 101,
+      "selector": "[data-uxid=\"Calendar.button-3\"]",
+      "parentId": "Calendar",
+      "accessibleName": "Next month",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Calendar.button-4",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. Handlers: onClick.",
+      "file": "app/page.tsx",
+      "startLine": 121,
+      "endLine": 150,
+      "selector": "[data-uxid=\"Calendar.button-4\"]",
+      "parentId": "Calendar",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Calendar.button-5",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"+ Add event\". Handlers: onClick.",
+      "file": "app/page.tsx",
+      "startLine": 162,
+      "endLine": 167,
+      "selector": "[data-uxid=\"Calendar.button-5\"]",
+      "parentId": "Calendar",
+      "accessibleName": "+ Add event",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Calendar.button-6",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Add a gig or rehearsal\". Handlers: onClick.",
+      "file": "app/page.tsx",
+      "startLine": 173,
+      "endLine": 175,
+      "selector": "[data-uxid=\"Calendar.button-6\"]",
+      "parentId": "Calendar",
+      "accessibleName": "Add a gig or rehearsal",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Calendar.div",
+      "kind": "element",
+      "name": "div",
+      "description": "<div> element. Handlers: onClick, onKeyDown.",
+      "file": "app/page.tsx",
+      "startLine": 181,
+      "endLine": 220,
+      "selector": "[data-uxid=\"Calendar.div\"]",
+      "parentId": "Calendar",
+      "handlers": [
+        "onClick",
+        "onKeyDown"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Calendar.link",
+      "kind": "element",
+      "name": "Link",
+      "description": "<Link> component. labelled \"Open full page\". Handlers: onClick.",
+      "file": "app/page.tsx",
+      "startLine": 205,
+      "endLine": 215,
+      "selector": "[data-uxid=\"Calendar.link\"]",
+      "parentId": "Calendar",
+      "accessibleName": "Open full page",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "Calendar.eventmodal",
+      "kind": "element",
+      "name": "EventModal",
+      "description": "<EventModal> component. Handlers: onClose.",
+      "file": "app/page.tsx",
+      "startLine": 230,
+      "endLine": 237,
+      "selector": "[data-uxid=\"Calendar.eventmodal\"]",
+      "parentId": "Calendar",
+      "refId": "EventModal",
+      "handlers": [
+        "onClose"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "EventBody.link",
+      "kind": "element",
+      "name": "Link",
+      "description": "<Link> component. labelled \"Show more →\". Handlers: onClick.",
+      "file": "app/page.tsx",
+      "startLine": 261,
+      "endLine": 267,
+      "selector": "[data-uxid=\"EventBody.link\"]",
+      "parentId": "EventBody",
+      "accessibleName": "Show more →",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "app/page.tsx",
+      "kind": "file",
+      "name": "app/page.tsx",
+      "description": "Source module: 9 top-level artifacts.",
+      "file": "app/page.tsx",
+      "startLine": 1,
+      "endLine": 283,
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "StandinsPage",
+      "kind": "component",
+      "name": "StandinsPage",
+      "description": "Function component. Renders: AppShell, SharedNotes.",
+      "file": "app/standins/page.tsx",
+      "startLine": 7,
+      "endLine": 22,
+      "visibleText": [
+        "Stand-ins",
+        "## Drums - Jonas Hansen — 12 34 56 78, jonas@mail.dk ## Bass - Mia Larsen — 87 …"
+      ],
+      "routes": [
+        "/standins"
+      ]
+    },
+    {
+      "id": "app/standins/page.tsx",
+      "kind": "file",
+      "name": "app/standins/page.tsx",
+      "description": "Source module: 1 top-level artifact.",
+      "file": "app/standins/page.tsx",
+      "startLine": 1,
+      "endLine": 23,
+      "routes": [
+        "/standins"
+      ]
+    },
+    {
+      "id": "UpcomingPage",
+      "kind": "component",
+      "name": "UpcomingPage",
+      "description": "Function component. Renders: AppShell, Upcoming.",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 42,
+      "endLine": 48,
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "Upcoming",
+      "kind": "component",
+      "name": "Upcoming",
+      "description": "Function component. Hooks: useState, useEffect, useMemo. Renders: div, h1, p, ul, li, button, Link, StatusBadge, +1 more.",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 50,
+      "endLine": 160,
+      "childIds": [
+        "Upcoming.link",
+        "Upcoming.button",
+        "Upcoming.link-2"
+      ],
+      "hooks": [
+        "useState",
+        "useEffect",
+        "useMemo"
+      ],
+      "sections": [
+        "Upcoming"
+      ],
+      "visibleText": [
+        "Upcoming",
+        "Add something on the calendar →",
+        "Open full page"
+      ],
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "pad-2",
+      "kind": "function",
+      "name": "pad",
+      "description": "Function 'pad'. Params: n.",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 10,
+      "endLine": 10,
+      "props": [
+        "n"
+      ],
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "todayKey-2",
+      "kind": "function",
+      "name": "todayKey",
+      "description": "Function 'todayKey'.",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 11,
+      "endLine": 14,
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "shortDate",
+      "kind": "function",
+      "name": "shortDate",
+      "description": "Function 'shortDate'. Params: key.",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 16,
+      "endLine": 23,
+      "props": [
+        "key"
+      ],
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "daysFromToday",
+      "kind": "function",
+      "name": "daysFromToday",
+      "description": "Function 'daysFromToday'. Params: key.",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 25,
+      "endLine": 31,
+      "props": [
+        "key"
+      ],
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "relativeLabel",
+      "kind": "function",
+      "name": "relativeLabel",
+      "description": "Function 'relativeLabel'. Params: key.",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 33,
+      "endLine": 40,
+      "props": [
+        "key"
+      ],
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "Upcoming.link",
+      "kind": "element",
+      "name": "Link",
+      "description": "<Link> component. href \"/\", labelled \"Add something on the calendar →\".",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 80,
+      "endLine": 82,
+      "selector": "[data-uxid=\"Upcoming.link\"]",
+      "parentId": "Upcoming",
+      "accessibleName": "Add something on the calendar →",
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "Upcoming.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. Handlers: onClick.",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 91,
+      "endLine": 131,
+      "selector": "[data-uxid=\"Upcoming.button\"]",
+      "parentId": "Upcoming",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "Upcoming.link-2",
+      "kind": "element",
+      "name": "Link",
+      "description": "<Link> component. labelled \"Open full page\".",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 141,
+      "endLine": 149,
+      "selector": "[data-uxid=\"Upcoming.link-2\"]",
+      "parentId": "Upcoming",
+      "accessibleName": "Open full page",
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "app/upcoming/page.tsx",
+      "kind": "file",
+      "name": "app/upcoming/page.tsx",
+      "description": "Source module: 7 top-level artifacts.",
+      "file": "app/upcoming/page.tsx",
+      "startLine": 1,
+      "endLine": 161,
+      "routes": [
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "AppShell",
+      "kind": "component",
+      "name": "AppShell",
+      "description": "Function component. Props: children. Hooks: useAuth, useRouter, usePathname, useEffect. Renders: div, header, span, nav, button, main, Link, Icon.",
+      "file": "lib/AppShell.tsx",
+      "startLine": 15,
+      "endLine": 103,
+      "childIds": [
+        "AppShell.link",
+        "AppShell.link-2",
+        "AppShell.button",
+        "AppShell.link-3"
+      ],
+      "props": [
+        "children"
+      ],
+      "hooks": [
+        "useAuth",
+        "useRouter",
+        "usePathname",
+        "useEffect"
+      ],
+      "visibleText": [
+        "♪ Band Manager",
+        "Sign out"
+      ],
+      "moments": [
+        {
+          "verb": "confirm",
+          "file": "lib/AppShell.tsx",
+          "line": 63,
+          "label": "Sign out"
+        }
+      ],
+      "routes": [
+        "/",
+        "/events/*",
+        "/gear",
+        "/standins",
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "CalendarIcon",
+      "kind": "component",
+      "name": "CalendarIcon",
+      "description": "Function component. Props: active. Renders: svg, rect, path.",
+      "file": "lib/AppShell.tsx",
+      "startLine": 105,
+      "endLine": 112,
+      "props": [
+        "active"
+      ]
+    },
+    {
+      "id": "ClockIcon",
+      "kind": "component",
+      "name": "ClockIcon",
+      "description": "Function component. Props: active. Renders: svg, circle, path.",
+      "file": "lib/AppShell.tsx",
+      "startLine": 114,
+      "endLine": 121,
+      "props": [
+        "active"
+      ]
+    },
+    {
+      "id": "GearIcon",
+      "kind": "component",
+      "name": "GearIcon",
+      "description": "Function component. Props: active. Renders: svg, circle, path.",
+      "file": "lib/AppShell.tsx",
+      "startLine": 123,
+      "endLine": 130,
+      "props": [
+        "active"
+      ]
+    },
+    {
+      "id": "PeopleIcon",
+      "kind": "component",
+      "name": "PeopleIcon",
+      "description": "Function component. Props: active. Renders: svg, circle, path.",
+      "file": "lib/AppShell.tsx",
+      "startLine": 132,
+      "endLine": 139,
+      "props": [
+        "active"
+      ]
+    },
+    {
+      "id": "AppShell.link",
+      "kind": "element",
+      "name": "Link",
+      "description": "<Link> component. href \"/\".",
+      "file": "lib/AppShell.tsx",
+      "startLine": 37,
+      "endLine": 40,
+      "selector": "[data-uxid=\"AppShell.link\"]",
+      "parentId": "AppShell",
+      "routes": [
+        "/",
+        "/events/*",
+        "/gear",
+        "/standins",
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "AppShell.link-2",
+      "kind": "element",
+      "name": "Link",
+      "description": "<Link> component.",
+      "file": "lib/AppShell.tsx",
+      "startLine": 47,
+      "endLine": 57,
+      "selector": "[data-uxid=\"AppShell.link-2\"]",
+      "parentId": "AppShell",
+      "routes": [
+        "/",
+        "/events/*",
+        "/gear",
+        "/standins",
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "AppShell.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Sign out\". Handlers: onClick.",
+      "file": "lib/AppShell.tsx",
+      "startLine": 62,
+      "endLine": 71,
+      "selector": "[data-uxid=\"AppShell.button\"]",
+      "parentId": "AppShell",
+      "accessibleName": "Sign out",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "AppShell.link-3",
+      "kind": "element",
+      "name": "Link",
+      "description": "<Link> component.",
+      "file": "lib/AppShell.tsx",
+      "startLine": 87,
+      "endLine": 96,
+      "selector": "[data-uxid=\"AppShell.link-3\"]",
+      "parentId": "AppShell",
+      "routes": [
+        "/",
+        "/events/*",
+        "/gear",
+        "/standins",
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "lib/AppShell.tsx",
+      "kind": "file",
+      "name": "lib/AppShell.tsx",
+      "description": "Source module: 5 top-level artifacts.",
+      "file": "lib/AppShell.tsx",
+      "startLine": 1,
+      "endLine": 140
+    },
+    {
+      "id": "CalendarSync",
+      "kind": "component",
+      "name": "CalendarSync",
+      "description": "Function component. Hooks: useState, useEffect. Renders: section, button, span, svg, path, div.",
+      "file": "lib/CalendarSync.tsx",
+      "startLine": 11,
+      "endLine": 182,
+      "childIds": [
+        "CalendarSync.button",
+        "CalendarSync.input",
+        "CalendarSync.button-2",
+        "CalendarSync.link",
+        "CalendarSync.link-2",
+        "CalendarSync.button-3"
+      ],
+      "hooks": [
+        "useState",
+        "useEffect"
+      ],
+      "visibleText": [
+        "Sync to your phone Keep this calendar in Google or iPhone Calendar — it updates…",
+        "Calendar subscription link",
+        "Copied / Copy",
+        "Open in iPhone / Mac Calendar",
+        "Add to Google Calendar",
+        "Make a new link"
+      ],
+      "routes": [
+        "/"
+      ]
+    },
+    {
+      "id": "CalendarSync.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. Handlers: onClick.",
+      "file": "lib/CalendarSync.tsx",
+      "startLine": 73,
+      "endLine": 96,
+      "selector": "[data-uxid=\"CalendarSync.button\"]",
+      "parentId": "CalendarSync",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "CalendarSync.input",
+      "kind": "element",
+      "name": "input",
+      "description": "Text input field. labelled \"Calendar subscription link\". Handlers: onFocus.",
+      "file": "lib/CalendarSync.tsx",
+      "startLine": 109,
+      "endLine": 115,
+      "selector": "[data-uxid=\"CalendarSync.input\"]",
+      "parentId": "CalendarSync",
+      "accessibleName": "Calendar subscription link",
+      "handlers": [
+        "onFocus"
+      ]
+    },
+    {
+      "id": "CalendarSync.button-2",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Copied / Copy\". Handlers: onClick.",
+      "file": "lib/CalendarSync.tsx",
+      "startLine": 116,
+      "endLine": 118,
+      "selector": "[data-uxid=\"CalendarSync.button-2\"]",
+      "parentId": "CalendarSync",
+      "accessibleName": "Copied / Copy",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "CalendarSync.link",
+      "kind": "element",
+      "name": "a",
+      "description": "Link. labelled \"Open in iPhone / Mac Calendar\". Handlers: onClick.",
+      "file": "lib/CalendarSync.tsx",
+      "startLine": 122,
+      "endLine": 128,
+      "selector": "[data-uxid=\"CalendarSync.link\"]",
+      "parentId": "CalendarSync",
+      "accessibleName": "Open in iPhone / Mac Calendar",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "CalendarSync.link-2",
+      "kind": "element",
+      "name": "a",
+      "description": "Link. labelled \"Add to Google Calendar\".",
+      "file": "lib/CalendarSync.tsx",
+      "startLine": 129,
+      "endLine": 136,
+      "selector": "[data-uxid=\"CalendarSync.link-2\"]",
+      "parentId": "CalendarSync",
+      "accessibleName": "Add to Google Calendar"
+    },
+    {
+      "id": "CalendarSync.button-3",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Make a new link\". Handlers: onClick.",
+      "file": "lib/CalendarSync.tsx",
+      "startLine": 170,
+      "endLine": 172,
+      "selector": "[data-uxid=\"CalendarSync.button-3\"]",
+      "parentId": "CalendarSync",
+      "accessibleName": "Make a new link",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "lib/CalendarSync.tsx",
+      "kind": "file",
+      "name": "lib/CalendarSync.tsx",
+      "description": "Source module: 1 top-level artifact.",
+      "file": "lib/CalendarSync.tsx",
+      "startLine": 1,
+      "endLine": 183
+    },
+    {
+      "id": "StatusBadge",
+      "kind": "component",
+      "name": "StatusBadge",
+      "description": "Function component. Props: status, compact. Renders: span.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 30,
+      "endLine": 47,
+      "props": [
+        "status",
+        "compact"
+      ],
+      "visibleText": [
+        "Confirmed / Figuring out / Being figured out"
+      ],
+      "routes": [
+        "/",
+        "/events/*",
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "EventModal",
+      "kind": "component",
+      "name": "EventModal",
+      "description": "Function component. Props: date, event, onClose, onDeleted, initialMode. Hooks: useState. Renders: div, h3, svg, path, button, label, Link, RichTextEditor, +2 more.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 59,
+      "endLine": 352,
+      "childIds": [
+        "EventModal.div",
+        "EventModal.div-2",
+        "EventModal.link",
+        "EventModal.button",
+        "EventModal.label",
+        "EventModal.input",
+        "EventModal.button-2",
+        "EventModal.button-3",
+        "EventModal.label-2",
+        "EventModal.date",
+        "EventModal.label-3",
+        "EventModal.time",
+        "EventModal.richtexteditor",
+        "EventModal.button-4",
+        "EventModal.button-5",
+        "EventModal.button-6",
+        "EventModal.button-7"
+      ],
+      "props": [
+        "date",
+        "event",
+        "onClose",
+        "onDeleted",
+        "initialMode"
+      ],
+      "hooks": [
+        "useState"
+      ],
+      "visibleText": [
+        "Full page",
+        "Close",
+        "Title",
+        "e.g. Loppen, Christiania",
+        "Confirmed / Being figured out",
+        "Date",
+        "Time (optional)",
+        "What's happening? e.g. load-in 18:00, bring the small PA…",
+        "Delete",
+        "Cancel",
+        "Saving… / Save",
+        "Edit event"
+      ],
+      "moments": [
+        {
+          "verb": "save",
+          "file": "lib/EventModal.tsx",
+          "line": 124,
+          "label": "Saving… / Save",
+          "handler": "save"
+        },
+        {
+          "verb": "confirm",
+          "file": "lib/EventModal.tsx",
+          "line": 179,
+          "label": "Full page"
+        },
+        {
+          "verb": "confirm",
+          "file": "lib/EventModal.tsx",
+          "line": 246,
+          "label": "Confirmed / Being figured out"
+        }
+      ],
+      "routes": [
+        "/",
+        "/events/*"
+      ]
+    },
+    {
+      "id": "formatLongDate-2",
+      "kind": "function",
+      "name": "formatLongDate",
+      "description": "Function 'formatLongDate'. Params: key.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 49,
+      "endLine": 57,
+      "props": [
+        "key"
+      ]
+    },
+    {
+      "id": "EventModal.div",
+      "kind": "element",
+      "name": "div",
+      "description": "<div> element. Handlers: onClick.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 164,
+      "endLine": 349,
+      "selector": "[data-uxid=\"EventModal.div\"]",
+      "parentId": "EventModal",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "EventModal.div-2",
+      "kind": "element",
+      "name": "div",
+      "description": "<div> element. Handlers: onClick.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 165,
+      "endLine": 348,
+      "selector": "[data-uxid=\"EventModal.div-2\"]",
+      "parentId": "EventModal",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "EventModal.link",
+      "kind": "element",
+      "name": "Link",
+      "description": "<Link> component. labelled \"Full page\". Handlers: onClick.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 177,
+      "endLine": 188,
+      "selector": "[data-uxid=\"EventModal.link\"]",
+      "parentId": "EventModal",
+      "accessibleName": "Full page",
+      "handlers": [
+        "onClick"
+      ],
+      "routes": [
+        "/",
+        "/events/*",
+        "/gear",
+        "/standins",
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "EventModal.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Close\". Handlers: onClick.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 190,
+      "endLine": 196,
+      "selector": "[data-uxid=\"EventModal.button\"]",
+      "parentId": "EventModal",
+      "accessibleName": "Close",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "EventModal.label",
+      "kind": "element",
+      "name": "label",
+      "description": "Field label.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 204,
+      "endLine": 215,
+      "selector": "[data-uxid=\"EventModal.label\"]",
+      "parentId": "EventModal"
+    },
+    {
+      "id": "EventModal.input",
+      "kind": "element",
+      "name": "input",
+      "description": "Text input. placeholder \"e.g. Loppen, Christiania\". Handlers: onChange.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 206,
+      "endLine": 214,
+      "selector": "[data-uxid=\"EventModal.input\"]",
+      "parentId": "EventModal",
+      "accessibleName": "e.g. Loppen, Christiania",
+      "handlers": [
+        "onChange"
+      ]
+    },
+    {
+      "id": "EventModal.button-2",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. Handlers: onClick.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 221,
+      "endLine": 232,
+      "selector": "[data-uxid=\"EventModal.button-2\"]",
+      "parentId": "EventModal",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "EventModal.button-3",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Confirmed / Being figured out\". Handlers: onClick.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 244,
+      "endLine": 255,
+      "selector": "[data-uxid=\"EventModal.button-3\"]",
+      "parentId": "EventModal",
+      "accessibleName": "Confirmed / Being figured out",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "EventModal.label-2",
+      "kind": "element",
+      "name": "label",
+      "description": "Field label.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 262,
+      "endLine": 270,
+      "selector": "[data-uxid=\"EventModal.label-2\"]",
+      "parentId": "EventModal"
+    },
+    {
+      "id": "EventModal.date",
+      "kind": "element",
+      "name": "input",
+      "description": "Date picker. Handlers: onChange.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 264,
+      "endLine": 269,
+      "selector": "[data-uxid=\"EventModal.date\"]",
+      "parentId": "EventModal",
+      "handlers": [
+        "onChange"
+      ]
+    },
+    {
+      "id": "EventModal.label-3",
+      "kind": "element",
+      "name": "label",
+      "description": "Field label.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 271,
+      "endLine": 279,
+      "selector": "[data-uxid=\"EventModal.label-3\"]",
+      "parentId": "EventModal"
+    },
+    {
+      "id": "EventModal.time",
+      "kind": "element",
+      "name": "input",
+      "description": "Time input. Handlers: onChange.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 273,
+      "endLine": 278,
+      "selector": "[data-uxid=\"EventModal.time\"]",
+      "parentId": "EventModal",
+      "handlers": [
+        "onChange"
+      ]
+    },
+    {
+      "id": "EventModal.richtexteditor",
+      "kind": "element",
+      "name": "RichTextEditor",
+      "description": "<RichTextEditor> component. placeholder \"What's happening? e.g. load-in 18:00, bring the small PA…\". Handlers: onChange.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 284,
+      "endLine": 289,
+      "selector": "[data-uxid=\"EventModal.richtexteditor\"]",
+      "parentId": "EventModal",
+      "refId": "RichTextEditor",
+      "accessibleName": "What's happening? e.g. load-in 18:00, bring the small PA…",
+      "handlers": [
+        "onChange"
+      ],
+      "routes": [
+        "/",
+        "/events/*",
+        "/gear",
+        "/standins"
+      ]
+    },
+    {
+      "id": "EventModal.button-4",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. can be disabled, labelled \"Delete\". Handlers: onClick.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 320,
+      "endLine": 326,
+      "selector": "[data-uxid=\"EventModal.button-4\"]",
+      "parentId": "EventModal",
+      "accessibleName": "Delete",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "EventModal.button-5",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. can be disabled, labelled \"Cancel\". Handlers: onClick.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 331,
+      "endLine": 333,
+      "selector": "[data-uxid=\"EventModal.button-5\"]",
+      "parentId": "EventModal",
+      "accessibleName": "Cancel",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "EventModal.button-6",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. can be disabled, labelled \"Saving… / Save\". Handlers: onClick.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 334,
+      "endLine": 340,
+      "selector": "[data-uxid=\"EventModal.button-6\"]",
+      "parentId": "EventModal",
+      "accessibleName": "Saving… / Save",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "EventModal.button-7",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Edit event\". Handlers: onClick.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 343,
+      "endLine": 345,
+      "selector": "[data-uxid=\"EventModal.button-7\"]",
+      "parentId": "EventModal",
+      "accessibleName": "Edit event",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "lib/EventModal.tsx",
+      "kind": "file",
+      "name": "lib/EventModal.tsx",
+      "description": "Source module: 3 top-level artifacts.",
+      "file": "lib/EventModal.tsx",
+      "startLine": 1,
+      "endLine": 353
+    },
+    {
+      "id": "Markdown",
+      "kind": "component",
+      "name": "Markdown",
+      "description": "Function component. Props: children, className. Renders: div, a, ReactMarkdown.",
+      "file": "lib/Markdown.tsx",
+      "startLine": 7,
+      "endLine": 21,
+      "childIds": [
+        "Markdown.link"
+      ],
+      "props": [
+        "children",
+        "className"
+      ],
+      "routes": [
+        "/",
+        "/events/*",
+        "/gear",
+        "/standins",
+        "/upcoming"
+      ]
+    },
+    {
+      "id": "Markdown.link",
+      "kind": "element",
+      "name": "a",
+      "description": "Link.",
+      "file": "lib/Markdown.tsx",
+      "startLine": 14,
+      "endLine": 14,
+      "selector": "[data-uxid=\"Markdown.link\"]",
+      "parentId": "Markdown"
+    },
+    {
+      "id": "lib/Markdown.tsx",
+      "kind": "file",
+      "name": "lib/Markdown.tsx",
+      "description": "Source module: 1 top-level artifact.",
+      "file": "lib/Markdown.tsx",
+      "startLine": 1,
+      "endLine": 22
+    },
+    {
+      "id": "RichTextEditor",
+      "kind": "component",
+      "name": "RichTextEditor",
+      "description": "Function component. Props: value, onChange, placeholder, minHeight, autoFocus, grow. Hooks: useRef, useEffect. Renders: strong, em, div, button, textarea.",
+      "file": "lib/RichTextEditor.tsx",
+      "startLine": 17,
+      "endLine": 128,
+      "childIds": [
+        "RichTextEditor.button",
+        "RichTextEditor.textarea"
+      ],
+      "props": [
+        "value",
+        "onChange",
+        "placeholder",
+        "minHeight",
+        "autoFocus",
+        "grow"
+      ],
+      "hooks": [
+        "useRef",
+        "useEffect"
+      ],
+      "routes": [
+        "/",
+        "/events/*",
+        "/gear",
+        "/standins"
+      ]
+    },
+    {
+      "id": "RichTextEditor.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. type=button. Handlers: onMouseDown, onClick.",
+      "file": "lib/RichTextEditor.tsx",
+      "startLine": 103,
+      "endLine": 113,
+      "selector": "[data-uxid=\"RichTextEditor.button\"]",
+      "parentId": "RichTextEditor",
+      "handlers": [
+        "onMouseDown",
+        "onClick"
+      ]
+    },
+    {
+      "id": "RichTextEditor.textarea",
+      "kind": "element",
+      "name": "textarea",
+      "description": "Multi-line text field. Handlers: onChange, onKeyDown.",
+      "file": "lib/RichTextEditor.tsx",
+      "startLine": 116,
+      "endLine": 125,
+      "selector": "[data-uxid=\"RichTextEditor.textarea\"]",
+      "parentId": "RichTextEditor",
+      "handlers": [
+        "onChange",
+        "onKeyDown"
+      ]
+    },
+    {
+      "id": "lib/RichTextEditor.tsx",
+      "kind": "file",
+      "name": "lib/RichTextEditor.tsx",
+      "description": "Source module: 1 top-level artifact.",
+      "file": "lib/RichTextEditor.tsx",
+      "startLine": 1,
+      "endLine": 129
+    },
+    {
+      "id": "SharedNotes",
+      "kind": "component",
+      "name": "SharedNotes",
+      "description": "Function component. Props: title, subtitle, placeholder, emptyLabel, subscribe, save. Hooks: useState, useRef, useEffect. Renders: section, div, h1, p, button, SaveStatus, RichTextEditor, Markdown.",
+      "file": "lib/SharedNotes.tsx",
+      "startLine": 11,
+      "endLine": 109,
+      "childIds": [
+        "SharedNotes.button",
+        "SharedNotes.richtexteditor",
+        "SharedNotes.button-2"
+      ],
+      "props": [
+        "title",
+        "subtitle",
+        "placeholder",
+        "emptyLabel",
+        "subscribe",
+        "save"
+      ],
+      "hooks": [
+        "useState",
+        "useRef",
+        "useEffect"
+      ],
+      "visibleText": [
+        "Done / Edit"
+      ],
+      "routes": [
+        "/gear",
+        "/standins"
+      ]
+    },
+    {
+      "id": "SaveStatus",
+      "kind": "component",
+      "name": "SaveStatus",
+      "description": "Function component. Props: status. Renders: span.",
+      "file": "lib/SharedNotes.tsx",
+      "startLine": 111,
+      "endLine": 125,
+      "props": [
+        "status"
+      ],
+      "routes": [
+        "/gear",
+        "/standins"
+      ]
+    },
+    {
+      "id": "SharedNotes.button",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. labelled \"Done / Edit\". Handlers: onClick.",
+      "file": "lib/SharedNotes.tsx",
+      "startLine": 75,
+      "endLine": 80,
+      "selector": "[data-uxid=\"SharedNotes.button\"]",
+      "parentId": "SharedNotes",
+      "accessibleName": "Done / Edit",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "SharedNotes.richtexteditor",
+      "kind": "element",
+      "name": "RichTextEditor",
+      "description": "<RichTextEditor> component. Handlers: onChange.",
+      "file": "lib/SharedNotes.tsx",
+      "startLine": 85,
+      "endLine": 93,
+      "selector": "[data-uxid=\"SharedNotes.richtexteditor\"]",
+      "parentId": "SharedNotes",
+      "refId": "RichTextEditor",
+      "handlers": [
+        "onChange"
+      ],
+      "routes": [
+        "/",
+        "/events/*",
+        "/gear",
+        "/standins"
+      ]
+    },
+    {
+      "id": "SharedNotes.button-2",
+      "kind": "element",
+      "name": "button",
+      "description": "Button. Handlers: onClick.",
+      "file": "lib/SharedNotes.tsx",
+      "startLine": 101,
+      "endLine": 103,
+      "selector": "[data-uxid=\"SharedNotes.button-2\"]",
+      "parentId": "SharedNotes",
+      "handlers": [
+        "onClick"
+      ]
+    },
+    {
+      "id": "lib/SharedNotes.tsx",
+      "kind": "file",
+      "name": "lib/SharedNotes.tsx",
+      "description": "Source module: 2 top-level artifacts.",
+      "file": "lib/SharedNotes.tsx",
+      "startLine": 1,
+      "endLine": 126
+    },
+    {
+      "id": "AuthProvider",
+      "kind": "component",
+      "name": "AuthProvider",
+      "description": "Function component. Props: children. Hooks: useState, useEffect. Renders: AuthContext.Provider.",
+      "file": "lib/auth.tsx",
+      "startLine": 19,
+      "endLine": 115,
+      "props": [
+        "children"
+      ],
+      "hooks": [
+        "useState",
+        "useEffect"
+      ]
+    },
+    {
+      "id": "useAuth",
+      "kind": "hook",
+      "name": "useAuth",
+      "description": "Exported Custom hook 'useAuth'.",
+      "file": "lib/auth.tsx",
+      "startLine": 117,
+      "endLine": 123,
+      "exported": true
+    },
+    {
+      "id": "lib/auth.tsx",
+      "kind": "file",
+      "name": "lib/auth.tsx",
+      "description": "Source module: 2 top-level artifacts.",
+      "file": "lib/auth.tsx",
+      "startLine": 1,
+      "endLine": 124
+    },
+    {
+      "id": "newToken",
+      "kind": "function",
+      "name": "newToken",
+      "description": "Function 'newToken'.",
+      "file": "lib/calendarFeedService.ts",
+      "startLine": 13,
+      "endLine": 17
+    },
+    {
+      "id": "getOrCreateFeedToken",
+      "kind": "function",
+      "name": "getOrCreateFeedToken",
+      "description": "Exported Function 'getOrCreateFeedToken'.",
+      "file": "lib/calendarFeedService.ts",
+      "startLine": 20,
+      "endLine": 28,
+      "exported": true
+    },
+    {
+      "id": "rotateFeedToken",
+      "kind": "function",
+      "name": "rotateFeedToken",
+      "description": "Exported Function 'rotateFeedToken'.",
+      "file": "lib/calendarFeedService.ts",
+      "startLine": 31,
+      "endLine": 35,
+      "exported": true
+    },
+    {
+      "id": "feedUrl",
+      "kind": "function",
+      "name": "feedUrl",
+      "description": "Exported Function 'feedUrl'. Params: token, origin.",
+      "file": "lib/calendarFeedService.ts",
+      "startLine": 37,
+      "endLine": 39,
+      "props": [
+        "token",
+        "origin"
+      ],
+      "exported": true
+    },
+    {
+      "id": "lib/calendarFeedService.ts",
+      "kind": "file",
+      "name": "lib/calendarFeedService.ts",
+      "description": "Source module: 4 top-level artifacts.",
+      "file": "lib/calendarFeedService.ts",
+      "startLine": 1,
+      "endLine": 40
+    },
+    {
+      "id": "readStatus",
+      "kind": "function",
+      "name": "readStatus",
+      "description": "Function 'readStatus'. Params: raw.",
+      "file": "lib/eventService.ts",
+      "startLine": 37,
+      "endLine": 39,
+      "props": [
+        "raw"
+      ]
+    },
+    {
+      "id": "subscribeToEvents",
+      "kind": "function",
+      "name": "subscribeToEvents",
+      "description": "Exported Function 'subscribeToEvents'. Params: onChange, onError.",
+      "file": "lib/eventService.ts",
+      "startLine": 46,
+      "endLine": 74,
+      "props": [
+        "onChange",
+        "onError"
+      ],
+      "exported": true
+    },
+    {
+      "id": "subscribeToEvent",
+      "kind": "function",
+      "name": "subscribeToEvent",
+      "description": "Exported Function 'subscribeToEvent'. Params: id, onChange, onError.",
+      "file": "lib/eventService.ts",
+      "startLine": 77,
+      "endLine": 102,
+      "props": [
+        "id",
+        "onChange",
+        "onError"
+      ],
+      "exported": true
+    },
+    {
+      "id": "createEvent",
+      "kind": "function",
+      "name": "createEvent",
+      "description": "Exported Function 'createEvent'. Params: data.",
+      "file": "lib/eventService.ts",
+      "startLine": 104,
+      "endLine": 116,
+      "props": [
+        "data"
+      ],
+      "exported": true
+    },
+    {
+      "id": "updateEvent",
+      "kind": "function",
+      "name": "updateEvent",
+      "description": "Exported Function 'updateEvent'. Params: id, data.",
+      "file": "lib/eventService.ts",
+      "startLine": 118,
+      "endLine": 128,
+      "props": [
+        "id",
+        "data"
+      ],
+      "exported": true
+    },
+    {
+      "id": "deleteEvent",
+      "kind": "function",
+      "name": "deleteEvent",
+      "description": "Exported Function 'deleteEvent'. Params: id.",
+      "file": "lib/eventService.ts",
+      "startLine": 130,
+      "endLine": 132,
+      "props": [
+        "id"
+      ],
+      "exported": true
+    },
+    {
+      "id": "lib/eventService.ts",
+      "kind": "file",
+      "name": "lib/eventService.ts",
+      "description": "Source module: 6 top-level artifacts.",
+      "file": "lib/eventService.ts",
+      "startLine": 1,
+      "endLine": 133
+    },
+    {
+      "id": "firstLine",
+      "kind": "function",
+      "name": "firstLine",
+      "description": "Exported Function 'firstLine'. Params: text.",
+      "file": "lib/eventText.ts",
+      "startLine": 10,
+      "endLine": 22,
+      "props": [
+        "text"
+      ],
+      "exported": true
+    },
+    {
+      "id": "resolveTitle",
+      "kind": "function",
+      "name": "resolveTitle",
+      "description": "Exported Function 'resolveTitle'. Params: title, text, type.",
+      "file": "lib/eventText.ts",
+      "startLine": 29,
+      "endLine": 37,
+      "props": [
+        "title",
+        "text",
+        "type"
+      ],
+      "exported": true
+    },
+    {
+      "id": "isDateKey",
+      "kind": "function",
+      "name": "isDateKey",
+      "description": "Exported Function 'isDateKey'. Params: s.",
+      "file": "lib/eventText.ts",
+      "startLine": 40,
+      "endLine": 40,
+      "props": [
+        "s"
+      ],
+      "exported": true
+    },
+    {
+      "id": "normalizeDate",
+      "kind": "function",
+      "name": "normalizeDate",
+      "description": "Exported Function 'normalizeDate'. Params: raw.",
+      "file": "lib/eventText.ts",
+      "startLine": 49,
+      "endLine": 51,
+      "props": [
+        "raw"
+      ],
+      "exported": true
+    },
+    {
+      "id": "lib/eventText.ts",
+      "kind": "file",
+      "name": "lib/eventText.ts",
+      "description": "Source module: 4 top-level artifacts.",
+      "file": "lib/eventText.ts",
+      "startLine": 1,
+      "endLine": 52
+    },
+    {
+      "id": "lib/firebase.ts",
+      "kind": "file",
+      "name": "lib/firebase.ts",
+      "description": "Source module: 0 top-level artifacts.",
+      "file": "lib/firebase.ts",
+      "startLine": 1,
+      "endLine": 48
+    },
+    {
+      "id": "loadCredentials",
+      "kind": "function",
+      "name": "loadCredentials",
+      "description": "Function 'loadCredentials'.",
+      "file": "lib/firebaseAdmin.ts",
+      "startLine": 14,
+      "endLine": 38
+    },
+    {
+      "id": "adminDb",
+      "kind": "function",
+      "name": "adminDb",
+      "description": "Exported Function 'adminDb'.",
+      "file": "lib/firebaseAdmin.ts",
+      "startLine": 42,
+      "endLine": 49,
+      "exported": true
+    },
+    {
+      "id": "lib/firebaseAdmin.ts",
+      "kind": "file",
+      "name": "lib/firebaseAdmin.ts",
+      "description": "Source module: 2 top-level artifacts.",
+      "file": "lib/firebaseAdmin.ts",
+      "startLine": 1,
+      "endLine": 50
+    },
+    {
+      "id": "subscribeToGear",
+      "kind": "function",
+      "name": "subscribeToGear",
+      "description": "Exported Function 'subscribeToGear'. Params: onChange, onError.",
+      "file": "lib/gearService.ts",
+      "startLine": 14,
+      "endLine": 23,
+      "props": [
+        "onChange",
+        "onError"
+      ],
+      "exported": true
+    },
+    {
+      "id": "saveGear",
+      "kind": "function",
+      "name": "saveGear",
+      "description": "Exported Function 'saveGear'. Params: text.",
+      "file": "lib/gearService.ts",
+      "startLine": 25,
+      "endLine": 27,
+      "props": [
+        "text"
+      ],
+      "exported": true
+    },
+    {
+      "id": "subscribeToNeeds",
+      "kind": "function",
+      "name": "subscribeToNeeds",
+      "description": "Exported Function 'subscribeToNeeds'. Params: onChange, onError.",
+      "file": "lib/gearService.ts",
+      "startLine": 46,
+      "endLine": 61,
+      "props": [
+        "onChange",
+        "onError"
+      ],
+      "exported": true
+    },
+    {
+      "id": "saveNeed",
+      "kind": "function",
+      "name": "saveNeed",
+      "description": "Exported Function 'saveNeed'. Params: member, text.",
+      "file": "lib/gearService.ts",
+      "startLine": 63,
+      "endLine": 65,
+      "props": [
+        "member",
+        "text"
+      ],
+      "exported": true
+    },
+    {
+      "id": "lib/gearService.ts",
+      "kind": "file",
+      "name": "lib/gearService.ts",
+      "description": "Source module: 4 top-level artifacts.",
+      "file": "lib/gearService.ts",
+      "startLine": 1,
+      "endLine": 66
+    },
+    {
+      "id": "esc",
+      "kind": "function",
+      "name": "esc",
+      "description": "Function 'esc'. Params: value.",
+      "file": "lib/ics.ts",
+      "startLine": 29,
+      "endLine": 35,
+      "props": [
+        "value"
+      ]
+    },
+    {
+      "id": "fold",
+      "kind": "function",
+      "name": "fold",
+      "description": "Function 'fold'. Params: line.",
+      "file": "lib/ics.ts",
+      "startLine": 42,
+      "endLine": 58,
+      "props": [
+        "line"
+      ]
+    },
+    {
+      "id": "pad-3",
+      "kind": "function",
+      "name": "pad",
+      "description": "Function 'pad'. Params: n.",
+      "file": "lib/ics.ts",
+      "startLine": 60,
+      "endLine": 60,
+      "props": [
+        "n"
+      ]
+    },
+    {
+      "id": "utcStamp",
+      "kind": "function",
+      "name": "utcStamp",
+      "description": "Function 'utcStamp'. Params: d.",
+      "file": "lib/ics.ts",
+      "startLine": 63,
+      "endLine": 68,
+      "props": [
+        "d"
+      ]
+    },
+    {
+      "id": "dateOnly",
+      "kind": "function",
+      "name": "dateOnly",
+      "description": "Function 'dateOnly'. Params: key.",
+      "file": "lib/ics.ts",
+      "startLine": 71,
+      "endLine": 71,
+      "props": [
+        "key"
+      ]
+    },
+    {
+      "id": "addDays",
+      "kind": "function",
+      "name": "addDays",
+      "description": "Function 'addDays'. Params: key, days.",
+      "file": "lib/ics.ts",
+      "startLine": 74,
+      "endLine": 78,
+      "props": [
+        "key",
+        "days"
+      ]
+    },
+    {
+      "id": "addHours",
+      "kind": "function",
+      "name": "addHours",
+      "description": "Function 'addHours'. Params: key, time, hours.",
+      "file": "lib/ics.ts",
+      "startLine": 81,
+      "endLine": 90,
+      "props": [
+        "key",
+        "time",
+        "hours"
+      ]
+    },
+    {
+      "id": "localStamp",
+      "kind": "function",
+      "name": "localStamp",
+      "description": "Function 'localStamp'. Params: key, time.",
+      "file": "lib/ics.ts",
+      "startLine": 93,
+      "endLine": 94,
+      "props": [
+        "key",
+        "time"
+      ]
+    },
+    {
+      "id": "titleFor",
+      "kind": "function",
+      "name": "titleFor",
+      "description": "Exported Function 'titleFor'. Params: e.",
+      "file": "lib/ics.ts",
+      "startLine": 128,
+      "endLine": 134,
+      "props": [
+        "e"
+      ],
+      "exported": true
+    },
+    {
+      "id": "vevent",
+      "kind": "function",
+      "name": "vevent",
+      "description": "Function 'vevent'. Params: e, now, domain.",
+      "file": "lib/ics.ts",
+      "startLine": 136,
+      "endLine": 169,
+      "props": [
+        "e",
+        "now",
+        "domain"
+      ]
+    },
+    {
+      "id": "buildCalendar",
+      "kind": "function",
+      "name": "buildCalendar",
+      "description": "Exported Function 'buildCalendar'. Params: events, opts.",
+      "file": "lib/ics.ts",
+      "startLine": 173,
+      "endLine": 199,
+      "props": [
+        "events",
+        "opts"
+      ],
+      "exported": true
+    },
+    {
+      "id": "lib/ics.ts",
+      "kind": "file",
+      "name": "lib/ics.ts",
+      "description": "Source module: 11 top-level artifacts.",
+      "file": "lib/ics.ts",
+      "startLine": 1,
+      "endLine": 200
+    },
+    {
+      "id": "lib/sessionService.ts",
+      "kind": "file",
+      "name": "lib/sessionService.ts",
+      "description": "Source module: 0 top-level artifacts.",
+      "file": "lib/sessionService.ts",
+      "startLine": 1,
+      "endLine": 76
+    },
+    {
+      "id": "subscribeToStandins",
+      "kind": "function",
+      "name": "subscribeToStandins",
+      "description": "Exported Function 'subscribeToStandins'. Params: onChange, onError.",
+      "file": "lib/standinService.ts",
+      "startLine": 8,
+      "endLine": 17,
+      "props": [
+        "onChange",
+        "onError"
+      ],
+      "exported": true
+    },
+    {
+      "id": "saveStandins",
+      "kind": "function",
+      "name": "saveStandins",
+      "description": "Exported Function 'saveStandins'. Params: text.",
+      "file": "lib/standinService.ts",
+      "startLine": 19,
+      "endLine": 21,
+      "props": [
+        "text"
+      ],
+      "exported": true
+    },
+    {
+      "id": "lib/standinService.ts",
+      "kind": "file",
+      "name": "lib/standinService.ts",
+      "description": "Source module: 2 top-level artifacts.",
+      "file": "lib/standinService.ts",
+      "startLine": 1,
+      "endLine": 22
+    },
+    {
+      "id": "next.config.ts",
+      "kind": "file",
+      "name": "next.config.ts",
+      "description": "Source module: 0 top-level artifacts.",
+      "file": "next.config.ts",
+      "startLine": 1,
+      "endLine": 19
+    },
+    {
+      "id": "postcss.config.mjs",
+      "kind": "file",
+      "name": "postcss.config.mjs",
+      "description": "Source module: 0 top-level artifacts.",
+      "file": "postcss.config.mjs",
+      "startLine": 1,
+      "endLine": 6
+    }
+  ],
+  "aiCalls": [],
+  "endpoints": [
+    {
+      "endpoint": "route:/api/calendar/*",
+      "calledFrom": [
+        {
+          "file": "lib/calendarFeedService.ts",
+          "line": 38
+        }
+      ],
+      "handler": "app/api/calendar/[token]/route.ts",
+      "modelCallsInHandler": 0
+    }
+  ],
+  "stackProfile": {
+    "version": 1,
+    "roots": [
+      {
+        "root": "",
+        "frameworks": [
+          {
+            "id": "next-route-handlers",
+            "label": "Next route handlers",
+            "origin": "rule",
+            "evidence": [
+              {
+                "file": "app/api/calendar/[token]/route.ts",
+                "why": "marker file"
+              }
+            ]
+          },
+          {
+            "id": "next-js",
+            "label": "Next.js",
+            "origin": "rule",
+            "evidence": [
+              {
+                "file": "next.config.ts",
+                "why": "marker file"
+              },
+              {
+                "file": "package.json",
+                "why": "dependency"
+              }
+            ]
+          }
+        ],
+        "hasWebClient": true,
+        "hasNativeClient": false,
+        "hasServer": true,
+        "serverless": true,
+        "runtime": "unknown",
+        "packageManager": "unknown",
+        "serverCode": [
+          "app/api/calendar/[token]/"
+        ],
+        "handlerStyles": [
+          {
+            "style": "a Next.js route handler",
+            "where": "app/api/calendar/[token]/",
+            "evidence": "app/api/calendar/[token]/route.ts"
+          }
+        ],
+        "aiPackages": [],
+        "unrecognisedAi": [],
+        "confidence": "high",
+        "unknowns": []
+      }
+    ],
+    "unknowns": [],
+    "disagreements": [],
+    "tiers": [
+      "rule"
+    ]
+  }
+}
