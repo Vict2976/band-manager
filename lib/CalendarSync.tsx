@@ -8,6 +8,7 @@ import { getOrCreateFeedToken, rotateFeedToken, feedUrl } from './calendarFeedSe
  * events added here keep appearing on everyone's calendar without anyone
  * doing anything again.
  */
+// @uxid lib/CalendarSync::CalendarSync
 export default function CalendarSync() {
   const [url, setUrl] = useState<string | null>(null);
   const [error, setError] = useState(false);
