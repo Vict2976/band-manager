@@ -1,0 +1,2994 @@
+{
+  "framework": "css-variables",
+  "sources": [
+    {
+      "kind": "tailwind-theme-block",
+      "path": "app/globals.css",
+      "line": 1,
+      "excerpt": "@import \"tailwindcss\";",
+      "detail": "Tailwind v4, CSS-first: the theme is this stylesheet, not a tailwind.config file."
+    },
+    {
+      "kind": "css-variables",
+      "path": "app/globals.css",
+      "line": 9,
+      "excerpt": ":root {",
+      "detail": "18 custom properties declared under `:root`."
+    },
+    {
+      "kind": "font-loader",
+      "path": "app/layout.tsx",
+      "line": 7,
+      "excerpt": "variable: \"--font-geist-sans\",",
+      "detail": "`--font-geist-sans` is declared by a font loader here, not in CSS."
+    },
+    {
+      "kind": "font-loader",
+      "path": "app/layout.tsx",
+      "line": 12,
+      "excerpt": "variable: \"--font-geist-mono\",",
+      "detail": "`--font-geist-mono` is declared by a font loader here, not in CSS."
+    }
+  ],
+  "shadcn": null,
+  "darkVariant": null,
+  "palette": {
+    "spaces": [
+      {
+        "space": "hex",
+        "count": 16
+      }
+    ],
+    "achromatic": [],
+    "chromatic": []
+  },
+  "groups": [
+    {
+      "role": "surface",
+      "label": "Surfaces",
+      "families": [
+        {
+          "family": "bg",
+          "tokens": [
+            {
+              "name": "--bg",
+              "value": "#f5f6fd",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 27,
+              "exposedAs": null,
+              "role": "surface",
+              "family": "bg",
+              "light": {
+                "raw": "#f5f6fd",
+                "resolved": "#f5f6fd",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 27,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#f5f6fd",
+                "resolved": "#f5f6fd",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 27,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--bg",
+                  "raw": "#f5f6fd",
+                  "source": "app/globals.css",
+                  "line": 27
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 3,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 34
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 41
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 61
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "family": "muted",
+          "tokens": [
+            {
+              "name": "--muted",
+              "value": "#6b7187",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 31,
+              "exposedAs": null,
+              "role": "surface",
+              "family": "muted",
+              "light": {
+                "raw": "#6b7187",
+                "resolved": "#6b7187",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 31,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#6b7187",
+                "resolved": "#6b7187",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 31,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--muted",
+                  "raw": "#6b7187",
+                  "source": "app/globals.css",
+                  "line": 31
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 37,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 179
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 227
+                  },
+                  {
+                    "path": "app/events/[id]/page.tsx",
+                    "line": 52
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "family": "surface",
+          "tokens": [
+            {
+              "name": "--surface",
+              "value": "#ffffff",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 28,
+              "exposedAs": null,
+              "role": "surface",
+              "family": "surface",
+              "light": {
+                "raw": "#ffffff",
+                "resolved": "#ffffff",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 28,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#ffffff",
+                "resolved": "#ffffff",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 28,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--surface",
+                  "raw": "#ffffff",
+                  "source": "app/globals.css",
+                  "line": 28
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 1,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 85
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "tokenCount": 3,
+      "totalUses": 41
+    },
+    {
+      "role": "brand",
+      "label": "Brand",
+      "families": [
+        {
+          "family": "primary",
+          "tokens": [
+            {
+              "name": "--primary",
+              "value": "#6874f4",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 11,
+              "exposedAs": null,
+              "role": "brand",
+              "family": "primary",
+              "light": {
+                "raw": "#6874f4",
+                "resolved": "#6874f4",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 11,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#6874f4",
+                "resolved": "#6874f4",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 11,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--primary",
+                  "raw": "#6874f4",
+                  "source": "app/globals.css",
+                  "line": 11
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 23,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 59
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 108
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 148
+                  }
+                ]
+              }
+            },
+            {
+              "name": "--primary-100",
+              "value": "#e4e6fd",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 14,
+              "exposedAs": null,
+              "role": "brand",
+              "family": "primary",
+              "light": {
+                "raw": "#e4e6fd",
+                "resolved": "#e4e6fd",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 14,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#e4e6fd",
+                "resolved": "#e4e6fd",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 14,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--primary-100",
+                  "raw": "#e4e6fd",
+                  "source": "app/globals.css",
+                  "line": 14
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 4,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 93
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 135
+                  },
+                  {
+                    "path": "app/events/[id]/page.tsx",
+                    "line": 44
+                  }
+                ]
+              }
+            },
+            {
+              "name": "--primary-50",
+              "value": "#f0f1fe",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 15,
+              "exposedAs": null,
+              "role": "brand",
+              "family": "primary",
+              "light": {
+                "raw": "#f0f1fe",
+                "resolved": "#f0f1fe",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 15,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#f0f1fe",
+                "resolved": "#f0f1fe",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 15,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--primary-50",
+                  "raw": "#f0f1fe",
+                  "source": "app/globals.css",
+                  "line": 15
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 14,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 131
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 170
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 217
+                  }
+                ]
+              }
+            },
+            {
+              "name": "--primary-600",
+              "value": "#4c5ae8",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 12,
+              "exposedAs": null,
+              "role": "brand",
+              "family": "primary",
+              "light": {
+                "raw": "#4c5ae8",
+                "resolved": "#4c5ae8",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 12,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#4c5ae8",
+                "resolved": "#4c5ae8",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 12,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--primary-600",
+                  "raw": "#4c5ae8",
+                  "source": "app/globals.css",
+                  "line": 12
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 1,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 59
+                  }
+                ]
+              }
+            },
+            {
+              "name": "--primary-700",
+              "value": "#3d48d4",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 13,
+              "exposedAs": null,
+              "role": "brand",
+              "family": "primary",
+              "light": {
+                "raw": "#3d48d4",
+                "resolved": "#3d48d4",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 13,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#3d48d4",
+                "resolved": "#3d48d4",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 13,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--primary-700",
+                  "raw": "#3d48d4",
+                  "source": "app/globals.css",
+                  "line": 13
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 4,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 132
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 183
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 215
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "tokenCount": 5,
+      "totalUses": 46
+    },
+    {
+      "role": "other",
+      "label": "Unclassified",
+      "families": [
+        {
+          "family": "background",
+          "tokens": [
+            {
+              "name": "--background",
+              "value": "var(--bg)",
+              "kind": "other",
+              "source": "app/globals.css",
+              "line": 34,
+              "exposedAs": null,
+              "role": "other",
+              "family": "background",
+              "light": {
+                "raw": "var(--bg)",
+                "resolved": "#f5f6fd",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 34,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "var(--bg)",
+                "resolved": "#f5f6fd",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 34,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": "--bg",
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--background",
+                  "raw": "var(--bg)",
+                  "source": "app/globals.css",
+                  "line": 34
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 0,
+                "utilities": [],
+                "examples": []
+              }
+            }
+          ]
+        },
+        {
+          "family": "confirmed",
+          "tokens": [
+            {
+              "name": "--confirmed",
+              "value": "#12b886",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 23,
+              "exposedAs": null,
+              "role": "other",
+              "family": "confirmed",
+              "light": {
+                "raw": "#12b886",
+                "resolved": "#12b886",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 23,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#12b886",
+                "resolved": "#12b886",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 23,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--confirmed",
+                  "raw": "#12b886",
+                  "source": "app/globals.css",
+                  "line": 23
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 1,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "lib/EventModal.tsx",
+                    "line": 25
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "family": "faint",
+          "tokens": [
+            {
+              "name": "--faint",
+              "value": "#9aa0b6",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 32,
+              "exposedAs": null,
+              "role": "other",
+              "family": "faint",
+              "light": {
+                "raw": "#9aa0b6",
+                "resolved": "#9aa0b6",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 32,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#9aa0b6",
+                "resolved": "#9aa0b6",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 32,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--faint",
+                  "raw": "#9aa0b6",
+                  "source": "app/globals.css",
+                  "line": 32
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 15,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 145
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 194
+                  },
+                  {
+                    "path": "app/events/[id]/page.tsx",
+                    "line": 102
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "family": "foreground",
+          "tokens": [
+            {
+              "name": "--foreground",
+              "value": "var(--ink)",
+              "kind": "other",
+              "source": "app/globals.css",
+              "line": 35,
+              "exposedAs": null,
+              "role": "other",
+              "family": "foreground",
+              "light": {
+                "raw": "var(--ink)",
+                "resolved": "#2c3147",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 35,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "var(--ink)",
+                "resolved": "#2c3147",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 35,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": "--ink",
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--foreground",
+                  "raw": "var(--ink)",
+                  "source": "app/globals.css",
+                  "line": 35
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 0,
+                "utilities": [],
+                "examples": []
+              }
+            }
+          ]
+        },
+        {
+          "family": "funk",
+          "tokens": [
+            {
+              "name": "--funk",
+              "value": "#ff6b35",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 18,
+              "exposedAs": null,
+              "role": "other",
+              "family": "funk",
+              "light": {
+                "raw": "#ff6b35",
+                "resolved": "#ff6b35",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 18,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#ff6b35",
+                "resolved": "#ff6b35",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 18,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--funk",
+                  "raw": "#ff6b35",
+                  "source": "app/globals.css",
+                  "line": 18
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 1,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 108
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "family": "gold",
+          "tokens": [
+            {
+              "name": "--gold",
+              "value": "#ffc24b",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 20,
+              "exposedAs": null,
+              "role": "other",
+              "family": "gold",
+              "light": {
+                "raw": "#ffc24b",
+                "resolved": "#ffc24b",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 20,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#ffc24b",
+                "resolved": "#ffc24b",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 20,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--gold",
+                  "raw": "#ffc24b",
+                  "source": "app/globals.css",
+                  "line": 20
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 2,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/gear/page.tsx",
+                    "line": 81
+                  },
+                  {
+                    "path": "lib/SharedNotes.tsx",
+                    "line": 119
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "family": "hairline",
+          "tokens": [
+            {
+              "name": "--hairline",
+              "value": "#e7e8f4",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 29,
+              "exposedAs": null,
+              "role": "other",
+              "family": "hairline",
+              "light": {
+                "raw": "#e7e8f4",
+                "resolved": "#e7e8f4",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 29,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#e7e8f4",
+                "resolved": "#e7e8f4",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 29,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--hairline",
+                  "raw": "#e7e8f4",
+                  "source": "app/globals.css",
+                  "line": 29
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 16,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 86
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 140
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 154
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "family": "ink",
+          "tokens": [
+            {
+              "name": "--ink",
+              "value": "#2c3147",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 30,
+              "exposedAs": null,
+              "role": "other",
+              "family": "ink",
+              "light": {
+                "raw": "#2c3147",
+                "resolved": "#2c3147",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 30,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#2c3147",
+                "resolved": "#2c3147",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 30,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--ink",
+                  "raw": "#2c3147",
+                  "source": "app/globals.css",
+                  "line": 30
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 20,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 35
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 42
+                  },
+                  {
+                    "path": "app/globals.css",
+                    "line": 54
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "family": "latina",
+          "tokens": [
+            {
+              "name": "--latina",
+              "value": "#ff3d77",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 19,
+              "exposedAs": null,
+              "role": "other",
+              "family": "latina",
+              "light": {
+                "raw": "#ff3d77",
+                "resolved": "#ff3d77",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 19,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#ff3d77",
+                "resolved": "#ff3d77",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 19,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--latina",
+                  "raw": "#ff3d77",
+                  "source": "app/globals.css",
+                  "line": 19
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 9,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "app/globals.css",
+                    "line": 108
+                  },
+                  {
+                    "path": "app/login/page.tsx",
+                    "line": 44
+                  },
+                  {
+                    "path": "app/login/page.tsx",
+                    "line": 44
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "family": "pending",
+          "tokens": [
+            {
+              "name": "--pending",
+              "value": "#e8a020",
+              "kind": "color",
+              "source": "app/globals.css",
+              "line": 24,
+              "exposedAs": null,
+              "role": "other",
+              "family": "pending",
+              "light": {
+                "raw": "#e8a020",
+                "resolved": "#e8a020",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 24,
+                "selector": ":root"
+              },
+              "dark": {
+                "raw": "#e8a020",
+                "resolved": "#e8a020",
+                "px": null,
+                "external": false,
+                "source": "app/globals.css",
+                "line": 24,
+                "selector": ":root"
+              },
+              "hasDarkOverride": false,
+              "aliasOf": null,
+              "layers": [
+                {
+                  "selector": ":root",
+                  "mode": null,
+                  "declaredAs": "--pending",
+                  "raw": "#e8a020",
+                  "source": "app/globals.css",
+                  "line": 24
+                }
+              ],
+              "usage": {
+                "utilityUses": 0,
+                "varRefs": 1,
+                "utilities": [],
+                "examples": [
+                  {
+                    "path": "lib/EventModal.tsx",
+                    "line": 26
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "tokenCount": 10,
+      "totalUses": 65
+    }
+  ],
+  "tokens": [
+    {
+      "name": "--bg",
+      "value": "#f5f6fd",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 27,
+      "exposedAs": null,
+      "role": "surface",
+      "family": "bg",
+      "light": {
+        "raw": "#f5f6fd",
+        "resolved": "#f5f6fd",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 27,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#f5f6fd",
+        "resolved": "#f5f6fd",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 27,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--bg",
+          "raw": "#f5f6fd",
+          "source": "app/globals.css",
+          "line": 27
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 3,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 34
+          },
+          {
+            "path": "app/globals.css",
+            "line": 41
+          },
+          {
+            "path": "app/globals.css",
+            "line": 61
+          }
+        ]
+      }
+    },
+    {
+      "name": "--muted",
+      "value": "#6b7187",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 31,
+      "exposedAs": null,
+      "role": "surface",
+      "family": "muted",
+      "light": {
+        "raw": "#6b7187",
+        "resolved": "#6b7187",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 31,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#6b7187",
+        "resolved": "#6b7187",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 31,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--muted",
+          "raw": "#6b7187",
+          "source": "app/globals.css",
+          "line": 31
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 37,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 179
+          },
+          {
+            "path": "app/globals.css",
+            "line": 227
+          },
+          {
+            "path": "app/events/[id]/page.tsx",
+            "line": 52
+          }
+        ]
+      }
+    },
+    {
+      "name": "--surface",
+      "value": "#ffffff",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 28,
+      "exposedAs": null,
+      "role": "surface",
+      "family": "surface",
+      "light": {
+        "raw": "#ffffff",
+        "resolved": "#ffffff",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 28,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#ffffff",
+        "resolved": "#ffffff",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 28,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--surface",
+          "raw": "#ffffff",
+          "source": "app/globals.css",
+          "line": 28
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 1,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 85
+          }
+        ]
+      }
+    },
+    {
+      "name": "--primary",
+      "value": "#6874f4",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 11,
+      "exposedAs": null,
+      "role": "brand",
+      "family": "primary",
+      "light": {
+        "raw": "#6874f4",
+        "resolved": "#6874f4",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 11,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#6874f4",
+        "resolved": "#6874f4",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 11,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--primary",
+          "raw": "#6874f4",
+          "source": "app/globals.css",
+          "line": 11
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 23,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 59
+          },
+          {
+            "path": "app/globals.css",
+            "line": 108
+          },
+          {
+            "path": "app/globals.css",
+            "line": 148
+          }
+        ]
+      }
+    },
+    {
+      "name": "--primary-100",
+      "value": "#e4e6fd",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 14,
+      "exposedAs": null,
+      "role": "brand",
+      "family": "primary",
+      "light": {
+        "raw": "#e4e6fd",
+        "resolved": "#e4e6fd",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 14,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#e4e6fd",
+        "resolved": "#e4e6fd",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 14,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--primary-100",
+          "raw": "#e4e6fd",
+          "source": "app/globals.css",
+          "line": 14
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 4,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 93
+          },
+          {
+            "path": "app/globals.css",
+            "line": 135
+          },
+          {
+            "path": "app/events/[id]/page.tsx",
+            "line": 44
+          }
+        ]
+      }
+    },
+    {
+      "name": "--primary-50",
+      "value": "#f0f1fe",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 15,
+      "exposedAs": null,
+      "role": "brand",
+      "family": "primary",
+      "light": {
+        "raw": "#f0f1fe",
+        "resolved": "#f0f1fe",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 15,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#f0f1fe",
+        "resolved": "#f0f1fe",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 15,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--primary-50",
+          "raw": "#f0f1fe",
+          "source": "app/globals.css",
+          "line": 15
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 14,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 131
+          },
+          {
+            "path": "app/globals.css",
+            "line": 170
+          },
+          {
+            "path": "app/globals.css",
+            "line": 217
+          }
+        ]
+      }
+    },
+    {
+      "name": "--primary-600",
+      "value": "#4c5ae8",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 12,
+      "exposedAs": null,
+      "role": "brand",
+      "family": "primary",
+      "light": {
+        "raw": "#4c5ae8",
+        "resolved": "#4c5ae8",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 12,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#4c5ae8",
+        "resolved": "#4c5ae8",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 12,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--primary-600",
+          "raw": "#4c5ae8",
+          "source": "app/globals.css",
+          "line": 12
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 1,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 59
+          }
+        ]
+      }
+    },
+    {
+      "name": "--primary-700",
+      "value": "#3d48d4",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 13,
+      "exposedAs": null,
+      "role": "brand",
+      "family": "primary",
+      "light": {
+        "raw": "#3d48d4",
+        "resolved": "#3d48d4",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 13,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#3d48d4",
+        "resolved": "#3d48d4",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 13,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--primary-700",
+          "raw": "#3d48d4",
+          "source": "app/globals.css",
+          "line": 13
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 4,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 132
+          },
+          {
+            "path": "app/globals.css",
+            "line": 183
+          },
+          {
+            "path": "app/globals.css",
+            "line": 215
+          }
+        ]
+      }
+    },
+    {
+      "name": "--background",
+      "value": "var(--bg)",
+      "kind": "other",
+      "source": "app/globals.css",
+      "line": 34,
+      "exposedAs": null,
+      "role": "other",
+      "family": "background",
+      "light": {
+        "raw": "var(--bg)",
+        "resolved": "#f5f6fd",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 34,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "var(--bg)",
+        "resolved": "#f5f6fd",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 34,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": "--bg",
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--background",
+          "raw": "var(--bg)",
+          "source": "app/globals.css",
+          "line": 34
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 0,
+        "utilities": [],
+        "examples": []
+      }
+    },
+    {
+      "name": "--confirmed",
+      "value": "#12b886",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 23,
+      "exposedAs": null,
+      "role": "other",
+      "family": "confirmed",
+      "light": {
+        "raw": "#12b886",
+        "resolved": "#12b886",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 23,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#12b886",
+        "resolved": "#12b886",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 23,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--confirmed",
+          "raw": "#12b886",
+          "source": "app/globals.css",
+          "line": 23
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 1,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "lib/EventModal.tsx",
+            "line": 25
+          }
+        ]
+      }
+    },
+    {
+      "name": "--faint",
+      "value": "#9aa0b6",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 32,
+      "exposedAs": null,
+      "role": "other",
+      "family": "faint",
+      "light": {
+        "raw": "#9aa0b6",
+        "resolved": "#9aa0b6",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 32,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#9aa0b6",
+        "resolved": "#9aa0b6",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 32,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--faint",
+          "raw": "#9aa0b6",
+          "source": "app/globals.css",
+          "line": 32
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 15,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 145
+          },
+          {
+            "path": "app/globals.css",
+            "line": 194
+          },
+          {
+            "path": "app/events/[id]/page.tsx",
+            "line": 102
+          }
+        ]
+      }
+    },
+    {
+      "name": "--foreground",
+      "value": "var(--ink)",
+      "kind": "other",
+      "source": "app/globals.css",
+      "line": 35,
+      "exposedAs": null,
+      "role": "other",
+      "family": "foreground",
+      "light": {
+        "raw": "var(--ink)",
+        "resolved": "#2c3147",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 35,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "var(--ink)",
+        "resolved": "#2c3147",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 35,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": "--ink",
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--foreground",
+          "raw": "var(--ink)",
+          "source": "app/globals.css",
+          "line": 35
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 0,
+        "utilities": [],
+        "examples": []
+      }
+    },
+    {
+      "name": "--funk",
+      "value": "#ff6b35",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 18,
+      "exposedAs": null,
+      "role": "other",
+      "family": "funk",
+      "light": {
+        "raw": "#ff6b35",
+        "resolved": "#ff6b35",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 18,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#ff6b35",
+        "resolved": "#ff6b35",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 18,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--funk",
+          "raw": "#ff6b35",
+          "source": "app/globals.css",
+          "line": 18
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 1,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 108
+          }
+        ]
+      }
+    },
+    {
+      "name": "--gold",
+      "value": "#ffc24b",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 20,
+      "exposedAs": null,
+      "role": "other",
+      "family": "gold",
+      "light": {
+        "raw": "#ffc24b",
+        "resolved": "#ffc24b",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 20,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#ffc24b",
+        "resolved": "#ffc24b",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 20,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--gold",
+          "raw": "#ffc24b",
+          "source": "app/globals.css",
+          "line": 20
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 2,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/gear/page.tsx",
+            "line": 81
+          },
+          {
+            "path": "lib/SharedNotes.tsx",
+            "line": 119
+          }
+        ]
+      }
+    },
+    {
+      "name": "--hairline",
+      "value": "#e7e8f4",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 29,
+      "exposedAs": null,
+      "role": "other",
+      "family": "hairline",
+      "light": {
+        "raw": "#e7e8f4",
+        "resolved": "#e7e8f4",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 29,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#e7e8f4",
+        "resolved": "#e7e8f4",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 29,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--hairline",
+          "raw": "#e7e8f4",
+          "source": "app/globals.css",
+          "line": 29
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 16,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 86
+          },
+          {
+            "path": "app/globals.css",
+            "line": 140
+          },
+          {
+            "path": "app/globals.css",
+            "line": 154
+          }
+        ]
+      }
+    },
+    {
+      "name": "--ink",
+      "value": "#2c3147",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 30,
+      "exposedAs": null,
+      "role": "other",
+      "family": "ink",
+      "light": {
+        "raw": "#2c3147",
+        "resolved": "#2c3147",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 30,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#2c3147",
+        "resolved": "#2c3147",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 30,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--ink",
+          "raw": "#2c3147",
+          "source": "app/globals.css",
+          "line": 30
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 20,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 35
+          },
+          {
+            "path": "app/globals.css",
+            "line": 42
+          },
+          {
+            "path": "app/globals.css",
+            "line": 54
+          }
+        ]
+      }
+    },
+    {
+      "name": "--latina",
+      "value": "#ff3d77",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 19,
+      "exposedAs": null,
+      "role": "other",
+      "family": "latina",
+      "light": {
+        "raw": "#ff3d77",
+        "resolved": "#ff3d77",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 19,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#ff3d77",
+        "resolved": "#ff3d77",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 19,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--latina",
+          "raw": "#ff3d77",
+          "source": "app/globals.css",
+          "line": 19
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 9,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "app/globals.css",
+            "line": 108
+          },
+          {
+            "path": "app/login/page.tsx",
+            "line": 44
+          },
+          {
+            "path": "app/login/page.tsx",
+            "line": 44
+          }
+        ]
+      }
+    },
+    {
+      "name": "--pending",
+      "value": "#e8a020",
+      "kind": "color",
+      "source": "app/globals.css",
+      "line": 24,
+      "exposedAs": null,
+      "role": "other",
+      "family": "pending",
+      "light": {
+        "raw": "#e8a020",
+        "resolved": "#e8a020",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 24,
+        "selector": ":root"
+      },
+      "dark": {
+        "raw": "#e8a020",
+        "resolved": "#e8a020",
+        "px": null,
+        "external": false,
+        "source": "app/globals.css",
+        "line": 24,
+        "selector": ":root"
+      },
+      "hasDarkOverride": false,
+      "aliasOf": null,
+      "layers": [
+        {
+          "selector": ":root",
+          "mode": null,
+          "declaredAs": "--pending",
+          "raw": "#e8a020",
+          "source": "app/globals.css",
+          "line": 24
+        }
+      ],
+      "usage": {
+        "utilityUses": 0,
+        "varRefs": 1,
+        "utilities": [],
+        "examples": [
+          {
+            "path": "lib/EventModal.tsx",
+            "line": 26
+          }
+        ]
+      }
+    }
+  ],
+  "scales": {
+    "radius": [],
+    "spacing": [],
+    "breakpoints": []
+  },
+  "typography": {
+    "fontFaces": [],
+    "families": [],
+    "scale": [
+      {
+        "label": "Heading 1",
+        "sizePx": 20.8,
+        "sizeRaw": "1.3rem",
+        "weight": 800,
+        "source": "app/globals.css",
+        "line": 204
+      },
+      {
+        "label": "Heading 2",
+        "sizePx": 17.92,
+        "sizeRaw": "1.12rem",
+        "weight": 700,
+        "source": "app/globals.css",
+        "line": 205
+      },
+      {
+        "label": "Heading 3",
+        "sizePx": 16,
+        "sizeRaw": "1rem",
+        "weight": 700,
+        "source": "app/globals.css",
+        "line": 206
+      }
+    ]
+  },
+  "states": [
+    {
+      "variant": "hover",
+      "count": 20
+    },
+    {
+      "variant": "disabled",
+      "count": 6
+    },
+    {
+      "variant": "group-hover",
+      "count": 1
+    }
+  ],
+  "breakpointUse": [
+    {
+      "variant": "sm",
+      "count": 22
+    }
+  ],
+  "components": [
+    {
+      "name": "AppShell",
+      "file": "lib/AppShell.tsx",
+      "line": 16,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 5,
+      "usedInFiles": 5
+    },
+    {
+      "name": "Markdown",
+      "file": "lib/Markdown.tsx",
+      "line": 8,
+      "base": null,
+      "axes": [],
+      "states": [],
+      "conditionalBranches": 0,
+      "uses": 5,
+      "usedInFiles": 5
+    },
+    {
+      "name": "StatusBadge",
+      "file": "lib/EventModal.tsx",
+      "line": 31,
+      "base": null,
+      "axes": [
+        {
+          "name": "initialMode",
+          "values": [
+            {
+              "name": "view",
+              "classes": null,
+              "explicitUses": 0
+            },
+            {
+              "name": "edit",
+              "classes": null,
+              "explicitUses": 0
+            }
+          ],
+          "defaultValue": null,
+          "evidence": "prop-union",
+          "line": 73
+        }
+      ],
+      "states": [
+        "disabled",
+        "hover"
+      ],
+      "conditionalBranches": 1,
+      "uses": 3,
+      "usedInFiles": 3
+    },
+    {
+      "name": "EventModal",
+      "file": "lib/EventModal.tsx",
+      "line": 61,
+      "base": null,
+      "axes": [],
+      "states": [
+        "disabled",
+        "hover"
+      ],
+      "conditionalBranches": 1,
+      "uses": 2,
+      "usedInFiles": 2
+    },
+    {
+      "name": "RichTextEditor",
+      "file": "lib/RichTextEditor.tsx",
+      "line": 18,
+      "base": null,
+      "axes": [],
+      "states": [],
+      "conditionalBranches": 1,
+      "uses": 2,
+      "usedInFiles": 2
+    },
+    {
+      "name": "SharedNotes",
+      "file": "lib/SharedNotes.tsx",
+      "line": 12,
+      "base": null,
+      "axes": [
+        {
+          "name": "status",
+          "values": [
+            {
+              "name": "idle",
+              "classes": null,
+              "explicitUses": 0
+            },
+            {
+              "name": "saving",
+              "classes": null,
+              "explicitUses": 0
+            },
+            {
+              "name": "saved",
+              "classes": null,
+              "explicitUses": 0
+            }
+          ],
+          "defaultValue": null,
+          "evidence": "prop-union",
+          "line": 113
+        }
+      ],
+      "states": [
+        "hover",
+        "placeholder"
+      ],
+      "conditionalBranches": 0,
+      "uses": 2,
+      "usedInFiles": 2
+    },
+    {
+      "name": "AuthProvider",
+      "file": "lib/auth.tsx",
+      "line": 20,
+      "base": null,
+      "axes": [],
+      "states": [],
+      "conditionalBranches": 0,
+      "uses": 1,
+      "usedInFiles": 1
+    },
+    {
+      "name": "CalendarSync",
+      "file": "lib/CalendarSync.tsx",
+      "line": 12,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 1,
+      "usedInFiles": 1
+    },
+    {
+      "name": "Calendar",
+      "file": "app/page.tsx",
+      "line": 52,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 1,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "CalendarIcon",
+      "file": "lib/AppShell.tsx",
+      "line": 107,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "CalendarPage",
+      "file": "app/page.tsx",
+      "line": 43,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 1,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "ClockIcon",
+      "file": "lib/AppShell.tsx",
+      "line": 117,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "EventBody",
+      "file": "app/page.tsx",
+      "line": 246,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 1,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "EventDetail",
+      "file": "app/events/[id]/page.tsx",
+      "line": 31,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "EventPage",
+      "file": "app/events/[id]/page.tsx",
+      "line": 22,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "GearIcon",
+      "file": "lib/AppShell.tsx",
+      "line": 127,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "GearOverview",
+      "file": "app/gear/page.tsx",
+      "line": 33,
+      "base": null,
+      "axes": [],
+      "states": [
+        "disabled",
+        "group-hover",
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "GearPage",
+      "file": "app/gear/page.tsx",
+      "line": 19,
+      "base": null,
+      "axes": [],
+      "states": [
+        "disabled",
+        "group-hover",
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "Legend",
+      "file": "app/page.tsx",
+      "line": 277,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 1,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "LoginPage",
+      "file": "app/login/page.tsx",
+      "line": 8,
+      "base": null,
+      "axes": [],
+      "states": [
+        "disabled"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "NeedModal",
+      "file": "app/gear/page.tsx",
+      "line": 102,
+      "base": null,
+      "axes": [],
+      "states": [
+        "disabled",
+        "group-hover",
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "Needs",
+      "file": "app/gear/page.tsx",
+      "line": 49,
+      "base": null,
+      "axes": [],
+      "states": [
+        "disabled",
+        "group-hover",
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "PeopleIcon",
+      "file": "lib/AppShell.tsx",
+      "line": 137,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "RootLayout",
+      "file": "app/layout.tsx",
+      "line": 30,
+      "base": null,
+      "axes": [],
+      "states": [],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "SaveStatus",
+      "file": "lib/SharedNotes.tsx",
+      "line": 113,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover",
+        "placeholder"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "StandinsPage",
+      "file": "app/standins/page.tsx",
+      "line": 8,
+      "base": null,
+      "axes": [],
+      "states": [],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "Upcoming",
+      "file": "app/upcoming/page.tsx",
+      "line": 52,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    },
+    {
+      "name": "UpcomingPage",
+      "file": "app/upcoming/page.tsx",
+      "line": 43,
+      "base": null,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "conditionalBranches": 0,
+      "uses": 0,
+      "usedInFiles": 0
+    }
+  ],
+  "composition": {
+    "primitiveDir": null,
+    "primitiveDirEvidence": null,
+    "primitives": [],
+    "unusedPrimitives": [],
+    "oneOffs": [
+      {
+        "name": "AuthProvider",
+        "file": "lib/auth.tsx"
+      },
+      {
+        "name": "CalendarSync",
+        "file": "lib/CalendarSync.tsx"
+      }
+    ],
+    "unreferenced": 20,
+    "screenCount": 7,
+    "applicationCount": 28,
+    "primitiveCount": 0,
+    "primitiveFileCount": 0
+  },
+  "disagreements": [
+    {
+      "kind": "unused-token",
+      "title": "2 token(s) are declared and never used",
+      "detail": "No utility class and no `var()` reference spends them: --background, --foreground.",
+      "count": 2,
+      "examples": [
+        {
+          "path": "app/globals.css",
+          "line": 34,
+          "excerpt": "--background: var(--bg)"
+        },
+        {
+          "path": "app/globals.css",
+          "line": 35,
+          "excerpt": "--foreground: var(--ink)"
+        }
+      ]
+    },
+    {
+      "kind": "hardcoded-color",
+      "title": "29 hardcoded colour literal(s) bypass the tokens",
+      "detail": "Written into a colour property or an arbitrary class value; 28 duplicate a token that already exists.",
+      "count": 29,
+      "examples": [
+        {
+          "path": "app/globals.css",
+          "line": 54,
+          "excerpt": "::selection { background: rgba(104, 116, 244, 0.25); color: var(--ink); }"
+        },
+        {
+          "path": "app/globals.css",
+          "line": 76,
+          "excerpt": "background: linear-gradient(100deg, #6874f4 0%, #ff6b35 50%, #ff3d77 100%);"
+        },
+        {
+          "path": "app/globals.css",
+          "line": 76,
+          "excerpt": "background: linear-gradient(100deg, #6874f4 0%, #ff6b35 50%, #ff3d77 100%);"
+        },
+        {
+          "path": "app/globals.css",
+          "line": 76,
+          "excerpt": "background: linear-gradient(100deg, #6874f4 0%, #ff6b35 50%, #ff3d77 100%);"
+        },
+        {
+          "path": "app/globals.css",
+          "line": 88,
+          "excerpt": "box-shadow: 0 1px 2px rgba(44, 49, 71, 0.04), 0 10px 30px -18px rgba(44, 49, 71, 0.18);"
+        },
+        {
+          "path": "app/globals.css",
+          "line": 88,
+          "excerpt": "box-shadow: 0 1px 2px rgba(44, 49, 71, 0.04), 0 10px 30px -18px rgba(44, 49, 71, 0.18);"
+        },
+        {
+          "path": "app/globals.css",
+          "line": 94,
+          "excerpt": "box-shadow: 0 18px 40px -20px rgba(104, 116, 244, 0.4);"
+        },
+        {
+          "path": "app/globals.css",
+          "line": 99,
+          "excerpt": "background: rgba(255, 255, 255, 0.72);"
+        },
+        {
+          "path": "app/globals.css",
+          "line": 110,
+          "excerpt": "color: #fff;"
+        },
+        {
+          "path": "app/globals.css",
+          "line": 112,
+          "excerpt": "box-shadow: 0 10px 26px -12px rgba(104, 116, 244, 0.6);"
+        }
+      ]
+    },
+    {
+      "kind": "off-scale",
+      "title": "16 arbitrary value(s) step off the scale",
+      "detail": "text-[11px] (7), border-[3px] (2), text-[10px] (2), border-[1.5px] (1), h-[100dvh] (1), max-h-[88vh] (1), min-h-[30vh] (1), text-[13px] (1)",
+      "count": 16,
+      "examples": [
+        {
+          "path": "app/events/[id]/page.tsx",
+          "line": 76,
+          "excerpt": "text-[11px]"
+        },
+        {
+          "path": "app/page.tsx",
+          "line": 110,
+          "excerpt": "text-[11px]"
+        },
+        {
+          "path": "app/page.tsx",
+          "line": 199,
+          "excerpt": "text-[11px]"
+        },
+        {
+          "path": "app/events/[id]/page.tsx",
+          "line": 44,
+          "excerpt": "border-[3px]"
+        },
+        {
+          "path": "lib/AppShell.tsx",
+          "line": 28,
+          "excerpt": "border-[3px]"
+        },
+        {
+          "path": "app/upcoming/page.tsx",
+          "line": 112,
+          "excerpt": "text-[10px]"
+        },
+        {
+          "path": "lib/EventModal.tsx",
+          "line": 37,
+          "excerpt": "text-[10px]"
+        },
+        {
+          "path": "app/page.tsx",
+          "line": 282,
+          "excerpt": "border-[1.5px]"
+        }
+      ]
+    }
+  ],
+  "literals": [
+    {
+      "path": "app/globals.css",
+      "line": 54,
+      "excerpt": "::selection { background: rgba(104, 116, 244, 0.25); color: var(--ink); }",
+      "literal": "rgba(104, 116, 244, 0.25)",
+      "duplicatesToken": "--primary",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 76,
+      "excerpt": "background: linear-gradient(100deg, #6874f4 0%, #ff6b35 50%, #ff3d77 100%);",
+      "literal": "#6874f4",
+      "duplicatesToken": "--primary",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 76,
+      "excerpt": "background: linear-gradient(100deg, #6874f4 0%, #ff6b35 50%, #ff3d77 100%);",
+      "literal": "#ff6b35",
+      "duplicatesToken": "--funk",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 76,
+      "excerpt": "background: linear-gradient(100deg, #6874f4 0%, #ff6b35 50%, #ff3d77 100%);",
+      "literal": "#ff3d77",
+      "duplicatesToken": "--latina",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 88,
+      "excerpt": "box-shadow: 0 1px 2px rgba(44, 49, 71, 0.04), 0 10px 30px -18px rgba(44, 49, 71, 0.18);",
+      "literal": "rgba(44, 49, 71, 0.04)",
+      "duplicatesToken": "--ink",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 88,
+      "excerpt": "box-shadow: 0 1px 2px rgba(44, 49, 71, 0.04), 0 10px 30px -18px rgba(44, 49, 71, 0.18);",
+      "literal": "rgba(44, 49, 71, 0.18)",
+      "duplicatesToken": "--ink",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 94,
+      "excerpt": "box-shadow: 0 18px 40px -20px rgba(104, 116, 244, 0.4);",
+      "literal": "rgba(104, 116, 244, 0.4)",
+      "duplicatesToken": "--primary",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 99,
+      "excerpt": "background: rgba(255, 255, 255, 0.72);",
+      "literal": "rgba(255, 255, 255, 0.72)",
+      "duplicatesToken": "--surface",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 110,
+      "excerpt": "color: #fff;",
+      "literal": "#fff",
+      "duplicatesToken": "--surface",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 112,
+      "excerpt": "box-shadow: 0 10px 26px -12px rgba(104, 116, 244, 0.6);",
+      "literal": "rgba(104, 116, 244, 0.6)",
+      "duplicatesToken": "--primary",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 117,
+      "excerpt": "box-shadow: 0 16px 32px -12px rgba(255, 61, 119, 0.55);",
+      "literal": "rgba(255, 61, 119, 0.55)",
+      "duplicatesToken": "--latina",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 123,
+      "excerpt": "background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);",
+      "literal": "rgba(255,255,255,0.4)",
+      "duplicatesToken": "--surface",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 139,
+      "excerpt": "background: #fff;",
+      "literal": "#fff",
+      "duplicatesToken": "--surface",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 149,
+      "excerpt": "box-shadow: 0 0 0 3px rgba(104, 116, 244, 0.15);",
+      "literal": "rgba(104, 116, 244, 0.15)",
+      "duplicatesToken": "--primary",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 156,
+      "excerpt": "background: #fff;",
+      "literal": "#fff",
+      "duplicatesToken": "--surface",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 162,
+      "excerpt": "box-shadow: 0 0 0 3px rgba(104, 116, 244, 0.15);",
+      "literal": "rgba(104, 116, 244, 0.15)",
+      "duplicatesToken": "--primary",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 183,
+      "excerpt": ".rte-btn:hover { background: #fff; color: var(--primary-700); }",
+      "literal": "#fff",
+      "duplicatesToken": "--surface",
+      "context": "colour property"
+    },
+    {
+      "path": "app/globals.css",
+      "line": 224,
+      "excerpt": "border-left: 3px solid var(--primary-200, #cdd0fb);",
+      "literal": "#cdd0fb",
+      "duplicatesToken": null,
+      "context": "colour property"
+    },
+    {
+      "path": "app/gear/page.tsx",
+      "line": 16,
+      "excerpt": "const MEMBER_COLORS = ['#6874f4', '#ff6b35', '#ff3d77', '#ffc24b', '#4c5ae8'];",
+      "literal": "#6874f4",
+      "duplicatesToken": "--primary",
+      "context": "colour-valued string"
+    },
+    {
+      "path": "app/gear/page.tsx",
+      "line": 16,
+      "excerpt": "const MEMBER_COLORS = ['#6874f4', '#ff6b35', '#ff3d77', '#ffc24b', '#4c5ae8'];",
+      "literal": "#ff6b35",
+      "duplicatesToken": "--funk",
+      "context": "colour-valued string"
+    },
+    {
+      "path": "app/gear/page.tsx",
+      "line": 16,
+      "excerpt": "const MEMBER_COLORS = ['#6874f4', '#ff6b35', '#ff3d77', '#ffc24b', '#4c5ae8'];",
+      "literal": "#ff3d77",
+      "duplicatesToken": "--latina",
+      "context": "colour-valued string"
+    },
+    {
+      "path": "app/gear/page.tsx",
+      "line": 16,
+      "excerpt": "const MEMBER_COLORS = ['#6874f4', '#ff6b35', '#ff3d77', '#ffc24b', '#4c5ae8'];",
+      "literal": "#ffc24b",
+      "duplicatesToken": "--gold",
+      "context": "colour-valued string"
+    },
+    {
+      "path": "app/gear/page.tsx",
+      "line": 16,
+      "excerpt": "const MEMBER_COLORS = ['#6874f4', '#ff6b35', '#ff3d77', '#ffc24b', '#4c5ae8'];",
+      "literal": "#4c5ae8",
+      "duplicatesToken": "--primary-600",
+      "context": "colour-valued string"
+    },
+    {
+      "path": "app/gear/page.tsx",
+      "line": 76,
+      "excerpt": "style={{ background: hasNote ? color : '#fff', color: hasNote ? '#fff' : 'var(--faint)', border: hasNote ? 'none' : '2px solid var(--hairline)' }}",
+      "literal": "#fff",
+      "duplicatesToken": "--surface",
+      "context": "colour-valued string"
+    },
+    {
+      "path": "app/gear/page.tsx",
+      "line": 76,
+      "excerpt": "style={{ background: hasNote ? color : '#fff', color: hasNote ? '#fff' : 'var(--faint)', border: hasNote ? 'none' : '2px solid var(--hairline)' }}",
+      "literal": "#fff",
+      "duplicatesToken": "--surface",
+      "context": "colour-valued string"
+    },
+    {
+      "path": "app/layout.tsx",
+      "line": 43,
+      "excerpt": "<meta name=\"theme-color\" content=\"#6874f4\" />",
+      "literal": "#6874f4",
+      "duplicatesToken": "--primary",
+      "context": "colour-valued string"
+    },
+    {
+      "path": "app/layout.tsx",
+      "line": 47,
+      "excerpt": "<meta name=\"msapplication-TileColor\" content=\"#6874f4\" />",
+      "literal": "#6874f4",
+      "duplicatesToken": "--primary",
+      "context": "colour-valued string"
+    },
+    {
+      "path": "lib/EventModal.tsx",
+      "line": 229,
+      "excerpt": "? { background: TYPE_COLOR[t], borderColor: TYPE_COLOR[t], color: '#fff' }",
+      "literal": "#fff",
+      "duplicatesToken": "--surface",
+      "context": "colour-valued string"
+    },
+    {
+      "path": "lib/EventModal.tsx",
+      "line": 252,
+      "excerpt": "? { background: meta.color, borderColor: meta.color, color: '#fff' }",
+      "literal": "#fff",
+      "duplicatesToken": "--surface",
+      "context": "colour-valued string"
+    }
+  ],
+  "summary": {
+    "tokenCount": 18,
+    "declarationCount": 18,
+    "groupCount": 3,
+    "tokensWithDark": 0,
+    "tokensWithoutDark": 16,
+    "usedTokens": 16,
+    "deadTokens": 2,
+    "componentCount": 28,
+    "componentsWithVariants": 2,
+    "variantAxisCount": 2,
+    "variantValueCount": 5,
+    "primitiveCount": 0,
+    "disagreementKinds": 3,
+    "disagreementInstances": 47
+  },
+  "filesScanned": {
+    "style": 1,
+    "source": 26
+  }
+}

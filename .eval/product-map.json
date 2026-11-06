@@ -1,0 +1,528 @@
+{
+  "sections": [
+    {
+      "key": "calendar",
+      "label": "Calendar"
+    },
+    {
+      "key": "upcoming",
+      "label": "Upcoming"
+    },
+    {
+      "key": "gear",
+      "label": "Gear"
+    },
+    {
+      "key": "stand-ins",
+      "label": "Stand ins"
+    }
+  ],
+  "sectionsFrom": "navigation",
+  "navigation": "lib/AppShell.tsx",
+  "pages": [
+    {
+      "id": "/",
+      "label": "Calendar",
+      "section": "calendar",
+      "file": "app/page.tsx",
+      "groups": [
+        "app",
+        "app/api/calendar",
+        "lib/CalendarSync",
+        "lib/EventModal",
+        "lib/calendarFeedService",
+        "lib/eventService"
+      ],
+      "tables": {
+        "events": "write",
+        "config": "write"
+      },
+      "components": [
+        "app/layout::RootLayout",
+        "app/page::Calendar",
+        "app/page::CalendarPage",
+        "app/page::EventBody",
+        "app/page::Legend",
+        "lib/AppShell::AppShell",
+        "lib/CalendarSync::CalendarSync",
+        "lib/EventModal::EventModal",
+        "lib/EventModal::StatusBadge",
+        "lib/Markdown::Markdown",
+        "lib/RichTextEditor::RichTextEditor",
+        "lib/auth::AuthProvider"
+      ]
+    },
+    {
+      "id": "/upcoming",
+      "label": "Upcoming",
+      "section": "upcoming",
+      "file": "app/upcoming/page.tsx",
+      "groups": [
+        "app/upcoming",
+        "lib/EventModal",
+        "lib/eventService"
+      ],
+      "tables": {
+        "events": "write"
+      },
+      "components": [
+        "app/layout::RootLayout",
+        "app/upcoming/page::Upcoming",
+        "app/upcoming/page::UpcomingPage",
+        "lib/AppShell::AppShell",
+        "lib/EventModal::StatusBadge",
+        "lib/Markdown::Markdown",
+        "lib/auth::AuthProvider"
+      ]
+    },
+    {
+      "id": "/gear",
+      "label": "Gear",
+      "section": "gear",
+      "file": "app/gear/page.tsx",
+      "groups": [
+        "app/gear",
+        "lib/SharedNotes",
+        "lib/gearService"
+      ],
+      "tables": {
+        "gear": "write",
+        "gearNeeds": "write"
+      },
+      "components": [
+        "app/gear/page::GearOverview",
+        "app/gear/page::GearPage",
+        "app/gear/page::NeedModal",
+        "app/gear/page::Needs",
+        "app/layout::RootLayout",
+        "lib/AppShell::AppShell",
+        "lib/Markdown::Markdown",
+        "lib/RichTextEditor::RichTextEditor",
+        "lib/SharedNotes::SaveStatus",
+        "lib/SharedNotes::SharedNotes",
+        "lib/auth::AuthProvider"
+      ]
+    },
+    {
+      "id": "/standins",
+      "label": "Stand ins",
+      "section": "stand-ins",
+      "file": "app/standins/page.tsx",
+      "groups": [
+        "app/standins",
+        "lib/SharedNotes",
+        "lib/standinService"
+      ],
+      "tables": {
+        "standins": "write"
+      },
+      "components": [
+        "app/layout::RootLayout",
+        "app/standins/page::StandinsPage",
+        "lib/AppShell::AppShell",
+        "lib/Markdown::Markdown",
+        "lib/RichTextEditor::RichTextEditor",
+        "lib/SharedNotes::SaveStatus",
+        "lib/SharedNotes::SharedNotes",
+        "lib/auth::AuthProvider"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "GET /api/calendar/[token]",
+      "method": "GET",
+      "path": "/api/calendar/[token]",
+      "file": "app/api/calendar/[token]/route.ts",
+      "doc": [],
+      "tables": {
+        "config": "read",
+        "events": "read"
+      },
+      "pages": [
+        "/"
+      ],
+      "group": "app/api/calendar",
+      "section": "calendar"
+    }
+  ],
+  "groups": [
+    {
+      "id": "app",
+      "label": "app",
+      "section": "calendar",
+      "files": 2,
+      "tables": {},
+      "pages": [
+        "/"
+      ],
+      "calls": [],
+      "components": [
+        "app/layout::RootLayout",
+        "app/page::Calendar",
+        "app/page::CalendarPage",
+        "app/page::EventBody",
+        "app/page::Legend"
+      ]
+    },
+    {
+      "id": "app/api/calendar",
+      "label": "calendar",
+      "section": "calendar",
+      "files": 1,
+      "tables": {
+        "config": "read",
+        "events": "read"
+      },
+      "pages": [
+        "/"
+      ],
+      "calls": [],
+      "components": []
+    },
+    {
+      "id": "app/gear",
+      "label": "gear",
+      "section": "gear",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/gear"
+      ],
+      "calls": [],
+      "components": [
+        "app/gear/page::GearOverview",
+        "app/gear/page::GearPage",
+        "app/gear/page::NeedModal",
+        "app/gear/page::Needs"
+      ]
+    },
+    {
+      "id": "app/standins",
+      "label": "standins",
+      "section": "stand-ins",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/standins"
+      ],
+      "calls": [],
+      "components": [
+        "app/standins/page::StandinsPage"
+      ]
+    },
+    {
+      "id": "app/upcoming",
+      "label": "upcoming",
+      "section": "upcoming",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/upcoming"
+      ],
+      "calls": [],
+      "components": [
+        "app/upcoming/page::Upcoming",
+        "app/upcoming/page::UpcomingPage"
+      ]
+    },
+    {
+      "id": "lib/CalendarSync",
+      "label": "CalendarSync",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/"
+      ],
+      "calls": [],
+      "components": [
+        "lib/CalendarSync::CalendarSync"
+      ]
+    },
+    {
+      "id": "lib/EventModal",
+      "label": "EventModal",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/",
+        "/upcoming"
+      ],
+      "calls": [],
+      "components": [
+        "lib/EventModal::EventModal",
+        "lib/EventModal::StatusBadge"
+      ]
+    },
+    {
+      "id": "lib/SharedNotes",
+      "label": "SharedNotes",
+      "section": "gear",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/gear",
+        "/standins"
+      ],
+      "calls": [],
+      "components": [
+        "lib/SharedNotes::SaveStatus",
+        "lib/SharedNotes::SharedNotes"
+      ]
+    },
+    {
+      "id": "lib/calendarFeedService",
+      "label": "calendarFeedService",
+      "section": "calendar",
+      "files": 1,
+      "tables": {
+        "config": "write",
+        "events": "read"
+      },
+      "pages": [
+        "/"
+      ],
+      "calls": [
+        "app/api/calendar"
+      ],
+      "components": []
+    },
+    {
+      "id": "lib/eventService",
+      "label": "eventService",
+      "section": "calendar",
+      "files": 1,
+      "tables": {
+        "events": "write"
+      },
+      "pages": [
+        "/",
+        "/upcoming"
+      ],
+      "calls": [],
+      "components": []
+    },
+    {
+      "id": "lib/gearService",
+      "label": "gearService",
+      "section": "gear",
+      "files": 1,
+      "tables": {
+        "gear": "write",
+        "gearNeeds": "write"
+      },
+      "pages": [
+        "/gear"
+      ],
+      "calls": [],
+      "components": []
+    },
+    {
+      "id": "lib/standinService",
+      "label": "standinService",
+      "section": "stand-ins",
+      "files": 1,
+      "tables": {
+        "standins": "write"
+      },
+      "pages": [
+        "/standins"
+      ],
+      "calls": [],
+      "components": []
+    }
+  ],
+  "quiet": [
+    {
+      "id": "lib/eventText",
+      "label": "eventText",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/",
+        "/upcoming"
+      ],
+      "calls": [],
+      "components": []
+    },
+    {
+      "id": "lib/firebaseAdmin",
+      "label": "firebaseAdmin",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/"
+      ],
+      "calls": [],
+      "components": []
+    },
+    {
+      "id": "lib/ics",
+      "label": "ics",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/"
+      ],
+      "calls": [],
+      "components": []
+    }
+  ],
+  "offMap": [
+    {
+      "id": "app/events/[id]",
+      "label": "[id]",
+      "section": null,
+      "files": 1,
+      "tables": {},
+      "pages": [],
+      "calls": [],
+      "components": [
+        "app/events/[id]/page::EventDetail",
+        "app/events/[id]/page::EventPage"
+      ]
+    },
+    {
+      "id": "app/login",
+      "label": "login",
+      "section": null,
+      "files": 1,
+      "tables": {},
+      "pages": [],
+      "calls": [],
+      "components": [
+        "app/login/page::LoginPage"
+      ]
+    },
+    {
+      "id": "lib/AppShell",
+      "label": "AppShell",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/",
+        "/gear",
+        "/standins",
+        "/upcoming"
+      ],
+      "calls": [],
+      "components": [
+        "lib/AppShell::AppShell",
+        "lib/AppShell::CalendarIcon",
+        "lib/AppShell::ClockIcon",
+        "lib/AppShell::GearIcon",
+        "lib/AppShell::PeopleIcon"
+      ]
+    },
+    {
+      "id": "lib/Markdown",
+      "label": "Markdown",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/",
+        "/gear",
+        "/standins",
+        "/upcoming"
+      ],
+      "calls": [],
+      "components": [
+        "lib/Markdown::Markdown"
+      ]
+    },
+    {
+      "id": "lib/RichTextEditor",
+      "label": "RichTextEditor",
+      "section": "calendar",
+      "files": 1,
+      "tables": {},
+      "pages": [
+        "/",
+        "/gear",
+        "/standins",
+        "/upcoming"
+      ],
+      "calls": [],
+      "components": [
+        "lib/RichTextEditor::RichTextEditor"
+      ]
+    },
+    {
+      "id": "lib/auth",
+      "label": "auth",
+      "section": null,
+      "files": 1,
+      "tables": {},
+      "pages": [],
+      "calls": [],
+      "components": [
+        "lib/auth::AuthProvider"
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "id": "config",
+      "section": "calendar",
+      "sections": [
+        "calendar"
+      ]
+    },
+    {
+      "id": "events",
+      "section": "calendar",
+      "sections": [
+        "calendar",
+        "upcoming"
+      ]
+    },
+    {
+      "id": "gear",
+      "section": "gear",
+      "sections": [
+        "gear"
+      ]
+    },
+    {
+      "id": "gearNeeds",
+      "section": "gear",
+      "sections": [
+        "gear"
+      ]
+    },
+    {
+      "id": "standins",
+      "section": "stand-ins",
+      "sections": [
+        "stand-ins"
+      ]
+    }
+  ],
+  "ai": [],
+  "services": [],
+  "shared": [
+    "lib/AppShell",
+    "lib/Markdown",
+    "lib/RichTextEditor",
+    "lib/firebase"
+  ],
+  "gaps": [
+    {
+      "kind": "good-to-know",
+      "text": "Some of the components with an id are rendered by no page this map can follow (a page outside the menu, a screen opened at runtime, or unused), so they are listed under their code only.",
+      "detail": "7 of 28 components"
+    },
+    {
+      "kind": "good-to-know",
+      "text": "Some links in the code are missing: imports of the product's own code that resolve to no file.",
+      "detail": "1 import"
+    }
+  ]
+}
