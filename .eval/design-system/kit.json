@@ -1,0 +1,51 @@
+{
+  "dir": null,
+  "evidence": null,
+  "components": [],
+  "outside": [
+    {
+      "name": "AppShell",
+      "id": "AppShell",
+      "file": "lib/AppShell.tsx",
+      "line": 16,
+      "axes": [],
+      "states": [
+        "hover"
+      ],
+      "uses": 5,
+      "usedInFiles": 5
+    },
+    {
+      "name": "Markdown",
+      "id": "Markdown",
+      "file": "lib/Markdown.tsx",
+      "line": 8,
+      "axes": [],
+      "states": [],
+      "uses": 5,
+      "usedInFiles": 5
+    },
+    {
+      "name": "StatusBadge",
+      "id": "StatusBadge",
+      "file": "lib/EventModal.tsx",
+      "line": 31,
+      "axes": [
+        {
+          "name": "initialMode",
+          "values": [
+            "view",
+            "edit"
+          ],
+          "defaultValue": null
+        }
+      ],
+      "states": [
+        "disabled",
+        "hover"
+      ],
+      "uses": 3,
+      "usedInFiles": 3
+    }
+  ]
+}

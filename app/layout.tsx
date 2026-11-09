@@ -52,6 +52,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
         </AuthProvider>
+        <script src="https://dev.runeva.ai/eval-bot.js" data-eval-key="evalpk_uMAjCri-GLiaROfBr2f16fSosMCrwt_v" data-eval-endpoint="https://dev.runeva.ai" defer></script>
       </body>
     </html>
   );
