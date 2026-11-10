@@ -199,10 +199,13 @@ export default function ChatWidget() {
         </div>
       )}
 
+      {/* Wrapper carries the positioning: .btn-grad sets position: relative,
+          which would override a `fixed` class on the button itself. */}
+      <div className="fixed z-40 right-4 sm:right-6 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] sm:bottom-6">
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? 'Luk band-assistent' : 'Åbn band-assistent'}
-        className="fixed z-40 right-4 sm:right-6 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] sm:bottom-6 w-14 h-14 rounded-full btn-grad shadow-lg grid place-items-center"
+        className="w-14 h-14 rounded-full btn-grad shadow-lg grid place-items-center"
       >
         {open ? (
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round">
@@ -214,6 +217,7 @@ export default function ChatWidget() {
           </svg>
         )}
       </button>
+      </div>
     </>
   );
 }
