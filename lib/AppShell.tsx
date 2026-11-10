@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from './auth';
+import ChatWidget from './ChatWidget';
 
 const TABS = [
   { href: '/', label: 'Calendar', icon: CalendarIcon },
@@ -76,6 +77,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <main className="flex-1 w-full max-w-3xl mx-auto px-4 py-6 pb-28 sm:pb-10 animate-fade-in">
         {children}
       </main>
+
+      {/* AI helper — only rendered past the auth gate above */}
+      <ChatWidget />
 
       {/* Mobile bottom nav */}
       <nav className="sm:hidden fixed bottom-0 inset-x-0 z-20 glass border-t border-[var(--hairline)] pb-[env(safe-area-inset-bottom)]">
