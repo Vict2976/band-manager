@@ -2,7 +2,6 @@ import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { cert, getApps, initializeApp, App, ServiceAccount } from 'firebase-admin/app';
 import { getFirestore, Firestore } from 'firebase-admin/firestore';
-import { getAuth, Auth } from 'firebase-admin/auth';
 
 /**
  * Server-side Firestore, used by the calendar feed route.
@@ -38,22 +37,13 @@ function loadCredentials(): ServiceAccount {
   );
 }
 
-function adminApp(): App {
-  return (
-    getApps().find((a) => a.name === 'admin') ??
-    initializeApp({ credential: cert(loadCredentials()) }, 'admin')
-  );
-}
-
 let cached: Firestore | null = null;
 
 export function adminDb(): Firestore {
   if (cached) return cached;
-  cached = getFirestore(adminApp());
+  const app: App =
+    getApps().find((a) => a.name === 'admin') ??
+    initializeApp({ credential: cert(loadCredentials()) }, 'admin');
+  cached = getFirestore(app);
   return cached;
-}
-
-/** Server-side Auth, used to verify the ID token of a signed-in band member. */
-export function adminAuth(): Auth {
-  return getAuth(adminApp());
 }

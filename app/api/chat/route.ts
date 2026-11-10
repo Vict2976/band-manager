@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
-import { adminAuth, adminDb } from '../../../lib/firebaseAdmin';
+import { adminDb } from '../../../lib/firebaseAdmin';
+import { verifyIdToken } from '../../../lib/verifyIdToken';
 import { resolveTitle, normalizeDate } from '../../../lib/eventText';
 
 export const dynamic = 'force-dynamic';
@@ -131,7 +132,7 @@ export async function POST(req: NextRequest) {
   const idToken = header.startsWith('Bearer ') ? header.slice(7) : '';
   if (!idToken) return new Response('Unauthorized', { status: 401 });
   try {
-    await adminAuth().verifyIdToken(idToken);
+    await verifyIdToken(idToken);
   } catch {
     return new Response('Unauthorized', { status: 401 });
   }
