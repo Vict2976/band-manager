@@ -14,6 +14,7 @@ interface Props {
 
 type Result = { text: string; selStart: number; selEnd: number };
 
+// @uxid lib/RichTextEditor::RichTextEditor
 export default function RichTextEditor({
   value,
   onChange,
@@ -100,7 +101,7 @@ export default function RichTextEditor({
     <div className={`rte${grow ? ' rte-grow' : ''}`}>
       <div className="rte-toolbar">
         {tools.map((t, i) => (
-          <button
+          <button /* @uxid lib/RichTextEditor::RichTextEditor.button */
             key={i}
             type="button"
             title={t.title}
@@ -113,7 +114,7 @@ export default function RichTextEditor({
           </button>
         ))}
       </div>
-      <textarea
+      <textarea /* @uxid lib/RichTextEditor::RichTextEditor.textarea */
         ref={ref}
         value={value}
         onChange={(e) => onChange(e.target.value)}

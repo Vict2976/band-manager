@@ -17,6 +17,7 @@ const SUGGESTIONS = [
  * Floating AI helper in the bottom-right corner. Only mounted inside AppShell
  * after sign-in, and the API route verifies the Firebase ID token as well.
  */
+// @uxid lib/ChatWidget::ChatWidget
 export default function ChatWidget() {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
@@ -85,7 +86,7 @@ export default function ChatWidget() {
   return (
     <>
       {open && (
-        <div
+        <div /* @uxid lib/ChatWidget::ChatWidget.div */
           className="fixed z-40 right-3 left-3 sm:left-auto bottom-[calc(9rem+env(safe-area-inset-bottom))] sm:bottom-24 sm:right-6 sm:w-[380px] h-[min(560px,calc(100dvh-12rem))] card flex flex-col overflow-hidden animate-slide-up"
           role="dialog"
           aria-label="Band-assistent"
@@ -100,7 +101,7 @@ export default function ChatWidget() {
             </div>
             <div className="flex items-center gap-1">
               {messages.length > 0 && !busy && (
-                <button
+                <button /* @uxid lib/ChatWidget::ChatWidget.button */
                   onClick={() => {
                     setMessages([]);
                     setError('');
@@ -110,7 +111,7 @@ export default function ChatWidget() {
                   Ryd
                 </button>
               )}
-              <button
+              <button /* @uxid lib/ChatWidget::ChatWidget.button-2 */
                 onClick={() => setOpen(false)}
                 aria-label="Luk"
                 className="w-8 h-8 grid place-items-center rounded-full text-[var(--muted)] hover:bg-[var(--primary-50)]"
@@ -128,7 +129,7 @@ export default function ChatWidget() {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {SUGGESTIONS.map((s) => (
-                    <button
+                    <button /* @uxid lib/ChatWidget::ChatWidget.button-3 */
                       key={s}
                       onClick={() => send(s)}
                       className="btn-soft text-xs font-semibold px-3 py-1.5 rounded-full text-left"
@@ -167,14 +168,14 @@ export default function ChatWidget() {
             {error && <p className="text-xs text-[var(--latina)]">{error}</p>}
           </div>
 
-          <form
+          <form /* @uxid lib/ChatWidget::ChatWidget.form */
             onSubmit={(e) => {
               e.preventDefault();
               send(input);
             }}
             className="flex items-end gap-2 p-3 border-t border-[var(--hairline)]"
           >
-            <textarea
+            <textarea /* @uxid lib/ChatWidget::ChatWidget.textarea */
               ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -188,7 +189,7 @@ export default function ChatWidget() {
               placeholder="Skriv et spørgsmål…"
               className="field flex-1 resize-none text-sm px-3 py-2 max-h-28"
             />
-            <button
+            <button /* @uxid lib/ChatWidget::ChatWidget.button-4 */
               type="submit"
               disabled={busy || !input.trim()}
               className="btn-grad rounded-xl px-4 py-2 text-sm font-semibold disabled:opacity-50"
@@ -202,7 +203,7 @@ export default function ChatWidget() {
       {/* Wrapper carries the positioning: .btn-grad sets position: relative,
           which would override a `fixed` class on the button itself. */}
       <div className="fixed z-40 right-4 sm:right-6 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] sm:bottom-6">
-      <button
+      <button /* @uxid lib/ChatWidget::ChatWidget.button-5 */
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? 'Luk band-assistent' : 'Åbn band-assistent'}
         className="w-14 h-14 rounded-full btn-grad shadow-lg grid place-items-center"

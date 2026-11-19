@@ -15,6 +15,7 @@ import {
 // Festival palette cycled across member avatars.
 const MEMBER_COLORS = ['#6874f4', '#ff6b35', '#ff3d77', '#ffc24b', '#4c5ae8'];
 
+// @uxid app/gear/page::GearPage
 export default function GearPage() {
   return (
     <AppShell>
@@ -28,6 +29,7 @@ export default function GearPage() {
 
 /* ---------------- What we have ---------------- */
 
+// @uxid app/gear/page::GearOverview
 function GearOverview() {
   return (
     <SharedNotes
@@ -43,6 +45,7 @@ function GearOverview() {
 
 /* ---------------- What we need ---------------- */
 
+// @uxid app/gear/page::Needs
 function Needs() {
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [editing, setEditing] = useState<string | null>(null);
@@ -61,7 +64,7 @@ function Needs() {
           const hasNote = (notes[member] ?? '').trim().length > 0;
           const color = MEMBER_COLORS[i % MEMBER_COLORS.length];
           return (
-            <button
+            <button /* @uxid app/gear/page::Needs.button */
               key={member}
               onClick={() => setEditing(member)}
               className="flex flex-col items-center gap-1.5 group"
@@ -85,7 +88,7 @@ function Needs() {
       </div>
 
       {editing && (
-        <NeedModal
+        <NeedModal /* @uxid app/gear/page::Needs.needmodal */
           member={editing}
           initial={notes[editing] ?? ''}
           onClose={() => setEditing(null)}
@@ -95,6 +98,7 @@ function Needs() {
   );
 }
 
+// @uxid app/gear/page::NeedModal
 function NeedModal({
   member,
   initial,
@@ -125,14 +129,14 @@ function NeedModal({
 
   // Portal to <body> so the animated section can't clip or bury the overlay.
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm p-0 sm:p-4" onClick={requestClose}>
-      <div
+    <div /* @uxid app/gear/page::NeedModal.div */ className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm p-0 sm:p-4" onClick={requestClose}>
+      <div /* @uxid app/gear/page::NeedModal.div-2 */
         className="w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl animate-pop-in"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-xl font-bold">What to bring for {member}</h3>
         <p className="text-sm text-[var(--muted)] -mt-2">The gear this musician needs at every gig.</p>
-        <textarea
+        <textarea /* @uxid app/gear/page::NeedModal.textarea */
           value={text}
           onChange={(e) => setText(e.target.value)}
           rows={4}
@@ -142,10 +146,10 @@ function NeedModal({
         />
         <div className="flex items-center gap-2">
           <div className="flex-1" />
-          <button onClick={requestClose} disabled={busy} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors disabled:opacity-50">
+          <button /* @uxid app/gear/page::NeedModal.button */ onClick={requestClose} disabled={busy} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors disabled:opacity-50">
             Cancel
           </button>
-          <button onClick={save} disabled={busy} className="btn-grad px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40">
+          <button /* @uxid app/gear/page::NeedModal.button-2 */ onClick={save} disabled={busy} className="btn-grad px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40">
             {busy ? 'Saving…' : 'Save'}
           </button>
         </div>

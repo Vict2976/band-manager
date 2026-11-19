@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../lib/auth';
 import { useRouter } from 'next/navigation';
 
+// @uxid app/login/page::LoginPage
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -38,16 +39,16 @@ export default function LoginPage() {
           <p className="text-[var(--muted)] mt-1.5 text-sm">Sign in to the shared band account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="card p-6 space-y-4">
+        <form /* @uxid app/login/page::LoginPage.form */ onSubmit={handleSubmit} className="card p-6 space-y-4">
           {error && (
             <div className="bg-[var(--latina)]/10 border border-[var(--latina)]/30 rounded-xl p-3 text-sm font-medium text-[var(--latina)]">
               {error}
             </div>
           )}
 
-          <label className="block">
+          <label /* @uxid app/login/page::LoginPage.label */ className="block">
             <span className="text-xs font-medium text-[var(--muted)]">Email</span>
-            <input
+            <input /* @uxid app/login/page::LoginPage.email */
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -57,9 +58,9 @@ export default function LoginPage() {
             />
           </label>
 
-          <label className="block">
+          <label /* @uxid app/login/page::LoginPage.label-2 */ className="block">
             <span className="text-xs font-medium text-[var(--muted)]">Password</span>
-            <input
+            <input /* @uxid app/login/page::LoginPage.password */
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -69,7 +70,7 @@ export default function LoginPage() {
             />
           </label>
 
-          <button
+          <button /* @uxid app/login/page::LoginPage.button */
             type="submit"
             disabled={loading}
             className="btn-grad w-full py-3 rounded-xl font-bold disabled:opacity-50"

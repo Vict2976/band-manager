@@ -13,6 +13,7 @@ const MAX_MESSAGE_CHARS = 4000;
 type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
 /** Today's date in Copenhagen, as YYYY-MM-DD plus a readable Danish form. */
+// @uxid app/api/chat/route::today
 function today(): { key: string; label: string } {
   const now = new Date();
   const key = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Copenhagen' }).format(now);
@@ -26,6 +27,7 @@ function today(): { key: string; label: string } {
   return { key, label };
 }
 
+// @uxid app/api/chat/route::weekday
 function weekday(dateKey: string): string {
   const d = new Date(`${dateKey}T12:00:00Z`);
   if (isNaN(d.getTime())) return '';
@@ -33,6 +35,7 @@ function weekday(dateKey: string): string {
 }
 
 /** Everything the band has in the app, flattened into text for the model. */
+// @uxid app/api/chat/route::buildKnowledge
 async function buildKnowledge(): Promise<string> {
   const db = adminDb();
   const [eventsSnap, gearSnap, needsSnap, standinsSnap] = await Promise.all([
@@ -78,6 +81,7 @@ async function buildKnowledge(): Promise<string> {
   const gear = ((gearSnap.data()?.text as string) || '').trim();
   const standins = ((standinsSnap.data()?.text as string) || '').trim();
 
+  // @uxid app/api/chat/route::buildKnowledge.prompt
   return [
     `## Kommende begivenheder (${upcoming.length})`,
     upcoming.length ? upcoming.map(fmtEvent).join('\n\n') : '(ingen)',
@@ -92,8 +96,10 @@ async function buildKnowledge(): Promise<string> {
   ].join('\n\n');
 }
 
+// @uxid app/api/chat/route::systemPrompt
 function systemPrompt(knowledge: string): string {
   const { key, label } = today();
+  // @uxid app/api/chat/route::systemPrompt.prompt
   return `Du er bandets hjælpsomme assistent i appen "Band Manager". Du svarer ALTID på dansk, kort og venligt.
 
 I dag er ${label} (${key}).
@@ -110,6 +116,7 @@ Svar på spørgsmål om bandet, udstyr, kommende gigs, øveaftener, stand-ins os
 ${knowledge}`;
 }
 
+// @uxid app/api/chat/route::sanitize
 function sanitize(raw: unknown): ChatMessage[] | null {
   if (!Array.isArray(raw)) return null;
   const msgs = raw
@@ -126,6 +133,7 @@ function sanitize(raw: unknown): ChatMessage[] | null {
   return msgs;
 }
 
+// @uxid app/api/chat/route::POST
 export async function POST(req: NextRequest) {
   // Only signed-in band members: verify their Firebase ID token.
   const header = req.headers.get('authorization') || '';

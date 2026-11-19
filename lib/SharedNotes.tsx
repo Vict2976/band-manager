@@ -8,6 +8,7 @@ import RichTextEditor from './RichTextEditor';
  * One free-text document the whole band edits together: rendered as markdown,
  * edited in place, autosaved shortly after typing stops.
  */
+// @uxid lib/SharedNotes::SharedNotes
 export default function SharedNotes({
   title,
   subtitle,
@@ -72,7 +73,7 @@ export default function SharedNotes({
         </div>
         <div className="flex items-center gap-3">
           <SaveStatus status={status} />
-          <button
+          <button /* @uxid lib/SharedNotes::SharedNotes.button */
             onClick={() => setEditing((v) => !v)}
             className="btn-soft text-sm font-semibold px-4 py-2 rounded-full"
           >
@@ -82,7 +83,7 @@ export default function SharedNotes({
       </div>
 
       {editing ? (
-        <RichTextEditor
+        <RichTextEditor /* @uxid lib/SharedNotes::SharedNotes.richtexteditor */
           value={text}
           onChange={(v) => {
             dirty.current = true;
@@ -98,7 +99,7 @@ export default function SharedNotes({
           ) : text.trim() ? (
             <Markdown>{text}</Markdown>
           ) : (
-            <button onClick={() => setEditing(true)} className="text-sm font-semibold text-[var(--primary)] hover:underline">
+            <button /* @uxid lib/SharedNotes::SharedNotes.button-2 */ onClick={() => setEditing(true)} className="text-sm font-semibold text-[var(--primary)] hover:underline">
               {emptyLabel}
             </button>
           )}
@@ -108,6 +109,7 @@ export default function SharedNotes({
   );
 }
 
+// @uxid lib/SharedNotes::SaveStatus
 function SaveStatus({ status }: { status: 'idle' | 'saving' | 'saved' }) {
   if (status === 'idle') return <span className="h-5" />;
   return (

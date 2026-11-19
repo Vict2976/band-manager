@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   },
 };
 
+// @uxid app/layout::RootLayout
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,11 +35,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="32x32" />
-        <link rel="icon" href="/logo.png" type="image/png" sizes="32x32" />
-        <link rel="icon" href="/logo.png" type="image/png" sizes="16x16" />
-        <link rel="apple-touch-icon" href="/logo.png" sizes="180x180" />
-        <link rel="manifest" href="/manifest.json" />
+        <link /* @uxid app/layout::RootLayout.link */ rel="icon" href="/favicon.ico" sizes="32x32" />
+        <link /* @uxid app/layout::RootLayout.link-2 */ rel="icon" href="/logo.png" type="image/png" sizes="32x32" />
+        <link /* @uxid app/layout::RootLayout.link-3 */ rel="icon" href="/logo.png" type="image/png" sizes="16x16" />
+        <link /* @uxid app/layout::RootLayout.link-4 */ rel="apple-touch-icon" href="/logo.png" sizes="180x180" />
+        <link /* @uxid app/layout::RootLayout.link-5 */ rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#6874f4" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -52,6 +53,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
         </AuthProvider>
+        <script src="https://app.runeva.ai/eval-bot.js" data-eval-key="evalpk_Owt05a9j92OGQargx12uhQ3SLGNvrEVo" data-eval-endpoint="https://app.runeva.ai" defer></script>
       </body>
     </html>
   );
