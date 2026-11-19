@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 /** Constant-time compare so the token can't be recovered by timing the endpoint. */
+// @uxid app/api/calendar/[token]/route::tokensMatch
 function tokensMatch(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
   let diff = 0;
@@ -16,6 +17,7 @@ function tokensMatch(a: string, b: string): boolean {
   return diff === 0;
 }
 
+// @uxid app/api/calendar/[token]/route::GET
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ token: string }> }

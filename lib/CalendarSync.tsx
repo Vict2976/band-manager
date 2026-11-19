@@ -8,6 +8,7 @@ import { getOrCreateFeedToken, rotateFeedToken, feedUrl } from './calendarFeedSe
  * events added here keep appearing on everyone's calendar without anyone
  * doing anything again.
  */
+// @uxid lib/CalendarSync::CalendarSync
 export default function CalendarSync() {
   const [url, setUrl] = useState<string | null>(null);
   const [error, setError] = useState(false);
@@ -70,7 +71,7 @@ export default function CalendarSync() {
 
   return (
     <section className="card p-4 sm:p-5 animate-slide-up">
-      <button
+      <button /* @uxid lib/CalendarSync::CalendarSync.button */
         onClick={() => setOpen((v) => !v)}
         className="w-full flex items-center gap-3 text-left"
         aria-expanded={open}
@@ -106,27 +107,27 @@ export default function CalendarSync() {
           ) : (
             <>
               <div className="flex gap-2">
-                <input
+                <input /* @uxid lib/CalendarSync::CalendarSync.input */
                   readOnly
                   value={url}
                   onFocus={(e) => e.currentTarget.select()}
                   className="field flex-1 min-w-0 px-3 py-2.5 text-xs font-mono"
                   aria-label="Calendar subscription link"
                 />
-                <button onClick={copy} className="btn-grad shrink-0 px-4 py-2.5 rounded-xl text-sm font-bold">
+                <button /* @uxid lib/CalendarSync::CalendarSync.button-2 */ onClick={copy} className="btn-grad shrink-0 px-4 py-2.5 rounded-xl text-sm font-bold">
                   {copied ? 'Copied' : 'Copy'}
                 </button>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-2">
-                <a
+                <a /* @uxid lib/CalendarSync::CalendarSync.link */
                   href={webcal}
                   onClick={() => setNudged(true)}
                   className="btn-soft block text-center text-sm font-semibold px-4 py-2.5 rounded-xl"
                 >
                   Open in iPhone / Mac Calendar
                 </a>
-                <a
+                <a /* @uxid lib/CalendarSync::CalendarSync.link-2 */
                   href={google}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -167,7 +168,7 @@ export default function CalendarSync() {
                 <p>
                   Anyone with this link can see the band&apos;s schedule, so keep it in the band
                   chat and nowhere public.{' '}
-                  <button onClick={rotate} className="font-bold text-[var(--primary)] hover:underline">
+                  <button /* @uxid lib/CalendarSync::CalendarSync.button-3 */ onClick={rotate} className="font-bold text-[var(--primary)] hover:underline">
                     Make a new link
                   </button>{' '}
                   if it leaks.

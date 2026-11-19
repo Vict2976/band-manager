@@ -18,6 +18,7 @@ function formatFullDate(key: string): string {
   });
 }
 
+// @uxid app/events/[id]/page::EventPage
 export default function EventPage() {
   return (
     <AppShell>
@@ -26,6 +27,7 @@ export default function EventPage() {
   );
 }
 
+// @uxid app/events/[id]/page::EventDetail
 function EventDetail() {
   const params = useParams();
   const id = String(params.id);
@@ -48,7 +50,7 @@ function EventDetail() {
     return (
       <div className="text-center py-24">
         <p className="text-[var(--muted)]">This event no longer exists.</p>
-        <Link href="/" className="mt-3 inline-block text-sm font-bold text-[var(--primary)] hover:underline">
+        <Link /* @uxid app/events/[id]/page::EventDetail.link */ href="/" className="mt-3 inline-block text-sm font-bold text-[var(--primary)] hover:underline">
           ← Back to calendar
         </Link>
       </div>
@@ -57,7 +59,7 @@ function EventDetail() {
 
   return (
     <div className="space-y-4 animate-slide-up">
-      <Link
+      <Link /* @uxid app/events/[id]/page::EventDetail.link-2 */
         href="/"
         className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--muted)] hover:text-[var(--ink)] transition-colors"
       >
@@ -84,7 +86,7 @@ function EventDetail() {
                 {event.time && ` · ${event.time}`}
               </p>
             </div>
-            <button
+            <button /* @uxid app/events/[id]/page::EventDetail.button */
               onClick={() => setEditing(true)}
               className="btn-soft shrink-0 text-sm font-semibold px-5 py-2 rounded-full"
             >
@@ -103,7 +105,7 @@ function EventDetail() {
       </article>
 
       {editing && (
-        <EventModal
+        <EventModal /* @uxid app/events/[id]/page::EventDetail.eventmodal */
           date={event.date}
           event={event}
           initialMode="edit"

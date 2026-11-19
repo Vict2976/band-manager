@@ -39,6 +39,7 @@ function formatLongDate(key: string): string {
   });
 }
 
+// @uxid app/page::CalendarPage
 export default function CalendarPage() {
   return (
     <AppShell>
@@ -47,6 +48,7 @@ export default function CalendarPage() {
   );
 }
 
+// @uxid app/page::Calendar
 function Calendar() {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -94,11 +96,11 @@ function Calendar() {
             {MONTHS[month]} <span className="text-[var(--faint)] font-semibold">{year}</span>
           </h1>
           <div className="flex items-center gap-1.5">
-            <button onClick={goToday} className="btn-soft text-xs font-semibold px-3 py-2 rounded-full">
+            <button /* @uxid app/page::Calendar.button */ onClick={goToday} className="btn-soft text-xs font-semibold px-3 py-2 rounded-full">
               Today
             </button>
-            <button onClick={() => changeMonth(-1)} aria-label="Previous month" className="w-9 h-9 grid place-items-center rounded-full text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors">‹</button>
-            <button onClick={() => changeMonth(1)} aria-label="Next month" className="w-9 h-9 grid place-items-center rounded-full text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors">›</button>
+            <button /* @uxid app/page::Calendar.button-2 */ onClick={() => changeMonth(-1)} aria-label="Previous month" className="w-9 h-9 grid place-items-center rounded-full text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors">‹</button>
+            <button /* @uxid app/page::Calendar.button-3 */ onClick={() => changeMonth(1)} aria-label="Next month" className="w-9 h-9 grid place-items-center rounded-full text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors">›</button>
           </div>
         </div>
 
@@ -118,7 +120,7 @@ function Calendar() {
             const isSelected = key === selected;
             const dayEvents = byDate.get(key) || [];
             return (
-              <button
+              <button /* @uxid app/page::Calendar.button-4 */
                 key={key}
                 onClick={() => setSelected(key)}
                 className={`aspect-square rounded-2xl flex flex-col items-center justify-center gap-1.5 transition-all ${
@@ -159,7 +161,7 @@ function Calendar() {
       <section className="animate-slide-up">
         <div className="flex items-center justify-between mb-3 px-1">
           <h2 className="font-bold text-[var(--ink)]">{formatLongDate(selected)}</h2>
-          <button
+          <button /* @uxid app/page::Calendar.button-5 */
             onClick={() => setCreating(true)}
             className="btn-grad text-sm font-semibold px-4 py-2 rounded-full"
           >
@@ -170,7 +172,7 @@ function Calendar() {
         {selectedEvents.length === 0 ? (
           <div className="card card-hover p-8 text-center">
             <p className="text-sm text-[var(--muted)]">Nothing planned this day.</p>
-            <button onClick={() => setCreating(true)} className="mt-2 text-sm font-semibold text-[var(--primary)] hover:underline">
+            <button /* @uxid app/page::Calendar.button-6 */ onClick={() => setCreating(true)} className="mt-2 text-sm font-semibold text-[var(--primary)] hover:underline">
               Add a gig or rehearsal
             </button>
           </div>
@@ -178,7 +180,7 @@ function Calendar() {
           <ul className="space-y-2.5">
             {selectedEvents.map((e) => (
               <li key={e.id}>
-                <div
+                <div /* @uxid app/page::Calendar.div */
                   role="button"
                   tabIndex={0}
                   onClick={() => setEditing(e)}
@@ -202,7 +204,7 @@ function Calendar() {
                       <StatusBadge status={e.status} compact />
                       {e.time && <span className="text-xs font-medium text-[var(--muted)]">{e.time}</span>}
                       <div className="flex-1" />
-                      <Link
+                      <Link /* @uxid app/page::Calendar.link */
                         href={`/events/${e.id}`}
                         onClick={(ev) => ev.stopPropagation()}
                         aria-label="Open full page"
@@ -227,7 +229,7 @@ function Calendar() {
       <CalendarSync />
 
       {(creating || editing) && (
-        <EventModal
+        <EventModal /* @uxid app/page::Calendar.eventmodal */
           date={selected}
           event={editing}
           onClose={() => {
@@ -240,6 +242,7 @@ function Calendar() {
   );
 }
 
+// @uxid app/page::EventBody
 function EventBody({ text, eventId }: { text: string; eventId: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [overflows, setOverflows] = useState(false);
@@ -258,7 +261,7 @@ function EventBody({ text, eventId }: { text: string; eventId: string }) {
         )}
       </div>
       {overflows && (
-        <Link
+        <Link /* @uxid app/page::EventBody.link */
           href={`/events/${eventId}`}
           onClick={(e) => e.stopPropagation()}
           className="inline-block mt-1.5 text-xs font-bold text-[var(--primary)] hover:underline"
@@ -270,6 +273,7 @@ function EventBody({ text, eventId }: { text: string; eventId: string }) {
   );
 }
 
+// @uxid app/page::Legend
 function Legend() {
   return (
     <div className="flex items-center justify-center gap-5 mt-4 text-xs font-medium text-[var(--muted)]">

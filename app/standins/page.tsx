@@ -4,6 +4,7 @@ import AppShell from '../../lib/AppShell';
 import SharedNotes from '../../lib/SharedNotes';
 import { subscribeToStandins, saveStandins } from '../../lib/standinService';
 
+// @uxid app/standins/page::StandinsPage
 export default function StandinsPage() {
   return (
     <AppShell>

@@ -27,6 +27,7 @@ export const STATUS_META: Record<EventStatus, { label: string; short: string; co
 };
 
 /** Status pill — a filled dot for confirmed, a hollow ring while it's unsettled. */
+// @uxid lib/EventModal::StatusBadge
 export function StatusBadge({ status, compact }: { status: EventStatus; compact?: boolean }) {
   const meta = STATUS_META[status];
   const done = status === 'confirmed';
@@ -56,6 +57,7 @@ function formatLongDate(key: string): string {
   });
 }
 
+// @uxid lib/EventModal::EventModal
 export default function EventModal({
   date,
   event,
@@ -161,8 +163,8 @@ export default function EventModal({
   // Portal to <body>: the page wrappers animate opacity/transform, which would
   // otherwise trap this overlay under the sticky header and bottom nav.
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm sm:p-4" onClick={requestClose}>
-      <div
+    <div /* @uxid lib/EventModal::EventModal.div */ className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center bg-[var(--ink)]/30 backdrop-blur-sm sm:p-4" onClick={requestClose}>
+      <div /* @uxid lib/EventModal::EventModal.div-2 */
         className={`w-full ${heightClass} sm:max-w-3xl bg-white sm:rounded-3xl shadow-2xl animate-pop-in flex flex-col overflow-hidden`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -174,7 +176,7 @@ export default function EventModal({
             </h3>
             <div className="flex items-center gap-1">
               {event && (
-                <Link
+                <Link /* @uxid lib/EventModal::EventModal.link */
                   href={`/events/${event.id}`}
                   onClick={(e) => {
                     if (isEdit && dirty && !confirm('You have unsaved changes. Leave and lose them?')) e.preventDefault();
@@ -187,7 +189,7 @@ export default function EventModal({
                   </svg>
                 </Link>
               )}
-              <button
+              <button /* @uxid lib/EventModal::EventModal.button */
                 onClick={requestClose}
                 aria-label="Close"
                 className="w-9 h-9 -mr-1 grid place-items-center rounded-full text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors text-xl leading-none"
@@ -201,9 +203,9 @@ export default function EventModal({
         {/* Body — the only scrolling region, so Save is always reachable. */}
         {isEdit ? (
           <div className="flex-1 min-h-0 overflow-y-auto px-5 sm:px-6 pb-2 space-y-4">
-            <label className="block">
+            <label /* @uxid lib/EventModal::EventModal.label */ className="block">
               <span className="text-xs font-medium text-[var(--muted)]">Title</span>
-              <input
+              <input /* @uxid lib/EventModal::EventModal.input */
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -218,7 +220,7 @@ export default function EventModal({
               {(['rehearsal', 'gig'] as EventType[]).map((t) => {
                 const sel = type === t;
                 return (
-                  <button
+                  <button /* @uxid lib/EventModal::EventModal.button-2 */
                     key={t}
                     onClick={() => setType(t)}
                     className="py-2.5 rounded-xl text-sm font-bold capitalize border-2 transition-all"
@@ -241,7 +243,7 @@ export default function EventModal({
                   const sel = status === st;
                   const meta = STATUS_META[st];
                   return (
-                    <button
+                    <button /* @uxid lib/EventModal::EventModal.button-3 */
                       key={st}
                       onClick={() => setStatus(st)}
                       className="py-2.5 rounded-xl text-sm font-bold border-2 transition-all"
@@ -259,18 +261,18 @@ export default function EventModal({
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <label className="block">
+              <label /* @uxid lib/EventModal::EventModal.label-2 */ className="block">
                 <span className="text-xs font-medium text-[var(--muted)]">Date</span>
-                <input
+                <input /* @uxid lib/EventModal::EventModal.date */
                   type="date"
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
                   className="field mt-1 w-full px-3 py-2.5 text-sm"
                 />
               </label>
-              <label className="block">
+              <label /* @uxid lib/EventModal::EventModal.label-3 */ className="block">
                 <span className="text-xs font-medium text-[var(--muted)]">Time (optional)</span>
-                <input
+                <input /* @uxid lib/EventModal::EventModal.time */
                   type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
@@ -281,7 +283,7 @@ export default function EventModal({
 
             <div>
               <span className="block text-xs font-medium text-[var(--muted)] mb-1.5">Details</span>
-              <RichTextEditor
+              <RichTextEditor /* @uxid lib/EventModal::EventModal.richtexteditor */
                 value={text}
                 onChange={setText}
                 minHeight="9rem"
@@ -317,7 +319,7 @@ export default function EventModal({
         {/* Footer (fixed) */}
         <div className="shrink-0 flex items-center gap-2 p-5 sm:p-6 pt-4 border-t border-[var(--hairline)]">
           {event && (
-            <button
+            <button /* @uxid lib/EventModal::EventModal.button-4 */
               onClick={remove}
               disabled={busy}
               className="px-3 py-2.5 rounded-xl text-sm font-semibold text-[var(--latina)] hover:bg-[var(--latina)]/10 transition-colors disabled:opacity-50"
@@ -328,10 +330,10 @@ export default function EventModal({
           <div className="flex-1" />
           {isEdit ? (
             <>
-              <button onClick={cancelEdit} disabled={busy} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors disabled:opacity-50">
+              <button /* @uxid lib/EventModal::EventModal.button-5 */ onClick={cancelEdit} disabled={busy} className="px-4 py-2.5 rounded-xl text-sm font-semibold text-[var(--muted)] hover:bg-[var(--primary-50)] transition-colors disabled:opacity-50">
                 Cancel
               </button>
-              <button
+              <button /* @uxid lib/EventModal::EventModal.button-6 */
                 onClick={save}
                 disabled={busy || !title.trim()}
                 className="btn-grad px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-40"
@@ -340,7 +342,7 @@ export default function EventModal({
               </button>
             </>
           ) : (
-            <button onClick={() => setMode('edit')} className="btn-grad px-6 py-2.5 rounded-xl text-sm font-bold">
+            <button /* @uxid lib/EventModal::EventModal.button-7 */ onClick={() => setMode('edit')} className="btn-grad px-6 py-2.5 rounded-xl text-sm font-bold">
               Edit event
             </button>
           )}

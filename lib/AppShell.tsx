@@ -13,6 +13,7 @@ const TABS = [
   { href: '/standins', label: 'Stand-ins', icon: PeopleIcon },
 ];
 
+// @uxid lib/AppShell::AppShell
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, loading, signOut } = useAuth();
   const router = useRouter();
@@ -35,7 +36,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       {/* Top bar */}
       <header className="sticky top-0 z-20 glass border-b border-[var(--hairline)]">
         <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
+          <Link /* @uxid lib/AppShell::AppShell.link */ href="/" className="flex items-center gap-2">
             <span className="w-8 h-8 rounded-xl btn-grad grid place-items-center text-white text-sm font-bold">♪</span>
             <span className="font-bold text-lg tracking-tight text-gradient">Band Manager</span>
           </Link>
@@ -45,7 +46,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             {TABS.map((t) => {
               const active = pathname === t.href;
               return (
-                <Link
+                <Link /* @uxid lib/AppShell::AppShell.link-2 */
                   key={t.href}
                   href={t.href}
                   className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
@@ -60,7 +61,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             })}
           </nav>
 
-          <button
+          <button /* @uxid lib/AppShell::AppShell.button */
             onClick={() => {
               // Shared account + a button on every screen: guard the one
               // action that actually ends the session.
@@ -88,7 +89,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             const active = pathname === t.href;
             const Icon = t.icon;
             return (
-              <Link
+              <Link /* @uxid lib/AppShell::AppShell.link-3 */
                 key={t.href}
                 href={t.href}
                 className={`flex-1 flex flex-col items-center gap-1 py-2.5 text-[11px] font-semibold transition-colors ${
@@ -106,6 +107,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+// @uxid lib/AppShell::CalendarIcon
 function CalendarIcon({ active }: { active?: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.3 : 1.9} strokeLinecap="round" strokeLinejoin="round">
@@ -115,6 +117,7 @@ function CalendarIcon({ active }: { active?: boolean }) {
   );
 }
 
+// @uxid lib/AppShell::ClockIcon
 function ClockIcon({ active }: { active?: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.3 : 1.9} strokeLinecap="round" strokeLinejoin="round">
@@ -124,6 +127,7 @@ function ClockIcon({ active }: { active?: boolean }) {
   );
 }
 
+// @uxid lib/AppShell::GearIcon
 function GearIcon({ active }: { active?: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.3 : 1.9} strokeLinecap="round" strokeLinejoin="round">
@@ -133,6 +137,7 @@ function GearIcon({ active }: { active?: boolean }) {
   );
 }
 
+// @uxid lib/AppShell::PeopleIcon
 function PeopleIcon({ active }: { active?: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={active ? 2.3 : 1.9} strokeLinecap="round" strokeLinejoin="round">

@@ -39,6 +39,7 @@ function relativeLabel(key: string): string {
   return `in ${Math.round(n / 7)} weeks`;
 }
 
+// @uxid app/upcoming/page::UpcomingPage
 export default function UpcomingPage() {
   return (
     <AppShell>
@@ -47,6 +48,7 @@ export default function UpcomingPage() {
   );
 }
 
+// @uxid app/upcoming/page::Upcoming
 function Upcoming() {
   const [events, setEvents] = useState<BandEvent[]>([]);
   const [open, setOpen] = useState<Set<string>>(new Set());
@@ -77,7 +79,7 @@ function Upcoming() {
       {upcoming.length === 0 ? (
         <div className="card p-10 text-center">
           <p className="text-sm text-[var(--muted)]">Nothing coming up.</p>
-          <Link href="/" className="mt-2 inline-block text-sm font-bold text-[var(--primary)] hover:underline">
+          <Link /* @uxid app/upcoming/page::Upcoming.link */ href="/" className="mt-2 inline-block text-sm font-bold text-[var(--primary)] hover:underline">
             Add something on the calendar →
           </Link>
         </div>
@@ -88,7 +90,7 @@ function Upcoming() {
             const color = TYPE_COLOR[e.type];
             return (
               <li key={e.id} className="card overflow-hidden">
-                <button
+                <button /* @uxid app/upcoming/page::Upcoming.button */
                   onClick={() => toggle(e.id)}
                   className="w-full flex items-center gap-3.5 p-4 text-left"
                   aria-expanded={isOpen}
@@ -138,7 +140,7 @@ function Upcoming() {
                       ) : (
                         <p className="text-sm text-[var(--faint)] italic">No details.</p>
                       )}
-                      <Link
+                      <Link /* @uxid app/upcoming/page::Upcoming.link-2 */
                         href={`/events/${e.id}`}
                         className="inline-flex items-center gap-1 mt-3 text-xs font-bold text-[var(--primary)] hover:underline"
                       >
